@@ -28,38 +28,38 @@ const metrics = [
 export default function LabPage() {
   return (
     <BaoxPageChrome active="/lab">
-      <section className="relative overflow-hidden px-4 py-12 sm:px-8 lg:py-24">
+      <section className="baox-subhero relative overflow-hidden px-4 sm:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(245,158,11,0.2),transparent_32%),radial-gradient(circle_at_82%_18%,rgba(20,184,166,0.16),transparent_32%),linear-gradient(180deg,#12100b_0%,#070707_82%)]" />
-        <div className="relative mx-auto flex w-full max-w-[1180px] flex-col items-center justify-center text-center lg:min-h-[560px]">
+        <div className="baox-subhero-grid relative mx-auto flex w-full max-w-[1180px] flex-col items-center justify-center text-center">
           <div>
             <p className="inline-flex items-center gap-2 rounded-full border border-amber-300/25 bg-amber-300/10 px-5 py-2 text-sm font-black text-amber-200">
               <FlaskConical size={16} />
               大师课学员作品集
             </p>
-            <h1 className="mt-6 text-[2.9rem] font-black leading-[1.02] tracking-tight sm:mt-8 sm:text-7xl lg:text-8xl">
+            <h1 className="baox-subhero-title mt-5 font-black tracking-tight sm:mt-6">
               上完大师课
               <span className="block text-amber-300">作品直接落地</span>
             </h1>
-            <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-white/62 sm:mt-7 sm:text-lg">
+            <p className="baox-subhero-copy mx-auto max-w-3xl text-base leading-8 text-white/62 sm:text-lg">
               这些不是概念演示，而是AI保险大师课学员完成的真实作业。把增额寿、年金、重疾等复杂产品做成可展示、可转发、可讲解的专业页面。
             </p>
           </div>
 
-          <div className="mt-8 w-full max-w-3xl sm:mt-10">
+          <div className="mt-6 w-full max-w-3xl sm:mt-7">
             <div className="grid overflow-hidden rounded-[1.7rem] border border-white/10 bg-white/[0.045] backdrop-blur-xl sm:grid-cols-3">
               {metrics.map(([value, label]) => (
-                <div key={label} className="border-b border-white/10 px-6 py-5 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
-                  <div className="text-4xl font-black text-amber-300">{value}</div>
+                <div key={label} className="border-b border-white/10 px-6 py-4 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
+                  <div className="text-3xl font-black text-amber-300 sm:text-4xl">{value}</div>
                   <div className="mt-2 text-sm font-bold text-white/48">{label}</div>
                 </div>
               ))}
             </div>
-            <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-              <Link href="#lab-topics" className="inline-flex h-[52px] items-center justify-center gap-2 rounded-full bg-amber-400 px-7 text-sm font-black text-black transition hover:bg-amber-300">
+            <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
+              <Link href="#lab-topics" className="baox-subhero-action inline-flex items-center justify-center gap-2 rounded-full bg-amber-400 px-7 text-sm font-black text-black transition hover:bg-amber-300">
                 查看学员作品
                 <ArrowRight size={17} />
               </Link>
-              <Link href="/masterclass" className="inline-flex h-[52px] items-center justify-center gap-2 rounded-full bg-white px-7 text-sm font-black text-black transition hover:bg-zinc-100">
+              <Link href="/masterclass" className="baox-subhero-action inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 text-sm font-black text-black transition hover:bg-zinc-100">
                 查看大师课
                 <ArrowRight size={17} />
               </Link>

@@ -165,35 +165,35 @@ const studentReviews = [
 export default function MasterclassPage() {
   return (
     <BaoxPageChrome active="/masterclass">
-      <section className="relative isolate overflow-hidden px-4 py-12 sm:px-8 lg:py-20">
+      <section className="baox-subhero relative isolate overflow-hidden px-4 sm:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_14%,rgba(245,158,11,0.24),transparent_30%),radial-gradient(circle_at_84%_18%,rgba(20,184,166,0.14),transparent_28%),linear-gradient(180deg,#11100c_0%,#070707_78%)]" />
-        <div className="relative mx-auto grid w-full max-w-[1500px] gap-8 lg:min-h-[760px] lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
+        <div className="baox-subhero-grid relative mx-auto grid w-full max-w-[1500px] gap-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-300/25 bg-amber-300/10 px-5 py-2 text-sm font-bold text-amber-200">
               <Sparkles size={16} />
               保险人专属 AI 实战课
             </div>
-            <h1 className="mt-6 text-[2.75rem] font-black leading-[0.96] tracking-tight sm:mt-8 sm:text-[5.4rem]">
+            <h1 className="baox-subhero-title mt-5 font-black tracking-tight sm:mt-6">
               AI保险
               <span className="block text-amber-300">大师课</span>
             </h1>
-            <p className="mt-5 max-w-2xl text-lg font-semibold leading-8 text-white/72 sm:mt-6 sm:text-xl">不是学AI，而是用AI。不是讲概念，而是做实战。</p>
+            <p className="baox-subhero-copy max-w-2xl text-lg font-semibold leading-8 text-white/72 sm:text-xl">不是学AI，而是用AI。不是讲概念，而是做实战。</p>
             <p className="mt-4 max-w-2xl text-base leading-8 text-white/50">5天密集实战，从图文创作到全流程自动化，构建你的完整AI保险工作流。</p>
-            <div className="mt-7 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
-              <Link href="#curriculum" className="inline-flex h-[60px] items-center justify-center gap-3 rounded-full bg-white px-8 text-base font-black text-black transition hover:bg-zinc-100">
+            <div className="baox-subhero-actions flex flex-col gap-3 sm:flex-row sm:gap-4">
+              <Link href="#curriculum" className="baox-subhero-action inline-flex items-center justify-center gap-3 rounded-full bg-white px-7 text-base font-black text-black transition hover:bg-zinc-100">
                 查看课程大纲
                 <ArrowRight size={18} />
               </Link>
-              <Link href="https://baox.ai/index.html" className="inline-flex h-[60px] items-center justify-center gap-3 rounded-full bg-amber-400 px-8 text-base font-black text-black shadow-[0_28px_70px_rgba(245,158,11,0.28)] transition hover:bg-amber-300">
+              <Link href="https://baox.ai/index.html" className="baox-subhero-action inline-flex items-center justify-center gap-3 rounded-full bg-amber-400 px-7 text-base font-black text-black shadow-[0_28px_70px_rgba(245,158,11,0.28)] transition hover:bg-amber-300">
                 学完进入工作台
                 <ArrowRight size={18} />
               </Link>
             </div>
           </div>
-          <div className="relative">
+          <div className="relative lg:self-center">
             <div className="absolute -inset-3 rounded-[2.2rem] bg-[radial-gradient(circle_at_40%_40%,rgba(245,158,11,0.2),transparent_40%),radial-gradient(circle_at_74%_80%,rgba(20,184,166,0.18),transparent_38%)] blur-2xl sm:-inset-8 sm:rounded-[4rem]" />
             <div className="relative rounded-[1.8rem] border border-white/10 bg-white/[0.06] p-1.5 shadow-[0_46px_130px_rgba(0,0,0,0.5)] sm:rounded-[3rem] sm:p-4">
-              <img src="/insurance/landing/baox-masterclass-hero-shield-course.png" alt="保险大师课宣传图" className="aspect-video w-full rounded-[1.5rem] object-contain sm:rounded-[2.3rem]" />
+              <img src="/insurance/landing/baox-masterclass-hero-shield-course.png" alt="保险大师课宣传图" className="baox-subhero-media aspect-video rounded-[1.5rem] sm:rounded-[2.3rem]" />
             </div>
           </div>
         </div>

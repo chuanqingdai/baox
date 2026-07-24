@@ -26,11 +26,11 @@ const asset = (name: string) => `/insurance/baox-original/images/${name}`;
 export default function AboutPage() {
   return (
     <BaoxPageChrome active="/about">
-      <section className="relative overflow-hidden px-5 py-20 sm:px-8">
+      <section className="baox-simple-hero relative overflow-hidden px-5 sm:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(245,158,11,0.18),transparent_42%)]" />
         <div className="relative mx-auto max-w-[1500px] text-center">
           <p className="text-sm font-black tracking-[0.24em] text-amber-300">ABOUT BAOX.AI</p>
-          <h1 className="mt-5 text-5xl font-black tracking-tight sm:text-7xl">
+          <h1 className="baox-simple-hero-title mt-5 font-black tracking-tight">
             关于<span className="text-amber-300">我们</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-xl font-semibold text-white/66">心有山海 ｜ 万相燎原</p>

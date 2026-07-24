@@ -69,11 +69,11 @@ const asset = (name: string) => `/insurance/baox-original/images/${name}`;
 export default function ToolPage() {
   return (
     <BaoxPageChrome active="/tool">
-      <section className="relative overflow-hidden px-5 py-20 sm:px-8">
+      <section className="baox-simple-hero relative overflow-hidden px-5 sm:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(245,158,11,0.18),transparent_42%)]" />
         <div className="relative mx-auto max-w-[1500px] text-center">
           <p className="text-sm font-black tracking-[0.24em] text-amber-300">AI TOOLKIT</p>
-          <h1 className="mt-5 text-5xl font-black tracking-tight sm:text-7xl">AI工具包</h1>
+          <h1 className="baox-simple-hero-title mt-5 font-black tracking-tight">AI工具包</h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/58">保险人常用 AI 工具集合，一键直达超省心。</p>
         </div>
       </section>

@@ -197,31 +197,31 @@ export default function PosterPage() {
         }}
       />
 
-      <section className="relative isolate overflow-hidden px-4 py-12 sm:px-8 lg:py-18">
+      <section className="baox-subhero relative isolate overflow-hidden px-4 sm:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(245,158,11,0.22),transparent_30%),radial-gradient(circle_at_86%_18%,rgba(20,184,166,0.14),transparent_30%),linear-gradient(180deg,#11100c_0%,#070707_78%)]" />
-        <div className="relative mx-auto grid w-full max-w-[1500px] gap-8 lg:min-h-[720px] lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
+        <div className="baox-subhero-grid relative mx-auto grid w-full max-w-[1500px] gap-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
           <div className="max-w-3xl" data-poster-reveal>
             <p className="inline-flex rounded-full border border-amber-300/25 bg-amber-300/10 px-5 py-2 text-sm font-black text-amber-200">
               保险海报
             </p>
-            <h1 className="mt-6 text-[2.7rem] font-black leading-[0.96] tracking-tight sm:mt-8 sm:text-[5.2rem]">
+            <h1 className="baox-subhero-title mt-5 font-black tracking-tight sm:mt-6">
               成品海报，
               <span className="block text-amber-300">拿来就能发。</span>
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-white/62 sm:mt-7 sm:text-lg">
+            <p className="baox-subhero-copy max-w-2xl text-base leading-8 text-white/62 sm:text-lg">
               面向保险人高频展业场景，把文案、画面和传播目的打包成可复用模板。改好一句话，就能快速产出专业素材。
             </p>
-            <div className="mt-7 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
-              <Link href="https://baox.ai/index.html" className="inline-flex h-[60px] items-center justify-center gap-3 rounded-full bg-amber-400 px-8 text-base font-black text-black shadow-[0_28px_70px_rgba(245,158,11,0.32)] transition hover:bg-amber-300">
+            <div className="baox-subhero-actions flex flex-col gap-3 sm:flex-row sm:gap-4">
+              <Link href="https://baox.ai/index.html" className="baox-subhero-action inline-flex items-center justify-center gap-3 rounded-full bg-amber-400 px-7 text-base font-black text-black shadow-[0_28px_70px_rgba(245,158,11,0.32)] transition hover:bg-amber-300">
                 打开海报工作台
                 <ArrowRight size={18} />
               </Link>
-              <Link href="#cases" className="inline-flex h-[60px] items-center justify-center gap-3 rounded-full bg-white px-8 text-base font-black text-black transition hover:bg-zinc-100">
+              <Link href="#cases" className="baox-subhero-action inline-flex items-center justify-center gap-3 rounded-full bg-white px-7 text-base font-black text-black transition hover:bg-zinc-100">
                 查看海报案例
                 <ArrowRight size={18} />
               </Link>
             </div>
-            <div className="mt-6 flex flex-wrap gap-2 sm:mt-9 sm:gap-3">
+            <div className="mt-5 flex flex-wrap gap-2 sm:mt-6 sm:gap-3">
               {promises.map((item) => (
                 <span key={item} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-sm font-bold text-white/72">
                   <CheckCircle2 size={16} className="text-amber-300" />
@@ -231,11 +231,11 @@ export default function PosterPage() {
             </div>
           </div>
 
-          <div className="relative" data-poster-reveal>
+          <div className="relative lg:self-center" data-poster-reveal>
             <div className="absolute -inset-3 rounded-[2.2rem] bg-[radial-gradient(circle_at_40%_40%,rgba(245,158,11,0.18),transparent_38%),radial-gradient(circle_at_70%_72%,rgba(20,184,166,0.15),transparent_38%)] blur-2xl sm:-inset-5 sm:rounded-[3rem]" />
             <div className="relative rounded-[1.6rem] bg-white/[0.035] p-1.5 shadow-[0_38px_110px_rgba(0,0,0,0.42)] sm:rounded-[2.4rem]" data-poster-tilt>
               <div className="relative aspect-video overflow-hidden rounded-[1.35rem] bg-[#fff5df] sm:rounded-[2rem]">
-                <img src="/insurance/landing/baox-poster-hero-template-wall.png" alt="保险海报模板展示" className="h-full w-full object-contain" />
+                <img src="/insurance/landing/baox-poster-hero-template-wall.png" alt="保险海报模板展示" className="baox-subhero-media h-full object-contain" />
               </div>
             </div>
           </div>

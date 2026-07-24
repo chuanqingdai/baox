@@ -38,6 +38,75 @@ img {
   display: block;
 }
 
+.baox-hero-frame {
+  height: min(56.25vw, calc(100svh - 4.125rem));
+  min-height: 430px;
+  max-height: 860px;
+}
+
+.baox-subhero {
+  padding-block: clamp(2rem, 4vw, 3rem);
+}
+
+.baox-subhero-grid {
+  min-height: min(580px, calc(100svh - 10.25rem));
+}
+
+.baox-subhero-title {
+  font-size: clamp(3.2rem, 6vw, 5rem);
+  line-height: 0.96;
+}
+
+.baox-subhero-copy {
+  margin-top: clamp(1rem, 1.7vw, 1.35rem);
+}
+
+.baox-subhero-actions {
+  margin-top: clamp(1.25rem, 2vw, 1.75rem);
+}
+
+.baox-subhero-action {
+  min-height: 3.25rem;
+}
+
+.baox-subhero-media {
+  max-height: min(42vw, calc(100svh - 12rem));
+  width: 100%;
+  object-fit: contain;
+}
+
+.baox-simple-hero {
+  padding-block: clamp(3rem, 6vw, 4.5rem);
+}
+
+.baox-simple-hero-title {
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  line-height: 1;
+}
+
+@media (max-width: 767px) {
+  .baox-hero-frame {
+    height: min(112vw, calc(100svh - 7.5rem));
+    min-height: 360px;
+  }
+
+  .baox-subhero {
+    padding-block: 2rem;
+  }
+
+  .baox-subhero-grid {
+    min-height: auto;
+  }
+
+  .baox-subhero-title {
+    font-size: clamp(2.5rem, 13vw, 3.4rem);
+  }
+
+  .baox-subhero-media {
+    max-height: none;
+  }
+}
+
 button:not(:disabled),
 [role="button"]:not([aria-disabled="true"]),
 input[type="button"]:not(:disabled),

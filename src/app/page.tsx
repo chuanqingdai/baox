@@ -241,7 +241,7 @@ export default function BaoxNewHomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(245,158,11,0.16),transparent_30%),radial-gradient(circle_at_82%_22%,rgba(20,184,166,0.13),transparent_30%),linear-gradient(180deg,#111_0%,#070707_86%)]" />
         <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#070707] to-transparent" />
         <div className="relative flex w-full flex-col justify-start">
-          <div className="baox-hero-media relative aspect-video w-full overflow-hidden rounded-none bg-black shadow-[0_44px_120px_rgba(0,0,0,0.52)]">
+          <div className="baox-hero-media baox-hero-frame relative w-full overflow-hidden rounded-none bg-black shadow-[0_44px_120px_rgba(0,0,0,0.52)]">
             {heroBanners.map((banner, index) => (
               <Link
                 key={banner.title}
@@ -252,9 +252,9 @@ export default function BaoxNewHomePage() {
                 }`}
               >
                 <img src={banner.image} alt={banner.title} className="h-full w-full !rounded-none object-contain transition duration-700 group-hover:scale-[1.01]" />
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex h-24 items-end justify-center bg-gradient-to-t from-black/62 via-black/24 to-transparent p-3 sm:h-36 sm:p-7">
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex h-20 items-end justify-center bg-gradient-to-t from-black/62 via-black/24 to-transparent p-3 sm:h-28 sm:p-5">
                   <span
-                    className={`inline-flex h-12 min-w-[205px] items-center justify-center gap-2 rounded-full px-6 text-sm font-black shadow-[0_24px_58px_rgba(245,158,11,0.42)] transition group-hover:-translate-y-1 sm:h-[68px] sm:min-w-[310px] sm:gap-3 sm:px-9 sm:text-xl ${
+                    className={`inline-flex h-11 min-w-[190px] items-center justify-center gap-2 rounded-full px-5 text-sm font-black shadow-[0_24px_58px_rgba(245,158,11,0.42)] transition group-hover:-translate-y-1 sm:h-14 sm:min-w-[260px] sm:gap-3 sm:px-7 sm:text-lg ${
                       index === 0 ? "bg-amber-400 text-black" : "bg-white text-black"
                     }`}
                   >
