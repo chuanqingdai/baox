@@ -7,6 +7,7 @@ import {
   BookOpenCheck,
   FileText,
   Layers3,
+  Menu,
   MessageSquareText,
   WandSparkles,
   Wrench,
@@ -111,9 +112,9 @@ export default function BaoxNewHomePage() {
               transition: transform 260ms ease, box-shadow 260ms ease, background-color 260ms ease;
             }
             [data-baox-reveal] {
-              opacity: 0;
-              transform: translateY(28px);
-              transition: opacity 760ms ease, transform 760ms cubic-bezier(0.22, 1, 0.36, 1);
+              opacity: 1;
+              transform: translateY(0);
+              transition: opacity 520ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
               transition-delay: var(--baox-delay, 0ms);
             }
             [data-baox-reveal].is-visible {
@@ -141,46 +142,27 @@ export default function BaoxNewHomePage() {
               const initBaoxMotion = () => {
                 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
                 const revealItems = [...document.querySelectorAll("[data-baox-reveal]")];
-                if (reduceMotion) {
-                  revealItems.forEach((item) => item.classList.add("is-visible"));
-                  return;
+                revealItems.forEach((item) => item.classList.add("is-visible"));
+
+                const preloadPageImages = () => {
+                  const sources = [...document.querySelectorAll("main img")]
+                    .map((img) => img.currentSrc || img.src)
+                    .filter(Boolean);
+                  [...new Set(sources)].forEach((src) => {
+                    const image = new Image();
+                    image.decoding = "async";
+                    image.src = src;
+                  });
+                };
+
+                const firstHeroImage = document.querySelector(".baox-home-banner-image");
+                if (!reduceMotion && firstHeroImage && !firstHeroImage.complete) {
+                  firstHeroImage.addEventListener("load", preloadPageImages, { once: true });
+                  firstHeroImage.addEventListener("error", preloadPageImages, { once: true });
+                  window.setTimeout(preloadPageImages, 1200);
+                } else {
+                  window.setTimeout(preloadPageImages, 120);
                 }
-                const showReveal = (item) => {
-                  item.classList.add("is-visible");
-                  if (observer) observer.unobserve(item);
-                };
-                const revealNearbyItems = () => {
-                  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-                  revealItems.forEach((item) => {
-                    if (item.classList.contains("is-visible")) return;
-                    const rect = item.getBoundingClientRect();
-                    if (rect.top < viewportHeight * 1.12 && rect.bottom > -viewportHeight * 0.18) {
-                      showReveal(item);
-                    }
-                  });
-                };
-                let ticking = false;
-                let observer = null;
-                observer = new IntersectionObserver((entries) => {
-                  entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                      showReveal(entry.target);
-                    }
-                  });
-                }, { rootMargin: "18% 0px 18% 0px", threshold: 0.01 });
-                revealItems.forEach((item) => observer.observe(item));
-                revealNearbyItems();
-                window.setTimeout(revealNearbyItems, 120);
-                window.setTimeout(revealNearbyItems, 520);
-                window.setTimeout(() => revealItems.forEach(showReveal), 1800);
-                window.addEventListener("scroll", () => {
-                  if (ticking) return;
-                  ticking = true;
-                  window.requestAnimationFrame(() => {
-                    revealNearbyItems();
-                    ticking = false;
-                  });
-                }, { passive: true });
 
                 document.querySelectorAll("[data-baox-tilt]").forEach((card) => {
                   card.addEventListener("mousemove", (event) => {
@@ -206,7 +188,7 @@ export default function BaoxNewHomePage() {
       </Script>
 
       <header className="sticky top-0 z-40 border-b border-white/10 bg-black/78 backdrop-blur-2xl">
-        <div className="mx-auto flex min-h-16 w-full max-w-[1500px] flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-8 md:h-16 md:flex-nowrap md:py-0">
+        <div className="mx-auto flex min-h-16 w-full max-w-[1500px] items-center justify-between gap-3 px-4 py-3 sm:px-8 md:h-16 md:py-0">
           <Link href="/" className="inline-flex items-center gap-3" aria-label="保罗万相首页">
             <img
               src="/insurance/baox-original/BOAX-LOGO-W.png"
@@ -214,12 +196,12 @@ export default function BaoxNewHomePage() {
               className="h-6 w-auto max-w-[128px] object-contain sm:h-7 sm:max-w-[150px]"
             />
           </Link>
-          <nav className="order-3 -mx-4 flex w-[calc(100%+2rem)] items-center gap-1 overflow-x-auto px-4 pb-1 md:order-none md:mx-0 md:w-auto md:overflow-visible md:px-0 md:pb-0">
+          <nav className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition ${
+                className={`inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition ${
                   item.href === "/" ? "bg-white text-black" : "text-white/54 hover:bg-white/10 hover:text-white"
                 }`}
               >
@@ -227,12 +209,24 @@ export default function BaoxNewHomePage() {
               </Link>
             ))}
           </nav>
-          <Link
-            href="https://baox.ai/index.html"
-            className="inline-flex h-9 items-center justify-center rounded-full bg-amber-400 px-4 text-xs font-black text-black shadow-[0_16px_36px_rgba(245,158,11,0.28)] transition hover:bg-amber-300 sm:h-10 sm:px-5 sm:text-sm"
-          >
-            开始出图
-          </Link>
+          <details className="baox-mobile-menu relative md:hidden">
+            <summary className="inline-flex h-10 w-10 list-none items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white transition hover:bg-white/10">
+              <Menu size={20} />
+            </summary>
+            <nav className="absolute right-0 top-12 z-50 w-56 rounded-[1.4rem] border border-white/10 bg-[#090909]/96 p-2 shadow-[0_28px_90px_rgba(0,0,0,0.48)] backdrop-blur-2xl">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex min-h-11 items-center rounded-full px-4 text-sm font-bold transition ${
+                    item.href === "/" ? "bg-white text-black" : "text-white/62 hover:bg-white/10 hover:text-white"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </details>
         </div>
       </header>
 
@@ -241,18 +235,23 @@ export default function BaoxNewHomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(245,158,11,0.16),transparent_30%),radial-gradient(circle_at_82%_22%,rgba(20,184,166,0.13),transparent_30%),linear-gradient(180deg,#111_0%,#070707_86%)]" />
         <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#070707] to-transparent" />
         <div className="relative flex w-full flex-col justify-start">
-          <div className="baox-hero-media baox-hero-frame relative w-full overflow-hidden rounded-none bg-black shadow-[0_44px_120px_rgba(0,0,0,0.52)]">
+          <div className="baox-hero-media baox-hero-frame relative w-full overflow-hidden rounded-none bg-[#070707] shadow-[0_44px_120px_rgba(0,0,0,0.52)]">
             {heroBanners.map((banner, index) => (
               <Link
                 key={banner.title}
                 href={banner.href}
                 aria-label={banner.cta}
-                className={`baox-banner-slide group absolute inset-0 overflow-hidden rounded-none bg-[#fff1d6] outline-none transition ${
+                className={`baox-banner-slide group absolute inset-0 overflow-hidden rounded-none bg-[#070707] outline-none transition ${
                   index === 0 ? "" : "opacity-0"
                 }`}
               >
-                <img src={banner.image} alt={banner.title} className="h-full w-full !rounded-none object-contain transition duration-700 group-hover:scale-[1.01]" />
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex h-20 items-end justify-center bg-gradient-to-t from-black/62 via-black/24 to-transparent p-3 sm:h-28 sm:p-5">
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,#070707_0%,#1a1006_22%,#2a1908_50%,#160e06_78%,#070707_100%)]" />
+                <img src={banner.image} alt="" aria-hidden="true" className="baox-home-banner-backdrop absolute inset-0 h-full w-full !rounded-none object-cover" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_24%,rgba(255,232,176,0.28),transparent_30%),radial-gradient(circle_at_28%_42%,rgba(245,158,11,0.12),transparent_32%),linear-gradient(180deg,rgba(7,7,7,0.16),rgba(7,7,7,0.28))]" />
+                <img src={banner.image} alt={banner.title} className="baox-home-banner-image relative mx-auto h-full w-auto !rounded-none object-contain transition duration-700 group-hover:scale-[1.006]" />
+                <div className="baox-home-banner-edge baox-home-banner-edge-left pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-[10vw] sm:block" />
+                <div className="baox-home-banner-edge baox-home-banner-edge-right pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-[10vw] sm:block" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex h-20 items-end justify-center bg-gradient-to-t from-black/70 via-black/20 to-transparent p-3 sm:h-28 sm:p-5">
                   <span
                     className={`inline-flex h-11 min-w-[190px] items-center justify-center gap-2 rounded-full px-5 text-sm font-black shadow-[0_24px_58px_rgba(245,158,11,0.42)] transition group-hover:-translate-y-1 sm:h-14 sm:min-w-[260px] sm:gap-3 sm:px-7 sm:text-lg ${
                       index === 0 ? "bg-amber-400 text-black" : "bg-white text-black"

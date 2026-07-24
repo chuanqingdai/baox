@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { Menu } from "lucide-react";
 
 const navItems = [
   { href: "/", label: "首页" },
@@ -19,7 +20,7 @@ export function BaoxPageChrome({ active, children }: BaoxPageChromeProps) {
   return (
     <main className="min-h-screen bg-[#070707] text-white">
       <header className="sticky top-0 z-40 border-b border-white/10 bg-black/78 backdrop-blur-2xl">
-        <div className="mx-auto flex min-h-16 w-full max-w-[1500px] flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-8 md:h-16 md:flex-nowrap md:py-0">
+        <div className="mx-auto flex min-h-16 w-full max-w-[1500px] items-center justify-between gap-3 px-4 py-3 sm:px-8 md:h-16 md:py-0">
           <Link href="/" className="inline-flex items-center gap-3" aria-label="保罗万相首页">
             <img
               src="/insurance/baox-original/BOAX-LOGO-W.png"
@@ -27,12 +28,12 @@ export function BaoxPageChrome({ active, children }: BaoxPageChromeProps) {
               className="h-6 w-auto max-w-[128px] object-contain sm:h-7 sm:max-w-[150px]"
             />
           </Link>
-          <nav className="order-3 -mx-4 flex w-[calc(100%+2rem)] items-center gap-1 overflow-x-auto px-4 pb-1 md:order-none md:mx-0 md:w-auto md:overflow-visible md:px-0 md:pb-0">
+          <nav className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition ${
+                className={`inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition ${
                   active === item.href ? "bg-white text-black" : "text-white/54 hover:bg-white/10 hover:text-white"
                 }`}
               >
@@ -40,12 +41,24 @@ export function BaoxPageChrome({ active, children }: BaoxPageChromeProps) {
               </Link>
             ))}
           </nav>
-          <Link
-            href="https://baox.ai/index.html"
-            className="inline-flex h-9 items-center justify-center rounded-full bg-amber-400 px-4 text-xs font-black text-black shadow-[0_16px_36px_rgba(245,158,11,0.28)] transition hover:bg-amber-300 sm:h-10 sm:px-5 sm:text-sm"
-          >
-            开始出图
-          </Link>
+          <details className="baox-mobile-menu relative md:hidden">
+            <summary className="inline-flex h-10 w-10 list-none items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white transition hover:bg-white/10">
+              <Menu size={20} />
+            </summary>
+            <nav className="absolute right-0 top-12 z-50 w-56 rounded-[1.4rem] border border-white/10 bg-[#090909]/96 p-2 shadow-[0_28px_90px_rgba(0,0,0,0.48)] backdrop-blur-2xl">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex min-h-11 items-center rounded-full px-4 text-sm font-bold transition ${
+                    active === item.href ? "bg-white text-black" : "text-white/62 hover:bg-white/10 hover:text-white"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </details>
         </div>
       </header>
 

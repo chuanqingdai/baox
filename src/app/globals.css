@@ -21,6 +21,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -32,16 +33,40 @@ body {
     "Microsoft YaHei", sans-serif;
   scrollbar-width: thin;
   scrollbar-color: rgba(245, 158, 11, 0.5) transparent;
+  overflow-x: hidden;
 }
 
 img {
   display: block;
 }
 
+.baox-mobile-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
 .baox-hero-frame {
   height: min(56.25vw, calc(100svh - 4.125rem));
   min-height: 430px;
   max-height: 860px;
+}
+
+.baox-home-banner-image {
+  max-width: min(100vw, calc((100svh - 4.125rem) * 1.777));
+  filter: drop-shadow(0 34px 80px rgba(0, 0, 0, 0.42));
+}
+
+.baox-home-banner-backdrop {
+  opacity: 0.42;
+  filter: blur(28px) saturate(1.14) brightness(0.72);
+  transform: scale(1.08);
+}
+
+.baox-home-banner-edge-left {
+  background: linear-gradient(90deg, rgba(7, 7, 7, 0.52), transparent);
+}
+
+.baox-home-banner-edge-right {
+  background: linear-gradient(270deg, rgba(7, 7, 7, 0.42), transparent);
 }
 
 .baox-subhero {
@@ -86,8 +111,21 @@ img {
 
 @media (max-width: 767px) {
   .baox-hero-frame {
-    height: min(112vw, calc(100svh - 7.5rem));
-    min-height: 360px;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 1672 / 941;
+  }
+
+  .baox-home-banner-image {
+    height: auto;
+    max-width: none;
+    width: 100%;
+  }
+
+  .baox-home-banner-backdrop {
+    opacity: 0.24;
+    filter: blur(18px) saturate(1.05) brightness(0.62);
+    transform: scale(1.03);
   }
 
   .baox-subhero {
