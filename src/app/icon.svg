@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="保罗万相">
+  <rect width="512" height="512" rx="112" fill="#070707"/>
+  <path d="M128 164h156c58 0 96 34 96 82 0 31-16 56-43 70 34 13 53 41 53 77 0 57-44 91-111 91H128V164Zm72 62v64h76c21 0 34-12 34-32 0-19-13-32-34-32h-76Zm0 120v76h84c24 0 38-14 38-38 0-23-15-38-39-38h-83Z" fill="#FBBF24"/>
+  <path d="M114 100h284v42H114V100Zm0 270h42v42h-42v-42Zm242-270h42v42h-42v-42Z" fill="#fff"/>
+</svg>
+*** Add File: src/app/manifest.ts
+import type { MetadataRoute } from "next";
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: "保罗万相｜保险人的人工智能增长系统",
+    short_name: "保罗万相",
+    description: "面向保险从业者的AI保险大师课、保险海报和AI工具包。",
+    start_url: "/",
+    scope: "/",
+    display: "standalone",
+    background_color: "#070707",
+    theme_color: "#070707",
+    lang: "zh-CN",
+    icons: [
+      {
+        src: "/icon.svg",
+        sizes: "any",
+        type: "image/svg+xml",
+        purpose: "any"
+      },
+      {
+        src: "/apple-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+        purpose: "any"
+      }
+    ]
+  };
+}
