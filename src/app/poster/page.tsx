@@ -231,9 +231,8 @@ export default function PosterPage() {
             </div>
           </div>
 
-          <div className="relative lg:self-center" data-poster-reveal>
-            <div className="absolute -inset-4 bg-[radial-gradient(circle_at_42%_44%,rgba(245,158,11,0.2),transparent_36%),radial-gradient(circle_at_74%_72%,rgba(20,184,166,0.18),transparent_36%)] blur-3xl sm:-inset-7" />
-            <div className="relative overflow-hidden rounded-[1.8rem] bg-[#fff5df] shadow-[0_42px_120px_rgba(0,0,0,0.48)] sm:rounded-[2.4rem]" data-poster-tilt>
+          <div className="relative flex justify-center lg:self-center" data-poster-reveal>
+            <div className="relative w-[94%] overflow-hidden rounded-[1.1rem] shadow-[0_32px_90px_rgba(0,0,0,0.38)] sm:rounded-[1.55rem]" data-poster-tilt>
               <img
                 src="/insurance/landing/baox-poster-hero-template-wall.png"
                 alt="保险海报模板展示"
