@@ -28,7 +28,7 @@ export default function AboutPage() {
     <BaoxPageChrome active="/about">
       <section className="baox-simple-hero relative overflow-hidden px-5 sm:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(245,158,11,0.18),transparent_42%)]" />
-        <div className="relative mx-auto max-w-[1500px] text-center">
+        <div className="relative mx-auto max-w-[1280px] text-center">
           <p className="text-sm font-black tracking-[0.24em] text-amber-300">ABOUT BAOX.AI</p>
           <h1 className="baox-simple-hero-title mt-5 font-black tracking-tight">
             关于<span className="text-amber-300">我们</span>
@@ -37,7 +37,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="mx-auto grid w-full max-w-[1500px] gap-10 px-5 py-12 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+      <section className="mx-auto grid w-full max-w-[1280px] gap-10 px-5 py-12 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
         <div className="rounded-[2.8rem] border border-white/10 bg-white/[0.045] p-8 sm:p-10">
           <p className="text-sm font-black tracking-[0.18em] text-amber-300">WANXIANG</p>
           <h2 className="mt-5 text-4xl font-black tracking-tight sm:text-5xl">保罗万相</h2>
@@ -53,7 +53,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1500px] px-5 py-16 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="mb-9 text-center">
           <p className="text-sm font-black tracking-[0.22em] text-amber-300">OUR TEAM</p>
           <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">团队成员</h2>
@@ -74,7 +74,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="mx-auto grid w-full max-w-[1500px] gap-10 px-5 py-16 sm:px-8 lg:grid-cols-[1fr_1fr] lg:items-center">
+      <section className="mx-auto grid w-full max-w-[1280px] gap-10 px-5 py-16 sm:px-8 lg:grid-cols-[1fr_1fr] lg:items-center">
         <div className="overflow-hidden rounded-[2.8rem] bg-white">
           <img src={asset("changjng003.jpg")} alt="保罗万相场景" className="aspect-[4/3] w-full object-cover" />
         </div>

@@ -112,13 +112,13 @@ export default function PosterPage() {
           __html: `
             .poster-reveal {
               opacity: 0;
-              transform: translateY(26px);
-              transition: opacity 720ms ease, transform 720ms cubic-bezier(.22,1,.36,1);
+              translate: 0 26px;
+              transition: opacity 720ms ease, translate 720ms cubic-bezier(.22,1,.36,1);
               transition-delay: var(--poster-delay, 0ms);
             }
             .poster-reveal.is-visible {
               opacity: 1;
-              transform: translateY(0);
+              translate: 0 0;
             }
             .poster-tilt {
               transform-style: preserve-3d;
@@ -133,6 +133,7 @@ export default function PosterPage() {
             @media (prefers-reduced-motion: reduce) {
               .poster-reveal, .poster-tilt, .poster-gallery-item {
                 opacity: 1 !important;
+                translate: none !important;
                 transform: none !important;
                 transition: none !important;
               }
@@ -148,6 +149,8 @@ export default function PosterPage() {
                 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
                 const reveals = [...document.querySelectorAll("[data-poster-reveal]")];
                 reveals.forEach((item, index) => {
+                  if (item.dataset.posterRevealReady === "1") return;
+                  item.dataset.posterRevealReady = "1";
                   item.classList.add("poster-reveal");
                   item.style.setProperty("--poster-delay", \`\${Math.min(index % 6, 5) * 70}ms\`);
                 });
@@ -166,6 +169,8 @@ export default function PosterPage() {
                 }
 
                 document.querySelectorAll("[data-poster-tilt]").forEach((card) => {
+                  if (card.dataset.posterTiltReady === "1") return;
+                  card.dataset.posterTiltReady = "1";
                   card.classList.add("poster-tilt");
                   card.addEventListener("pointermove", (event) => {
                     const rect = card.getBoundingClientRect();
@@ -179,6 +184,8 @@ export default function PosterPage() {
                 });
 
                 document.querySelectorAll("[data-poster-spotlight]").forEach((card) => {
+                  if (card.dataset.posterSpotlightReady === "1") return;
+                  card.dataset.posterSpotlightReady = "1";
                   card.classList.add("poster-spotlight");
                   card.addEventListener("pointermove", (event) => {
                     const rect = card.getBoundingClientRect();
@@ -199,7 +206,7 @@ export default function PosterPage() {
 
       <section className="baox-subhero relative isolate overflow-hidden px-4 sm:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(245,158,11,0.22),transparent_30%),radial-gradient(circle_at_86%_18%,rgba(20,184,166,0.14),transparent_30%),linear-gradient(180deg,#11100c_0%,#070707_78%)]" />
-        <div className="baox-subhero-grid relative mx-auto grid w-full max-w-[1360px] gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-center">
+        <div className="baox-subhero-grid relative mx-auto grid w-full max-w-[1280px] gap-8 px-4 sm:px-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-center">
           <div className="max-w-4xl max-lg:mx-auto max-lg:text-center" data-poster-reveal>
             <p className="inline-flex border-l-2 border-amber-300/80 pl-3 text-sm font-black tracking-[0.18em] text-amber-200/90 max-lg:border-l-0 max-lg:border-t-2 max-lg:px-3 max-lg:pt-3">
               专业保险海报模版
@@ -243,7 +250,7 @@ export default function PosterPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1360px] px-5 pb-10 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 pb-10 sm:px-8">
         <div className="grid overflow-hidden rounded-[2.4rem] border border-white/10 bg-white/[0.04] md:grid-cols-4" data-poster-reveal>
           {metrics.map(([value, label]) => (
             <div key={label} className="border-b border-white/10 p-7 md:border-b-0 md:border-r md:last:border-r-0">
@@ -254,7 +261,7 @@ export default function PosterPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1360px] px-5 py-16 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="mb-10 grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
           <div data-poster-reveal>
             <p className="text-sm font-black text-amber-300">高频场景</p>
@@ -277,7 +284,7 @@ export default function PosterPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1360px] px-5 py-16 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="grid gap-5 lg:grid-cols-[0.78fr_1.22fr] lg:items-stretch">
           <div className="rounded-[2.8rem] bg-[#fff5df] p-8 text-black sm:p-10" data-poster-reveal>
             <TrendingUp size={30} className="text-amber-700" />
@@ -302,7 +309,7 @@ export default function PosterPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1360px] px-5 py-16 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="relative overflow-hidden rounded-[3rem] border border-white/10 bg-[#11100d] p-8 sm:p-10 lg:p-12" data-poster-reveal data-poster-spotlight>
           <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
@@ -325,7 +332,7 @@ export default function PosterPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1360px] px-5 py-16 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="mb-10 grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
           <div data-poster-reveal>
             <p className="text-sm font-black text-amber-300">交付物清单</p>
@@ -346,7 +353,7 @@ export default function PosterPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1360px] px-5 py-16 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="mb-10 grid gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
           <div data-poster-reveal>
             <p className="text-sm font-black text-amber-300">出图流程</p>
@@ -377,7 +384,7 @@ export default function PosterPage() {
         </div>
       </section>
 
-      <section id="cases" className="mx-auto w-full max-w-[1360px] px-5 py-16 sm:px-8">
+      <section id="cases" className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div data-poster-reveal>
             <p className="text-sm font-black text-amber-300">案例展示</p>
@@ -400,7 +407,7 @@ export default function PosterPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1360px] px-5 py-16 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="grid gap-5 lg:grid-cols-[0.72fr_1.28fr] lg:items-stretch">
           <div className="rounded-[2.6rem] bg-[#fff5df] p-8 text-black sm:p-10" data-poster-reveal>
             <Target size={30} className="text-amber-700" />
@@ -419,7 +426,7 @@ export default function PosterPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1360px] px-5 py-16 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="mb-10 max-w-3xl" data-poster-reveal>
           <p className="text-sm font-black text-amber-300">真实使用用户评价</p>
           <h2 className="mt-4 text-4xl font-black leading-tight tracking-tight sm:text-5xl">用户更相信看得见的专业</h2>
@@ -438,7 +445,7 @@ export default function PosterPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1200px] px-5 py-16 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="mb-8 text-center" data-poster-reveal>
           <p className="text-sm font-black text-amber-300">常见问题</p>
           <h2 className="mt-4 text-4xl font-black leading-tight tracking-tight sm:text-5xl">发布前，你可能想知道</h2>
@@ -456,7 +463,7 @@ export default function PosterPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1360px] px-5 pb-24 pt-18 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 pb-24 pt-18 sm:px-8">
         <div className="relative overflow-hidden rounded-[3rem] bg-[#fff5df] p-6 text-black sm:p-10 lg:p-12" data-poster-reveal>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_22%,rgba(20,184,166,0.18),transparent_30%),radial-gradient(circle_at_16%_18%,rgba(245,158,11,0.24),transparent_28%),linear-gradient(120deg,#fff5df_0%,#fffaf0_55%,#eefaf7_100%)]" />
           <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">

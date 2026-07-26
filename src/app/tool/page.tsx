@@ -70,7 +70,7 @@ export default function ToolPage() {
     <BaoxPageChrome active="/tool">
       <section className="baox-simple-hero relative overflow-hidden px-5 sm:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(245,158,11,0.18),transparent_42%)]" />
-        <div className="relative mx-auto max-w-[1500px] text-center">
+        <div className="relative mx-auto max-w-[1280px] text-center">
           <p className="text-sm font-black tracking-[0.24em] text-amber-300">AI TOOLKIT</p>
           <h1 className="baox-simple-hero-title mt-5 font-black tracking-tight">AI工具包</h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/58">保险人常用 AI 工具集合，一键直达超省心。</p>
@@ -78,7 +78,7 @@ export default function ToolPage() {
       </section>
 
       {groups.map((group) => (
-        <section key={group.title} className="mx-auto w-full max-w-[1500px] px-5 py-12 sm:px-8">
+        <section key={group.title} className="mx-auto w-full max-w-[1280px] px-5 py-12 sm:px-8">
           <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="text-sm font-black tracking-[0.18em] text-amber-300">{group.eyebrow}</p>

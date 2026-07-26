@@ -174,8 +174,8 @@ export default function BaoxHomePage() {
       <HomeCarouselController />
 
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/35 backdrop-blur-2xl">
-        <div className="mx-auto flex min-h-16 w-full max-w-[1500px] items-center justify-between gap-3 px-4 py-3 sm:px-8 md:h-16 md:py-0">
-          <Link href="/" className="inline-flex items-center gap-3" aria-label="保罗万相首页">
+        <div className="mx-auto flex min-h-16 w-full max-w-[1280px] items-center justify-between gap-3 px-4 py-3 sm:px-8 md:h-16 md:py-0">
+          <Link href="/" className="relative z-10 inline-flex h-10 items-center gap-3 pr-3" aria-label="返回保罗万相首页">
             <img
               src="/insurance/baox-original/BOAX-LOGO-W.png"
               alt="BAOX.AI"
@@ -280,7 +280,7 @@ export default function BaoxHomePage() {
           </Link>
         ))}
 
-        <div className="baox-carousel-controls pointer-events-none absolute left-1/2 top-1/2 z-40 flex w-[min(88vw,1360px)] -translate-x-1/2 -translate-y-1/2 items-center justify-between px-2 sm:px-4">
+        <div className="baox-carousel-controls pointer-events-none absolute left-1/2 top-1/2 z-40 flex w-[min(88vw,1280px)] -translate-x-1/2 -translate-y-1/2 items-center justify-between px-2 sm:px-4">
           <button type="button" data-baox-prev className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/18 bg-black/42 text-3xl font-light text-white shadow-[0_18px_54px_rgba(0,0,0,0.36)] backdrop-blur-2xl transition hover:-translate-x-1 hover:border-amber-300/50 hover:bg-white hover:text-black sm:h-14 sm:w-14" aria-label="上一个 banner">
             ‹
           </button>

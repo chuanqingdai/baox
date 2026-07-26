@@ -30,7 +30,7 @@ export default function LabPage() {
     <BaoxPageChrome active="/lab">
       <section className="baox-subhero relative overflow-hidden px-4 sm:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(245,158,11,0.2),transparent_32%),radial-gradient(circle_at_82%_18%,rgba(20,184,166,0.16),transparent_32%),linear-gradient(180deg,#12100b_0%,#070707_82%)]" />
-        <div className="baox-subhero-grid relative mx-auto flex w-full max-w-[1180px] flex-col items-center justify-center text-center">
+        <div className="baox-subhero-grid relative mx-auto flex w-full max-w-[1280px] flex-col items-center justify-center text-center">
           <div>
             <p className="inline-flex items-center gap-2 rounded-full border border-amber-300/25 bg-amber-300/10 px-5 py-2 text-sm font-black text-amber-200">
               <FlaskConical size={16} />
@@ -68,7 +68,7 @@ export default function LabPage() {
         </div>
       </section>
 
-      <section id="lab-topics" className="mx-auto w-full max-w-[1500px] px-5 py-12 sm:px-8">
+      <section id="lab-topics" className="mx-auto w-full max-w-[1280px] px-5 py-12 sm:px-8">
         <div className="mb-9 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-sm font-black text-amber-300">学员实战成果</p>
@@ -109,7 +109,7 @@ export default function LabPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1500px] px-5 pb-24 pt-14 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 pb-24 pt-14 sm:px-8">
         <div className="relative overflow-hidden rounded-[3rem] bg-[#fff5df] p-8 text-black sm:p-12">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_84%_28%,rgba(20,184,166,0.16),transparent_30%),radial-gradient(circle_at_16%_18%,rgba(245,158,11,0.24),transparent_28%)]" />
           <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">

@@ -21,8 +21,8 @@ export function BaoxPageChrome({ active, children }: BaoxPageChromeProps) {
   return (
     <main className="min-h-screen bg-[#070707] pt-16 text-white">
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/78 backdrop-blur-2xl">
-        <div className="mx-auto flex min-h-16 w-full max-w-[1500px] items-center justify-between gap-3 px-4 py-3 sm:px-8 md:h-16 md:py-0">
-          <Link href="/" className="inline-flex items-center gap-3" aria-label="保罗万相首页">
+        <div className="mx-auto flex min-h-16 w-full max-w-[1280px] items-center justify-between gap-3 px-4 py-3 sm:px-8 md:h-16 md:py-0">
+          <Link href="/" className="relative z-10 inline-flex h-10 items-center gap-3 pr-3" aria-label="返回保罗万相首页">
             <img
               src="/insurance/baox-original/BOAX-LOGO-W.png"
               alt="BAOX.AI"
@@ -72,7 +72,7 @@ export function BaoxPageChrome({ active, children }: BaoxPageChromeProps) {
       {children}
 
       <footer className="border-t border-white/10 px-5 py-10 sm:px-8">
-        <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-6 text-sm text-white/48 md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-6 text-sm text-white/48 md:flex-row md:items-center md:justify-between">
           <Link href="/" className="inline-flex items-center gap-3 text-white">
             <img
               src="/insurance/baox-original/BOAX-LOGO-W.png"

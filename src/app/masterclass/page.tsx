@@ -167,7 +167,7 @@ export default function MasterclassPage() {
     <BaoxPageChrome active="/masterclass">
       <section className="baox-subhero relative isolate overflow-hidden px-4 sm:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_14%,rgba(245,158,11,0.24),transparent_30%),radial-gradient(circle_at_84%_18%,rgba(20,184,166,0.14),transparent_28%),linear-gradient(180deg,#11100c_0%,#070707_78%)]" />
-        <div className="baox-subhero-grid relative mx-auto grid w-full max-w-[1500px] gap-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
+        <div className="baox-subhero-grid relative mx-auto grid w-full max-w-[1280px] gap-8 px-4 sm:px-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
           <div className="max-lg:mx-auto max-lg:text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-300/25 bg-amber-300/10 px-5 py-2 text-sm font-bold text-amber-200">
               <Sparkles size={16} />
@@ -193,7 +193,7 @@ export default function MasterclassPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1500px] px-5 pb-10 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 pb-10 sm:px-8">
         <div className="grid overflow-hidden rounded-[2.4rem] border border-white/10 bg-white/[0.04] md:grid-cols-4">
           {stats.map(([value, label]) => (
             <div key={label} className="border-b border-white/10 p-7 text-center md:border-b-0 md:border-r md:last:border-r-0">
@@ -204,7 +204,7 @@ export default function MasterclassPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1500px] px-5 py-16 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="mb-10 max-w-3xl">
           <p className="text-sm font-black text-amber-300">核心价值</p>
           <h2 className="mt-4 text-4xl font-black leading-tight tracking-tight sm:text-5xl">5天掌握保险行业AI全链路能力</h2>
@@ -222,13 +222,13 @@ export default function MasterclassPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1500px] px-5 py-16 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="overflow-hidden rounded-[3rem] border border-white/10 bg-white/[0.045] p-4">
           <img src="/insurance/baox-original/images/02.jpg" alt="BAOX.AI 工具包 V7" className="aspect-[16/7] w-full rounded-[2.3rem] object-cover object-top" />
         </div>
       </section>
 
-      <section id="curriculum" className="mx-auto w-full max-w-[1500px] px-5 py-16 sm:px-8">
+      <section id="curriculum" className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="mb-12 grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
           <div>
             <p className="text-sm font-black text-amber-300">五天课程</p>
@@ -282,7 +282,7 @@ export default function MasterclassPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1500px] px-5 py-16 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="mb-10 max-w-3xl">
           <p className="text-sm font-black text-amber-300">课程亮点</p>
           <h2 className="mt-4 text-4xl font-black leading-tight tracking-tight sm:text-5xl">6大核心优势，让每一分钟都有价值</h2>
@@ -298,7 +298,7 @@ export default function MasterclassPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1500px] px-5 py-16 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="grid gap-5 lg:grid-cols-[0.62fr_1.38fr]">
           <div className="rounded-[2.6rem] bg-[#fff5df] p-8 text-black sm:p-10">
             <Users size={30} className="text-amber-700" />
@@ -317,12 +317,12 @@ export default function MasterclassPage() {
         </div>
       </section>
 
-      <section className="mx-auto grid w-full max-w-[1500px] gap-6 px-5 py-16 sm:px-8 lg:grid-cols-2">
+      <section className="mx-auto grid w-full max-w-[1280px] gap-6 px-5 py-16 sm:px-8 lg:grid-cols-2">
         <ResourcePanel title="学习资源" subtitle="课程配套完整，学有所依" items={resources} />
         <ResourcePanel title="评估方式" subtitle="实战驱动，作品说话" items={assessments} />
       </section>
 
-      <section className="mx-auto w-full max-w-[1500px] px-5 py-16 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="mb-10 max-w-3xl">
           <p className="text-sm font-black text-amber-300">学员评价</p>
           <h2 className="mt-4 text-4xl font-black leading-tight tracking-tight sm:text-5xl">学完以后，开始真正把AI用在展业里</h2>
@@ -338,7 +338,7 @@ export default function MasterclassPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1500px] px-5 pb-24 pt-16 sm:px-8">
+      <section className="mx-auto w-full max-w-[1280px] px-5 pb-24 pt-16 sm:px-8">
         <div className="relative overflow-hidden rounded-[3rem] bg-[#fff5df] p-8 text-black sm:p-12 lg:p-14">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_86%_28%,rgba(20,184,166,0.16),transparent_28%),radial-gradient(circle_at_14%_18%,rgba(245,158,11,0.22),transparent_28%)]" />
           <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
