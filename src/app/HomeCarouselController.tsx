@@ -3,6 +3,10 @@
 import { useEffect } from "react";
 
 const TOTAL_SLIDES = 3;
+const eagerImagePaths = [
+  "/insurance/landing/baox-home-masterclass-banner.webp",
+  "/insurance/landing/baox-home-poster-banner.webp",
+];
 
 export function HomeCarouselController() {
   useEffect(() => {
@@ -20,6 +24,15 @@ export function HomeCarouselController() {
     const restart = () => {
       window.clearInterval(timer);
       timer = window.setInterval(() => setActive(active + 1), 6200);
+    };
+
+    const warmImages = () => {
+      eagerImagePaths.forEach((src) => {
+        const image = new Image();
+        image.decoding = "async";
+        image.fetchPriority = "low";
+        image.src = src;
+      });
     };
 
     const onClick = (event: Event) => {
@@ -53,8 +66,13 @@ export function HomeCarouselController() {
     stage.addEventListener("click", onClick);
     restart();
 
+    const scheduleIdle = window.requestIdleCallback ?? window.setTimeout;
+    const cancelIdle = window.cancelIdleCallback ?? window.clearTimeout;
+    const idleId = scheduleIdle(warmImages, { timeout: 1800 });
+
     return () => {
       window.clearInterval(timer);
+      cancelIdle(idleId);
       stage.removeEventListener("click", onClick);
     };
   }, []);

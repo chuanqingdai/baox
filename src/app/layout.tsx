@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { I18nBridge } from "./I18nBridge";
+import { NavigationFeedback } from "./NavigationFeedback";
 
 export const viewport: Viewport = {
   themeColor: "#070707"
@@ -75,6 +76,7 @@ export default function RootLayout({
     <html lang="zh-CN" className="h-full antialiased">
       <body className="min-h-full">
         <I18nBridge />
+        <NavigationFeedback />
         {children}
       </body>
     </html>

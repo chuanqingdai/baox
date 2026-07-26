@@ -24,17 +24,17 @@ const navItems = [
 const slides = [
   {
     title: "保罗万相 BAOX",
-    image: "/insurance/landing/baox-brand-banner.png",
+    image: "/insurance/landing/baox-brand-banner.webp",
   },
   {
     title: "AI保险大师课",
-    image: "/insurance/landing/baox-home-masterclass-banner.png",
+    image: "/insurance/landing/baox-home-masterclass-banner.webp",
     href: "/masterclass",
     cta: "查看大师课",
   },
   {
     title: "展页",
-    image: "/insurance/landing/baox-home-poster-banner.png",
+    image: "/insurance/landing/baox-home-poster-banner.webp",
     href: "https://knowlens.ai/baox",
     cta: "查看展页",
   },
@@ -233,6 +233,9 @@ export default function BaoxHomePage() {
               <img
                 src={slide.image}
                 alt={slide.title}
+                loading={index === 0 ? "eager" : "lazy"}
+                decoding="async"
+                fetchPriority={index === 0 ? "high" : "low"}
                 className={`h-full w-full object-cover transition duration-700 ${"href" in slide ? "group-hover:scale-[1.02]" : ""}`}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/42 via-transparent to-black/8" />

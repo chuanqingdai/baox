@@ -684,10 +684,14 @@ function syncSeo(lang: Lang) {
   upsertMeta('meta[name="twitter:description"]', "name", "twitter:description", copy.description);
 }
 
-function translateDocument(lang: Lang) {
+function syncLanguageShell(lang: Lang) {
   document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
   document.documentElement.dataset.lang = lang;
   syncSeo(lang);
+}
+
+function translateDocument(lang: Lang) {
+  syncLanguageShell(lang);
 
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
@@ -723,9 +727,18 @@ function translateDocument(lang: Lang) {
 export function I18nBridge() {
   useEffect(() => {
     let current = getInitialLang();
-    translateDocument(current);
+    syncLanguageShell(current);
+    const scheduleIdle = window.requestIdleCallback ?? window.setTimeout;
+    const cancelIdle = window.cancelIdleCallback ?? window.clearTimeout;
+    let idleId: number | undefined;
 
-    const observer = new MutationObserver(() => translateDocument(current));
+    if (current === "en") {
+      idleId = scheduleIdle(() => translateDocument(current), { timeout: 1200 });
+    }
+
+    const observer = new MutationObserver(() => {
+      if (current === "en") translateDocument(current);
+    });
     observer.observe(document.body, { childList: true, subtree: true });
 
     const headObserver = new MutationObserver(() => syncSeo(current));
@@ -739,6 +752,7 @@ export function I18nBridge() {
 
     window.addEventListener("baox-language-change", onLangChange);
     return () => {
+      if (idleId !== undefined) cancelIdle(idleId);
       observer.disconnect();
       headObserver.disconnect();
       window.removeEventListener("baox-language-change", onLangChange);
@@ -754,7 +768,6 @@ export function LanguageToggle() {
   useEffect(() => {
     const initial = getInitialLang();
     setLang(initial);
-    window.requestAnimationFrame(() => translateDocument(initial));
   }, []);
 
   const changeLang = (next: Lang) => {
