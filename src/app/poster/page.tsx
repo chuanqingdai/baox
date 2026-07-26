@@ -125,7 +125,7 @@ export default function PosterPage() {
               transition: transform 360ms cubic-bezier(.22,1,.36,1), border-color 240ms ease, background-color 240ms ease;
             }
             .poster-spotlight {
-              background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(245,158,11,.2), transparent 32%), rgba(255,255,255,.045);
+              background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(195,161,120,.2), transparent 32%), rgba(255,255,255,.045);
             }
             .poster-gallery-item {
               transition: transform 300ms ease, border-color 300ms ease;
@@ -194,10 +194,11 @@ export default function PosterPage() {
                   });
                 });
               };
+              const schedulePosterPage = () => window.setTimeout(initPosterPage, 1200);
               if (document.readyState === "loading") {
-                document.addEventListener("DOMContentLoaded", initPosterPage, { once: true });
+                document.addEventListener("DOMContentLoaded", schedulePosterPage, { once: true });
               } else {
-                initPosterPage();
+                schedulePosterPage();
               }
             })();
           `,
@@ -205,7 +206,7 @@ export default function PosterPage() {
       />
 
       <section className="baox-subhero relative isolate overflow-hidden px-4 sm:px-8">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(245,158,11,0.22),transparent_30%),radial-gradient(circle_at_86%_18%,rgba(20,184,166,0.14),transparent_30%),linear-gradient(180deg,#11100c_0%,#070707_78%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(195,161,120,0.22),transparent_30%),radial-gradient(circle_at_86%_18%,rgba(104,119,137,0.14),transparent_30%),linear-gradient(180deg,#17171B_0%,#0D0D10_78%)]" />
         <div className="baox-subhero-grid relative mx-auto grid w-full max-w-[1280px] gap-8 px-4 sm:px-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-center">
           <div className="max-w-4xl max-lg:mx-auto max-lg:text-center" data-poster-reveal>
             <p className="inline-flex border-l-2 border-amber-300/80 pl-3 text-sm font-black tracking-[0.18em] text-amber-200/90 max-lg:border-l-0 max-lg:border-t-2 max-lg:px-3 max-lg:pt-3">
@@ -219,7 +220,7 @@ export default function PosterPage() {
               面向保险人高频展业场景，把文案、画面和传播目的打包成可复用模板，快速产出专业素材。
             </p>
             <div className="baox-subhero-actions flex flex-col gap-3 sm:flex-row sm:gap-4 max-lg:justify-center">
-              <Link href="https://knowlens.ai/baox" className="baox-subhero-action inline-flex items-center justify-center gap-3 rounded-full bg-amber-400 px-7 text-base font-black text-black shadow-[0_28px_70px_rgba(245,158,11,0.32)] transition hover:bg-amber-300">
+              <Link href="https://knowlens.ai/baox" className="baox-subhero-action inline-flex items-center justify-center gap-3 rounded-full bg-amber-400 px-7 text-base font-black text-black shadow-[0_28px_70px_rgba(195,161,120,0.32)] transition hover:bg-amber-300">
                 打开「展页」
                 <ArrowRight size={18} />
               </Link>
@@ -241,7 +242,7 @@ export default function PosterPage() {
           <div className="relative flex justify-center lg:self-center" data-poster-reveal>
             <div className="relative w-[94%] overflow-hidden rounded-[1.1rem] shadow-[0_32px_90px_rgba(0,0,0,0.38)] sm:rounded-[1.55rem]" data-poster-tilt>
               <img
-                src="/insurance/landing/baox-poster-hero-template-wall.png"
+                src="/insurance/landing/baox-poster-hero-template-wall.webp"
                 alt="保险海报模板展示"
                 className="w-full object-contain"
               />
@@ -254,7 +255,7 @@ export default function PosterPage() {
         <div className="grid overflow-hidden rounded-[2.4rem] border border-white/10 bg-white/[0.04] md:grid-cols-4" data-poster-reveal>
           {metrics.map(([value, label]) => (
             <div key={label} className="border-b border-white/10 p-7 md:border-b-0 md:border-r md:last:border-r-0">
-              <p className="text-4xl font-black text-amber-300">{value}</p>
+              <p className="baox-stat-value text-4xl font-black text-amber-300">{value}</p>
               <p className="mt-2 text-sm font-bold text-white/54">{label}</p>
             </div>
           ))}
@@ -286,7 +287,7 @@ export default function PosterPage() {
 
       <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="grid gap-5 lg:grid-cols-[0.78fr_1.22fr] lg:items-stretch">
-          <div className="rounded-[2.8rem] bg-[#fff5df] p-8 text-black sm:p-10" data-poster-reveal>
+          <div className="rounded-[2.8rem] bg-[#F0E7DC] p-8 text-black sm:p-10" data-poster-reveal>
             <TrendingUp size={30} className="text-amber-700" />
             <h2 className="mt-8 text-4xl font-black leading-tight tracking-tight">为什么保险人需要一套海报系统</h2>
             <p className="mt-5 text-base leading-8 text-zinc-600">
@@ -295,7 +296,7 @@ export default function PosterPage() {
           </div>
           <div className="grid gap-px overflow-hidden rounded-[2.8rem] border border-white/10 bg-white/10 md:grid-cols-2" data-poster-reveal>
             {painPoints.map(([problem, pain, solution]) => (
-              <article key={problem} className="bg-[#11100d] p-7">
+              <article key={problem} className="bg-[#17171B] p-7">
                 <p className="text-sm font-black text-amber-300">问题</p>
                 <h3 className="mt-3 text-2xl font-black">{problem}</h3>
                 <p className="mt-4 text-sm leading-7 text-white/44">{pain}</p>
@@ -310,7 +311,7 @@ export default function PosterPage() {
       </section>
 
       <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
-        <div className="relative overflow-hidden rounded-[3rem] border border-white/10 bg-[#11100d] p-8 sm:p-10 lg:p-12" data-poster-reveal data-poster-spotlight>
+        <div className="relative overflow-hidden rounded-[3rem] border border-white/10 bg-[#17171B] p-8 sm:p-10 lg:p-12" data-poster-reveal data-poster-spotlight>
           <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p className="text-sm font-black text-amber-300">模板能力</p>
@@ -345,7 +346,7 @@ export default function PosterPage() {
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {deliverables.map(([title, body], index) => (
             <article key={title} className="rounded-[2.2rem] border border-white/10 bg-white/[0.045] p-7" data-poster-reveal data-poster-tilt>
-              <span className="text-5xl font-black text-amber-300/90">0{index + 1}</span>
+              <span className="baox-stat-value text-5xl font-black text-amber-300/90">0{index + 1}</span>
               <h3 className="mt-8 text-2xl font-black">{title}</h3>
               <p className="mt-4 text-base leading-7 text-white/52">{body}</p>
             </article>
@@ -368,7 +369,7 @@ export default function PosterPage() {
             <article key={title} className="relative min-h-[260px] rounded-[2.2rem] border border-white/10 bg-[#fff8ea] p-8 text-black shadow-[0_24px_80px_rgba(0,0,0,0.2)] sm:p-10" data-poster-tilt>
               <div className="flex items-start justify-between gap-6">
                 <span className="text-sm font-black text-black/28">0{index + 1}</span>
-                <span className="inline-flex h-[54px] w-[54px] items-center justify-center rounded-2xl bg-amber-400 text-black shadow-[0_16px_40px_rgba(245,158,11,0.34)]">
+                <span className="inline-flex h-[54px] w-[54px] items-center justify-center rounded-2xl bg-amber-400 text-black shadow-[0_16px_40px_rgba(195,161,120,0.34)]">
                   <Icon size={26} />
                 </span>
               </div>
@@ -409,7 +410,7 @@ export default function PosterPage() {
 
       <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="grid gap-5 lg:grid-cols-[0.72fr_1.28fr] lg:items-stretch">
-          <div className="rounded-[2.6rem] bg-[#fff5df] p-8 text-black sm:p-10" data-poster-reveal>
+          <div className="rounded-[2.6rem] bg-[#F0E7DC] p-8 text-black sm:p-10" data-poster-reveal>
             <Target size={30} className="text-amber-700" />
             <h2 className="mt-8 text-4xl font-black leading-tight">适合这些保险从业者</h2>
             <p className="mt-5 text-base leading-8 text-zinc-600">先让内容被看见，再让专业被理解。</p>
@@ -464,8 +465,8 @@ export default function PosterPage() {
       </section>
 
       <section className="mx-auto w-full max-w-[1280px] px-5 pb-24 pt-18 sm:px-8">
-        <div className="relative overflow-hidden rounded-[3rem] bg-[#fff5df] p-6 text-black sm:p-10 lg:p-12" data-poster-reveal>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_22%,rgba(20,184,166,0.18),transparent_30%),radial-gradient(circle_at_16%_18%,rgba(245,158,11,0.24),transparent_28%),linear-gradient(120deg,#fff5df_0%,#fffaf0_55%,#eefaf7_100%)]" />
+        <div className="relative overflow-hidden rounded-[3rem] bg-[#F0E7DC] p-6 text-black sm:p-10 lg:p-12" data-poster-reveal>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_22%,rgba(104,119,137,0.18),transparent_30%),radial-gradient(circle_at_16%_18%,rgba(195,161,120,0.24),transparent_28%),linear-gradient(120deg,#F0E7DC_0%,#F5F2ED_55%,#E7EBEF_100%)]" />
           <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
               <p className="text-sm font-black text-amber-700">开始使用</p>

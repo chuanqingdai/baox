@@ -166,7 +166,7 @@ export default function MasterclassPage() {
   return (
     <BaoxPageChrome active="/masterclass">
       <section className="baox-subhero relative isolate overflow-hidden px-4 sm:px-8">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_14%,rgba(245,158,11,0.24),transparent_30%),radial-gradient(circle_at_84%_18%,rgba(20,184,166,0.14),transparent_28%),linear-gradient(180deg,#11100c_0%,#070707_78%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_14%,rgba(195,161,120,0.24),transparent_30%),radial-gradient(circle_at_84%_18%,rgba(104,119,137,0.14),transparent_28%),linear-gradient(180deg,#17171B_0%,#0D0D10_78%)]" />
         <div className="baox-subhero-grid relative mx-auto grid w-full max-w-[1280px] gap-8 px-4 sm:px-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
           <div className="max-lg:mx-auto max-lg:text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-300/25 bg-amber-300/10 px-5 py-2 text-sm font-bold text-amber-200">
@@ -187,8 +187,8 @@ export default function MasterclassPage() {
             </div>
           </div>
           <div className="relative lg:self-center">
-            <div className="absolute -inset-4 bg-[radial-gradient(circle_at_46%_48%,rgba(245,158,11,0.18),transparent_42%),radial-gradient(circle_at_76%_78%,rgba(20,184,166,0.16),transparent_40%)] blur-3xl sm:-inset-8" />
-            <img src="/insurance/landing/baox-masterclass-hero-shield-course.png" alt="保险大师课宣传图" className="baox-subhero-media relative aspect-video rounded-[1.5rem] object-cover shadow-[0_46px_130px_rgba(0,0,0,0.5)] sm:rounded-[2rem]" />
+            <div className="absolute -inset-4 bg-[radial-gradient(circle_at_46%_48%,rgba(195,161,120,0.18),transparent_42%),radial-gradient(circle_at_76%_78%,rgba(104,119,137,0.16),transparent_40%)] blur-3xl sm:-inset-8" />
+            <img src="/insurance/landing/baox-masterclass-hero-shield-course.webp" alt="保险大师课宣传图" className="baox-subhero-media relative aspect-video rounded-[1.5rem] object-cover shadow-[0_46px_130px_rgba(0,0,0,0.5)] sm:rounded-[2rem]" />
           </div>
         </div>
       </section>
@@ -197,7 +197,7 @@ export default function MasterclassPage() {
         <div className="grid overflow-hidden rounded-[2.4rem] border border-white/10 bg-white/[0.04] md:grid-cols-4">
           {stats.map(([value, label]) => (
             <div key={label} className="border-b border-white/10 p-7 text-center md:border-b-0 md:border-r md:last:border-r-0">
-              <p className="text-5xl font-black text-amber-300">{value}</p>
+              <p className="baox-stat-value text-5xl font-black text-amber-300">{value}</p>
               <p className="mt-2 text-sm font-bold text-white/54">{label}</p>
             </div>
           ))}
@@ -215,7 +215,7 @@ export default function MasterclassPage() {
               <Icon size={30} className="text-amber-300" />
               <h3 className="mt-8 text-2xl font-black">{title}</h3>
               <p className="mt-4 min-h-[4.2rem] text-base leading-7 text-white/52">{body}</p>
-              <p className="mt-7 text-5xl font-black text-amber-300">{metric}</p>
+              <p className="baox-stat-value mt-7 text-5xl font-black text-amber-300">{metric}</p>
               <p className="mt-2 text-sm font-bold text-white/36">{label}</p>
             </article>
           ))}
@@ -238,7 +238,7 @@ export default function MasterclassPage() {
         </div>
         <div className="space-y-10">
           {curriculum.map((day) => (
-            <article key={day.day} className="overflow-hidden rounded-[2.8rem] border border-white/10 bg-[#11100d]">
+            <article key={day.day} className="overflow-hidden rounded-[2.8rem] border border-white/10 bg-[#17171B]">
               <div className="grid gap-0 xl:grid-cols-[0.7fr_1.3fr]">
                 <div className="relative min-h-[360px] border-b border-white/10 p-8 sm:p-10 xl:border-b-0 xl:border-r">
                   <p className="text-sm font-black tracking-[0.18em] text-amber-300">{day.day}</p>
@@ -258,7 +258,7 @@ export default function MasterclassPage() {
                 </div>
                 <div className="grid gap-px bg-white/10 md:grid-cols-2">
                   {day.projects.map(([Icon, title, type, result, bullets]) => (
-                    <div key={title} className="min-h-[280px] bg-[#11100d] p-7">
+                    <div key={title} className="min-h-[280px] bg-[#17171B] p-7">
                       <Icon size={26} className="text-amber-300" />
                       <h4 className="mt-6 text-xl font-black">{title}</h4>
                       <p className="mt-2 text-sm font-bold text-white/34">{type}</p>
@@ -290,7 +290,7 @@ export default function MasterclassPage() {
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {highlights.map(([value, title, body]) => (
             <article key={title} className="rounded-[2.2rem] border border-white/10 bg-white/[0.045] p-7">
-              <p className="inline-flex h-12 min-w-12 items-center justify-center rounded-2xl bg-amber-300/12 px-4 text-sm font-black text-amber-300">{value}</p>
+              <p className="baox-stat-value inline-flex h-12 min-w-12 items-center justify-center rounded-2xl bg-amber-300/12 px-4 text-sm font-black text-amber-300">{value}</p>
               <h3 className="mt-8 text-2xl font-black">{title}</h3>
               <p className="mt-4 text-base leading-7 text-white/52">{body}</p>
             </article>
@@ -300,7 +300,7 @@ export default function MasterclassPage() {
 
       <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="grid gap-5 lg:grid-cols-[0.62fr_1.38fr]">
-          <div className="rounded-[2.6rem] bg-[#fff5df] p-8 text-black sm:p-10">
+          <div className="rounded-[2.6rem] bg-[#F0E7DC] p-8 text-black sm:p-10">
             <Users size={30} className="text-amber-700" />
             <h2 className="mt-8 text-4xl font-black leading-tight">适合这些保险从业者</h2>
             <p className="mt-5 text-base leading-8 text-zinc-600">不管你在保险行业哪个岗位，AI都能帮你降本增效。</p>
@@ -339,8 +339,8 @@ export default function MasterclassPage() {
       </section>
 
       <section className="mx-auto w-full max-w-[1280px] px-5 pb-24 pt-16 sm:px-8">
-        <div className="relative overflow-hidden rounded-[3rem] bg-[#fff5df] p-8 text-black sm:p-12 lg:p-14">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_86%_28%,rgba(20,184,166,0.16),transparent_28%),radial-gradient(circle_at_14%_18%,rgba(245,158,11,0.22),transparent_28%)]" />
+        <div className="relative overflow-hidden rounded-[3rem] bg-[#F0E7DC] p-8 text-black sm:p-12 lg:p-14">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_86%_28%,rgba(104,119,137,0.16),transparent_28%),radial-gradient(circle_at_14%_18%,rgba(195,161,120,0.22),transparent_28%)]" />
           <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
               <p className="text-sm font-black text-amber-700">5天 · 21+工具 · 18+实战项目</p>
@@ -374,7 +374,7 @@ type ResourcePanelProps = {
 
 function ResourcePanel({ title, subtitle, items }: ResourcePanelProps) {
   return (
-    <div className="rounded-[2.6rem] border border-white/10 bg-[#11100d] p-8 sm:p-10">
+    <div className="rounded-[2.6rem] border border-white/10 bg-[#17171B] p-8 sm:p-10">
       <p className="text-sm font-black text-amber-300">{title}</p>
       <h2 className="mt-4 text-4xl font-black leading-tight">{subtitle}</h2>
       <div className="mt-8 grid gap-4">

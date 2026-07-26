@@ -70,8 +70,8 @@ export function NavigationFeedback() {
 
 export function RouteSkeletonOverlay() {
   return (
-    <div className="baox-route-skeleton fixed inset-0 z-[999] bg-[#070707] text-white" role="status" aria-live="polite" aria-label="页面加载中">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(245,158,11,0.2),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(20,184,166,0.12),transparent_28%),linear-gradient(180deg,#0d0d0d_0%,#070707_78%)]" />
+    <div className="baox-route-skeleton fixed inset-0 z-[999] bg-[var(--background-primary)] text-[var(--text-primary-dark)]" role="status" aria-live="polite" aria-label="页面加载中">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(195,161,120,0.18),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(104,119,137,0.12),transparent_28%),linear-gradient(180deg,var(--background-secondary)_0%,var(--background-primary)_78%)]" />
       <div className="relative mx-auto flex h-16 w-full max-w-[1280px] items-center justify-between px-4 sm:px-8">
         <div className="h-7 w-36 rounded-full bg-white/16" />
         <div className="hidden items-center gap-2 md:flex">
@@ -98,7 +98,7 @@ export function RouteSkeletonOverlay() {
           </div>
         </div>
         <div className="min-h-[280px] rounded-[2rem] border border-white/10 bg-white/[0.045] p-3 shadow-[0_36px_100px_rgba(0,0,0,0.42)]">
-          <div className="h-full min-h-[260px] rounded-[1.5rem] bg-[linear-gradient(120deg,rgba(255,255,255,0.08),rgba(245,158,11,0.18),rgba(255,255,255,0.06))]" />
+          <div className="h-full min-h-[260px] rounded-[1.5rem] bg-[linear-gradient(120deg,rgba(255,255,255,0.08),rgba(195,161,120,0.18),rgba(255,255,255,0.06))]" />
         </div>
       </div>
       <span className="sr-only">页面加载中</span>

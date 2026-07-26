@@ -45,7 +45,7 @@ const slides = [
 
 export default function BaoxHomePage() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[#060606] text-white">
+    <main className="min-h-screen overflow-hidden bg-[var(--background-primary)] text-[var(--text-primary-dark)]">
       <style
         dangerouslySetInnerHTML={{
           __html: `
@@ -127,7 +127,7 @@ export default function BaoxHomePage() {
                 border-left-width: 0;
                 border-right-width: 0;
                 border-radius: clamp(.9rem, 4vw, 1.35rem);
-                box-shadow: 0 30px 90px rgba(0,0,0,.62), 0 0 0 1px rgba(245,158,11,.16);
+                box-shadow: 0 30px 90px rgba(0,0,0,.62), 0 0 0 1px rgba(195,161,120,.16);
               }
               .baox-carousel-stage[data-active="0"] [data-slide-index="0"],
               .baox-carousel-stage[data-active="1"] [data-slide-index="1"],
@@ -157,8 +157,8 @@ export default function BaoxHomePage() {
                 padding: .68rem 1.35rem;
                 font-size: .88rem;
                 border-color: rgba(255,236,179,.62);
-                background: linear-gradient(90deg, rgba(252,211,77,.92), rgba(251,191,36,.92), rgba(249,115,22,.92));
-                box-shadow: 0 12px 34px rgba(245,158,11,.34);
+                background: linear-gradient(90deg, rgba(195,161,120,.92), rgba(210,178,139,.92), rgba(159,125,89,.92));
+                box-shadow: 0 12px 34px rgba(195,161,120,.34);
               }
               .baox-carousel-stage[data-active="0"] [data-mobile-cta="0"],
               .baox-carousel-stage[data-active="1"] [data-mobile-cta="1"],
@@ -173,7 +173,7 @@ export default function BaoxHomePage() {
               .baox-carousel-controls button {
                 height: 2.5rem;
                 width: 2.5rem;
-                border-color: rgba(245,158,11,.24);
+                border-color: rgba(195,161,120,.24);
                 background: rgba(0,0,0,.28);
                 font-size: 1.75rem;
               }
@@ -201,7 +201,7 @@ export default function BaoxHomePage() {
       />
       <HomeCarouselController />
 
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/35 backdrop-blur-2xl">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-[var(--border-subtle)] bg-[color-mix(in_srgb,var(--background-secondary)_62%,transparent)] backdrop-blur-2xl">
         <div className="mx-auto flex min-h-16 w-full max-w-[1280px] items-center justify-between gap-3 px-4 py-3 sm:px-8 md:h-16 md:py-0">
           <Link href="/" className="relative z-10 inline-flex h-10 items-center gap-3 pr-3" aria-label="返回保罗万相首页">
             <img
@@ -216,7 +216,7 @@ export default function BaoxHomePage() {
                 key={item.href}
                 href={item.href}
                 className={`inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition ${
-                  item.href === "/" ? "bg-white text-black" : "text-white/62 hover:bg-white/10 hover:text-white"
+                  item.href === "/" ? "bg-[var(--brand-primary-soft)] text-[var(--text-primary-light)]" : "text-white/62 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 {item.label}
@@ -230,7 +230,7 @@ export default function BaoxHomePage() {
             <summary className="inline-flex h-10 w-10 list-none items-center justify-center rounded-full border border-white/10 bg-white/[0.08] text-white transition hover:bg-white/12">
               <Menu size={20} />
             </summary>
-            <nav className="absolute right-0 top-12 z-50 w-56 rounded-[1.4rem] border border-white/10 bg-[#090909]/96 p-2 shadow-[0_28px_90px_rgba(0,0,0,0.48)] backdrop-blur-2xl">
+            <nav className="absolute right-0 top-12 z-50 w-56 rounded-[1.4rem] border border-white/10 bg-[#17171B]/96 p-2 shadow-[0_28px_90px_rgba(0,0,0,0.48)] backdrop-blur-2xl">
               <div className="mb-2 px-2">
                 <LanguageToggle />
               </div>
@@ -239,7 +239,7 @@ export default function BaoxHomePage() {
                   key={item.href}
                   href={item.href}
                   className={`flex min-h-11 items-center rounded-full px-4 text-sm font-bold transition ${
-                    item.href === "/" ? "bg-white text-black" : "text-white/62 hover:bg-white/10 hover:text-white"
+                    item.href === "/" ? "bg-[var(--brand-primary-soft)] text-[var(--text-primary-light)]" : "text-white/62 hover:bg-white/10 hover:text-white"
                   }`}
                 >
                   {item.label}
@@ -251,7 +251,7 @@ export default function BaoxHomePage() {
       </header>
 
       <section className="baox-carousel-stage relative h-[100svh] min-h-[620px] overflow-hidden pt-16" data-active="0" data-baox-carousel>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_18%,rgba(245,158,11,0.2),transparent_28%),radial-gradient(circle_at_82%_18%,rgba(20,184,166,0.16),transparent_28%),linear-gradient(135deg,#030303_0%,#100c06_48%,#031511_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_18%,rgba(195,161,120,0.2),transparent_28%),radial-gradient(circle_at_82%_18%,rgba(104,119,137,0.16),transparent_28%),linear-gradient(135deg,#0D0D10_0%,#17171B_48%,#17171B_100%)]" />
         <div className="absolute inset-x-0 top-16 h-px bg-gradient-to-r from-transparent via-amber-300/30 to-transparent" />
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
 
@@ -273,7 +273,7 @@ export default function BaoxHomePage() {
               </picture>
               <div className="absolute inset-0 bg-gradient-to-t from-black/42 via-transparent to-black/8" />
               {"cta" in slide && (
-                <span className="baox-carousel-cta absolute bottom-6 left-1/2 inline-flex -translate-x-1/2 items-center justify-center whitespace-nowrap rounded-full border border-amber-200/70 bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 px-7 py-3 text-sm font-black text-black shadow-[0_18px_48px_rgba(245,158,11,0.42)] transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_64px_rgba(245,158,11,0.55)] sm:bottom-8 sm:px-9 sm:py-3.5 sm:text-base">
+                <span className="baox-carousel-cta absolute bottom-6 left-1/2 inline-flex -translate-x-1/2 items-center justify-center whitespace-nowrap rounded-full border border-amber-200/70 bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 px-7 py-3 text-sm font-black text-black shadow-[0_18px_48px_rgba(195,161,120,0.42)] transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_64px_rgba(195,161,120,0.55)] sm:bottom-8 sm:px-9 sm:py-3.5 sm:text-base">
                   {slide.cta}
                   <span className="ml-2 text-lg leading-none">→</span>
                 </span>
@@ -308,7 +308,7 @@ export default function BaoxHomePage() {
             key={`${slide.title}-mobile-cta`}
             href={slide.href}
             data-mobile-cta={index}
-            className="baox-mobile-slide-cta absolute left-1/2 z-40 -translate-x-1/2 items-center justify-center whitespace-nowrap rounded-full border border-amber-200/70 bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 px-8 py-4 text-base font-black text-black shadow-[0_18px_48px_rgba(245,158,11,0.42)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_64px_rgba(245,158,11,0.5)] active:scale-[0.98]"
+            className="baox-mobile-slide-cta absolute left-1/2 z-40 -translate-x-1/2 items-center justify-center whitespace-nowrap rounded-full border border-amber-200/70 bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 px-8 py-4 text-base font-black text-black shadow-[0_18px_48px_rgba(195,161,120,0.42)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_64px_rgba(195,161,120,0.5)] active:scale-[0.98]"
             aria-label={slide.cta}
           >
             {slide.cta}

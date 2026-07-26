@@ -1,16 +1,41 @@
 @import "tailwindcss";
 
 :root {
-  --background: #070707;
-  --foreground: #ffffff;
+  --brand-primary: #C3A178;
+  --brand-primary-hover: #D2B28B;
+  --brand-primary-active: #9F7D59;
+  --brand-primary-soft: #F0E7DC;
+  --background-primary: #0D0D10;
+  --background-secondary: #17171B;
+  --background-elevated: #222228;
+  --background-light: #F5F2ED;
+  --text-primary-dark: #F3F0EB;
+  --text-secondary-dark: #AAA7A2;
+  --text-muted-dark: #747278;
+  --text-primary-light: #19191D;
+  --text-secondary-light: #66646A;
+  --accent-primary: #687789;
+  --accent-primary-hover: #7B8999;
+  --accent-primary-soft: #E7EBEF;
+  --border-default: #323238;
+  --border-subtle: #26262B;
+  --border-brand: #8F7355;
+  --status-success: #718375;
+  --status-warning: #B68B55;
+  --status-danger: #A46565;
+  --status-info: #687789;
+  --font-display:
+    "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  --font-ui:
+    "Inter", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --background: var(--background-primary);
+  --foreground: var(--text-primary-dark);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans:
-    "Avenir Next", "SF Pro Display", "PingFang SC", "Noto Sans SC",
-    "Microsoft YaHei", sans-serif;
+  --font-sans: var(--font-ui);
   --font-mono:
     "SF Mono", "JetBrains Mono", "Menlo", "Monaco", "Courier New", monospace;
 }
@@ -28,19 +53,107 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family:
-    "Avenir Next", "SF Pro Display", "PingFang SC", "Noto Sans SC",
-    "Microsoft YaHei", sans-serif;
+  font-family: var(--font-ui);
   scrollbar-width: thin;
-  scrollbar-color: rgba(245, 158, 11, 0.5) transparent;
+  scrollbar-color: color-mix(in srgb, var(--brand-primary) 52%, transparent) transparent;
   overflow-x: hidden;
 }
 
+.text-amber-100,
+.text-amber-200,
+.text-amber-200\/90,
+.text-amber-300,
+.text-amber-300\/90 {
+  color: var(--brand-primary) !important;
+}
+
+.text-amber-700 {
+  color: var(--brand-primary-active) !important;
+}
+
+.bg-amber-300,
+.bg-amber-400,
+.bg-amber-500 {
+  background-color: var(--brand-primary) !important;
+}
+
+.hover\:bg-amber-300:hover,
+.hover\:bg-amber-400:hover {
+  background-color: var(--brand-primary-hover) !important;
+}
+
+.hover\:text-amber-300:hover {
+  color: var(--brand-primary-hover) !important;
+}
+
+.border-amber-200\/70,
+.border-amber-200\/28,
+.border-amber-300\/16,
+.border-amber-300\/18,
+.border-amber-300\/20,
+.border-amber-300\/25,
+.border-amber-300\/30,
+.border-amber-300\/80,
+.hover\:border-amber-300\/30:hover,
+.hover\:border-amber-300\/35:hover,
+.hover\:border-amber-300\/50:hover,
+.hover\:border-amber-200\/48:hover,
+.focus-visible\:border-amber-300\/40:focus-visible {
+  border-color: color-mix(in srgb, var(--brand-primary) 48%, transparent) !important;
+}
+
+.bg-amber-300\/8,
+.bg-amber-300\/10,
+.bg-amber-300\/12,
+.bg-amber-300\/14,
+.bg-amber-300\/18,
+.bg-amber-300\/20,
+.bg-amber-300\/34,
+.hover\:bg-amber-300\/18:hover {
+  background-color: color-mix(in srgb, var(--brand-primary) 12%, transparent) !important;
+}
+
+.baox-carousel-cta,
+.baox-mobile-slide-cta {
+  border-color: color-mix(in srgb, var(--brand-primary-hover) 62%, transparent) !important;
+  background: linear-gradient(90deg, var(--brand-primary-hover), var(--brand-primary), var(--brand-primary-active)) !important;
+  color: var(--text-primary-light) !important;
+}
+
 html[data-lang="en"] body {
-  font-family:
-    "Inter", "Avenir Next", "SF Pro Display", "Helvetica Neue", Arial,
-    sans-serif;
+  font-family: var(--font-ui);
   font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
+
+h1,
+h2,
+.baox-subhero-title,
+.baox-simple-hero-title,
+.baox-poster-hero-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+h3,
+h4,
+h5,
+h6,
+p,
+nav,
+button,
+select,
+input,
+textarea,
+summary,
+a {
+  font-family: var(--font-ui);
+}
+
+.baox-display-copy,
+.baox-stat-value {
+  font-family: var(--font-display);
+  letter-spacing: 0;
 }
 
 html[data-lang="en"] .baox-subhero-title,
@@ -239,7 +352,7 @@ input[type="button"]:focus-visible,
 input[type="submit"]:focus-visible,
 input[type="reset"]:focus-visible,
 a[href]:focus-visible {
-  outline: 2px solid rgba(245, 158, 11, 0.5);
+  outline: 2px solid rgba(195, 161, 120, 0.5);
   outline-offset: 3px;
 }
 
@@ -254,5 +367,5 @@ a[href]:focus-visible {
 
 *::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: rgba(245, 158, 11, 0.45);
+  background: rgba(195, 161, 120, 0.45);
 }

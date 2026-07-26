@@ -69,7 +69,7 @@ export default function ToolPage() {
   return (
     <BaoxPageChrome active="/tool">
       <section className="baox-simple-hero relative overflow-hidden px-5 sm:px-8">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(245,158,11,0.18),transparent_42%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(195,161,120,0.18),transparent_42%)]" />
         <div className="relative mx-auto max-w-[1280px] text-center">
           <p className="text-sm font-black tracking-[0.24em] text-amber-300">AI TOOLKIT</p>
           <h1 className="baox-simple-hero-title mt-5 font-black tracking-tight">AI工具包</h1>

@@ -29,7 +29,7 @@ export default function LabPage() {
   return (
     <BaoxPageChrome active="/lab">
       <section className="baox-subhero relative overflow-hidden px-4 sm:px-8">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(245,158,11,0.2),transparent_32%),radial-gradient(circle_at_82%_18%,rgba(20,184,166,0.16),transparent_32%),linear-gradient(180deg,#12100b_0%,#070707_82%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(195,161,120,0.2),transparent_32%),radial-gradient(circle_at_82%_18%,rgba(104,119,137,0.16),transparent_32%),linear-gradient(180deg,#17171B_0%,#0D0D10_82%)]" />
         <div className="baox-subhero-grid relative mx-auto flex w-full max-w-[1280px] flex-col items-center justify-center text-center">
           <div>
             <p className="inline-flex items-center gap-2 rounded-full border border-amber-300/25 bg-amber-300/10 px-5 py-2 text-sm font-black text-amber-200">
@@ -49,7 +49,7 @@ export default function LabPage() {
             <div className="grid overflow-hidden rounded-[1.7rem] border border-white/10 bg-white/[0.045] backdrop-blur-xl sm:grid-cols-3">
               {metrics.map(([value, label]) => (
                 <div key={label} className="border-b border-white/10 px-6 py-4 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
-                  <div className="text-3xl font-black text-amber-300 sm:text-4xl">{value}</div>
+                  <div className="baox-stat-value text-3xl font-black text-amber-300 sm:text-4xl">{value}</div>
                   <div className="mt-2 text-sm font-bold text-white/48">{label}</div>
                 </div>
               ))}
@@ -91,7 +91,7 @@ export default function LabPage() {
               <div className="relative aspect-[16/10] overflow-hidden bg-[#111]">
                 <img src={image} alt={`${title}网页截图`} className="h-full w-full object-cover object-top transition duration-700 group-hover:scale-[1.035]" />
                 <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/72 to-transparent" />
-                <span className="absolute left-5 top-5 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-400 text-lg font-black text-black shadow-[0_16px_38px_rgba(245,158,11,0.28)]">{icon}</span>
+                <span className="absolute left-5 top-5 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-400 text-lg font-black text-black shadow-[0_16px_38px_rgba(195,161,120,0.28)]">{icon}</span>
                 <span className="absolute right-5 top-5 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-black/45 text-amber-300 backdrop-blur transition group-hover:bg-amber-400 group-hover:text-black">
                   <ArrowUpRight size={18} />
                 </span>
@@ -110,8 +110,8 @@ export default function LabPage() {
       </section>
 
       <section className="mx-auto w-full max-w-[1280px] px-5 pb-24 pt-14 sm:px-8">
-        <div className="relative overflow-hidden rounded-[3rem] bg-[#fff5df] p-8 text-black sm:p-12">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_84%_28%,rgba(20,184,166,0.16),transparent_30%),radial-gradient(circle_at_16%_18%,rgba(245,158,11,0.24),transparent_28%)]" />
+        <div className="relative overflow-hidden rounded-[3rem] bg-[#F0E7DC] p-8 text-black sm:p-12">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_84%_28%,rgba(104,119,137,0.16),transparent_30%),radial-gradient(circle_at_16%_18%,rgba(195,161,120,0.24),transparent_28%)]" />
           <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
               <p className="text-sm font-black text-amber-700">下一步</p>

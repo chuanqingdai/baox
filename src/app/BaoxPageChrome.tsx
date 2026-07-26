@@ -19,8 +19,8 @@ type BaoxPageChromeProps = {
 
 export function BaoxPageChrome({ active, children }: BaoxPageChromeProps) {
   return (
-    <main className="min-h-screen bg-[#070707] pt-16 text-white">
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/78 backdrop-blur-2xl">
+    <main className="min-h-screen bg-[var(--background-primary)] pt-16 text-[var(--text-primary-dark)]">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-[var(--border-subtle)] bg-[color-mix(in_srgb,var(--background-secondary)_86%,transparent)] backdrop-blur-2xl">
         <div className="mx-auto flex min-h-16 w-full max-w-[1280px] items-center justify-between gap-3 px-4 py-3 sm:px-8 md:h-16 md:py-0">
           <Link href="/" className="relative z-10 inline-flex h-10 items-center gap-3 pr-3" aria-label="返回保罗万相首页">
             <img
@@ -35,7 +35,7 @@ export function BaoxPageChrome({ active, children }: BaoxPageChromeProps) {
                 key={item.href}
                 href={item.href}
                 className={`inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition ${
-                  active === item.href ? "bg-white text-black" : "text-white/54 hover:bg-white/10 hover:text-white"
+                  active === item.href ? "bg-[var(--brand-primary-soft)] text-[var(--text-primary-light)]" : "text-white/54 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 {item.label}
@@ -49,7 +49,7 @@ export function BaoxPageChrome({ active, children }: BaoxPageChromeProps) {
             <summary className="inline-flex h-10 w-10 list-none items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white transition hover:bg-white/10">
               <Menu size={20} />
             </summary>
-            <nav className="absolute right-0 top-12 z-50 w-56 rounded-[1.4rem] border border-white/10 bg-[#090909]/96 p-2 shadow-[0_28px_90px_rgba(0,0,0,0.48)] backdrop-blur-2xl">
+            <nav className="absolute right-0 top-12 z-50 w-56 rounded-[1.4rem] border border-white/10 bg-[#17171B]/96 p-2 shadow-[0_28px_90px_rgba(0,0,0,0.48)] backdrop-blur-2xl">
               <div className="mb-2 px-2">
                 <LanguageToggle />
               </div>
@@ -58,7 +58,7 @@ export function BaoxPageChrome({ active, children }: BaoxPageChromeProps) {
                   key={item.href}
                   href={item.href}
                   className={`flex min-h-11 items-center rounded-full px-4 text-sm font-bold transition ${
-                    active === item.href ? "bg-white text-black" : "text-white/62 hover:bg-white/10 hover:text-white"
+                    active === item.href ? "bg-[var(--brand-primary-soft)] text-[var(--text-primary-light)]" : "text-white/62 hover:bg-white/10 hover:text-white"
                   }`}
                 >
                   {item.label}

@@ -4,7 +4,7 @@ import { I18nBridge } from "./I18nBridge";
 import { NavigationFeedback } from "./NavigationFeedback";
 
 export const viewport: Viewport = {
-  themeColor: "#070707"
+  themeColor: "#0D0D10"
 };
 
 export const metadata: Metadata = {
@@ -48,9 +48,9 @@ export const metadata: Metadata = {
     description: "保险大师课、「展页」、AI工具包与学员作品集，帮助保险人把AI能力变成真实展业成果。",
     images: [
       {
-        url: "/insurance/landing/baox-home-masterclass-banner.png",
-        width: 1792,
-        height: 1024,
+        url: "/insurance/landing/baox-home-masterclass-banner.webp",
+        width: 1672,
+        height: 941,
         alt: "保罗万相AI保险大师课"
       }
     ]
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "保罗万相｜保险人的人工智能增长系统",
     description: "保险大师课、「展页」、AI工具包与学员作品集，帮助保险人把AI能力变成真实展业成果。",
-    images: ["/insurance/landing/baox-home-masterclass-banner.png"]
+    images: ["/insurance/landing/baox-home-masterclass-banner.webp"]
   },
   robots: {
     index: true,

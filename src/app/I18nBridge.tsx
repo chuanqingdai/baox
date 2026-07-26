@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 type Lang = "zh" | "en";
 
@@ -729,39 +730,39 @@ function translateDocument(lang: Lang) {
 }
 
 export function I18nBridge() {
+  const pathname = usePathname();
+  const langRef = useRef<Lang>("zh");
+
   useEffect(() => {
-    let current = getInitialLang();
+    const current = getInitialLang();
+    langRef.current = current;
     syncLanguageShell(current);
-    const scheduleIdle = window.requestIdleCallback ?? window.setTimeout;
-    const cancelIdle = window.cancelIdleCallback ?? window.clearTimeout;
-    let idleId: number | undefined;
 
-    if (current === "en") {
-      idleId = scheduleIdle(() => translateDocument(current), { timeout: 1200 });
-    }
-
-    const observer = new MutationObserver(() => {
-      if (current === "en") translateDocument(current);
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    const headObserver = new MutationObserver(() => syncSeo(current));
+    const headObserver = new MutationObserver(() => syncSeo(langRef.current));
     headObserver.observe(document.head, { attributes: true, childList: true, subtree: true });
 
     const onLangChange = (event: Event) => {
-      current = (event as CustomEvent<Lang>).detail === "en" ? "en" : "zh";
-      window.localStorage.setItem(STORAGE_KEY, current);
-      translateDocument(current);
+      const next = (event as CustomEvent<Lang>).detail === "en" ? "en" : "zh";
+      langRef.current = next;
+      window.localStorage.setItem(STORAGE_KEY, next);
+      translateDocument(next);
     };
 
     window.addEventListener("baox-language-change", onLangChange);
     return () => {
-      if (idleId !== undefined) cancelIdle(idleId);
-      observer.disconnect();
       headObserver.disconnect();
       window.removeEventListener("baox-language-change", onLangChange);
     };
   }, []);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      const current = langRef.current;
+      if (current === "en") translateDocument(current);
+      else syncLanguageShell(current);
+    }, 900);
+    return () => window.clearTimeout(timer);
+  }, [pathname]);
 
   return null;
 }
@@ -782,21 +783,18 @@ export function LanguageToggle() {
   };
 
   return (
-    <div className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.06] p-1 text-xs font-black text-white/58 shadow-[0_12px_34px_rgba(0,0,0,0.22)] backdrop-blur-xl" aria-label="Language">
-      {(["zh", "en"] as const).map((item) => (
-        <button
-          key={item}
-          type="button"
-          onClick={() => changeLang(item)}
-          aria-pressed={lang === item}
-          className={`h-8 min-w-12 rounded-full px-3 transition ${
-            lang === item ? "bg-amber-400 text-black shadow-[0_8px_22px_rgba(245,158,11,0.26)]" : "hover:bg-white/10 hover:text-white"
-          }`}
-          aria-label={item === "zh" ? "切换到中文" : "Switch to English"}
-        >
-          {item === "zh" ? "中文" : "EN"}
-        </button>
-      ))}
-    </div>
+    <label className="relative inline-flex items-center text-[11px] font-bold text-white/48">
+      <span className="sr-only">Language</span>
+      <select
+        value={lang}
+        onChange={(event) => changeLang(event.target.value === "en" ? "en" : "zh")}
+        className="h-8 appearance-none rounded-full border border-white/8 bg-white/[0.035] pl-3 pr-7 text-white/58 shadow-[0_8px_22px_rgba(0,0,0,0.14)] outline-none backdrop-blur-xl transition hover:border-white/14 hover:bg-white/[0.055] hover:text-white/78 focus-visible:border-amber-300/40"
+        aria-label="Language"
+      >
+        <option value="zh">中文</option>
+        <option value="en">EN</option>
+      </select>
+      <span className="pointer-events-none absolute right-2.5 text-[9px] text-white/36">▼</span>
+    </label>
   );
 }
