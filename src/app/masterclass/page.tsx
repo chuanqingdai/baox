@@ -350,7 +350,7 @@ export default function MasterclassPage() {
               <p className="mt-5 max-w-2xl text-base leading-8 text-zinc-600">5天，从0到1，成为AI时代的保险超级个体。</p>
             </div>
             <div className="flex flex-col gap-4 sm:flex-row lg:flex-col">
-              <Link href="https://baox.ai/index.html" className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-black px-8 text-base font-black text-white transition hover:bg-zinc-900">
+              <Link href="https://knowlens.ai/baox" className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-black px-8 text-base font-black text-white transition hover:bg-zinc-900">
                 进入海报工作台
                 <ArrowRight size={18} />
               </Link>

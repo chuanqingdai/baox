@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Script from "next/script";
 import { Menu } from "lucide-react";
+import { HomeCarouselController } from "./HomeCarouselController";
 import { LanguageToggle } from "./I18nBridge";
 
 export const metadata: Metadata = {
@@ -25,8 +25,6 @@ const slides = [
   {
     title: "保罗万相 BAOX",
     image: "/insurance/landing/baox-brand-banner.png",
-    href: "/about",
-    cta: "了解保罗万相",
   },
   {
     title: "AI保险大师课",
@@ -37,7 +35,7 @@ const slides = [
   {
     title: "展页",
     image: "/insurance/landing/baox-home-poster-banner.png",
-    href: "/poster",
+    href: "https://knowlens.ai/baox",
     cta: "查看展页",
   },
 ] as const;
@@ -173,43 +171,7 @@ export default function BaoxHomePage() {
           `,
         }}
       />
-      <Script id="baox-home-carousel" strategy="afterInteractive">
-        {`
-          (() => {
-            const stage = document.querySelector("[data-baox-carousel]");
-            if (!stage) return;
-            const total = 3;
-            let active = Number(stage.getAttribute("data-active") || "0");
-            let timer = null;
-            const setActive = (next) => {
-              active = (next + total) % total;
-              stage.setAttribute("data-active", String(active));
-            };
-            const restart = () => {
-              window.clearInterval(timer);
-              timer = window.setInterval(() => setActive(active + 1), 6200);
-            };
-            stage.querySelectorAll("[data-baox-dot]").forEach((button) => {
-              button.addEventListener("click", (event) => {
-                event.preventDefault();
-                setActive(Number(button.getAttribute("data-baox-dot")));
-                restart();
-              });
-            });
-            stage.querySelector("[data-baox-prev]")?.addEventListener("click", (event) => {
-              event.preventDefault();
-              setActive(active - 1);
-              restart();
-            });
-            stage.querySelector("[data-baox-next]")?.addEventListener("click", (event) => {
-              event.preventDefault();
-              setActive(active + 1);
-              restart();
-            });
-            restart();
-          })();
-        `}
-      </Script>
+      <HomeCarouselController />
 
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/35 backdrop-blur-2xl">
         <div className="mx-auto flex min-h-16 w-full max-w-[1500px] items-center justify-between gap-3 px-4 py-3 sm:px-8 md:h-16 md:py-0">
@@ -265,30 +227,47 @@ export default function BaoxHomePage() {
         <div className="absolute inset-x-0 top-16 h-px bg-gradient-to-r from-transparent via-amber-300/30 to-transparent" />
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
 
-        {slides.map((slide, index) => (
-          <Link
-            key={slide.title}
-            href={slide.href}
-            aria-label={slide.cta}
-            data-slide-index={index}
-            className="baox-carousel-card group absolute overflow-hidden border border-white/12 bg-black shadow-[0_46px_140px_rgba(0,0,0,0.62)]"
-          >
+        {slides.map((slide, index) => {
+          const cardContent = (
             <div className="relative h-full bg-black">
               <img
                 src={slide.image}
                 alt={slide.title}
-                className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.02]"
+                className={`h-full w-full object-cover transition duration-700 ${"href" in slide ? "group-hover:scale-[1.02]" : ""}`}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/42 via-transparent to-black/8" />
-              <span className="baox-carousel-cta absolute bottom-6 left-1/2 inline-flex -translate-x-1/2 items-center justify-center whitespace-nowrap rounded-full border border-amber-200/70 bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 px-7 py-3 text-sm font-black text-black shadow-[0_18px_48px_rgba(245,158,11,0.42)] transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_64px_rgba(245,158,11,0.55)] sm:bottom-8 sm:px-9 sm:py-3.5 sm:text-base">
-                {slide.cta}
-                <span className="ml-2 text-lg leading-none">→</span>
-              </span>
+              {"cta" in slide && (
+                <span className="baox-carousel-cta absolute bottom-6 left-1/2 inline-flex -translate-x-1/2 items-center justify-center whitespace-nowrap rounded-full border border-amber-200/70 bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 px-7 py-3 text-sm font-black text-black shadow-[0_18px_48px_rgba(245,158,11,0.42)] transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_64px_rgba(245,158,11,0.55)] sm:bottom-8 sm:px-9 sm:py-3.5 sm:text-base">
+                  {slide.cta}
+                  <span className="ml-2 text-lg leading-none">→</span>
+                </span>
+              )}
             </div>
-          </Link>
-        ))}
+          );
 
-        {slides.map((slide, index) => (
+          return "href" in slide ? (
+            <Link
+              key={slide.title}
+              href={slide.href}
+              aria-label={slide.cta}
+              data-slide-index={index}
+              className="baox-carousel-card group absolute overflow-hidden border border-white/12 bg-black shadow-[0_46px_140px_rgba(0,0,0,0.62)]"
+            >
+              {cardContent}
+            </Link>
+          ) : (
+            <div
+              key={slide.title}
+              aria-label={slide.title}
+              data-slide-index={index}
+              className="baox-carousel-card absolute overflow-hidden border border-white/12 bg-black shadow-[0_46px_140px_rgba(0,0,0,0.62)]"
+            >
+              {cardContent}
+            </div>
+          );
+        })}
+
+        {slides.map((slide, index) => "href" in slide && (
           <Link
             key={`${slide.title}-mobile-cta`}
             href={slide.href}
