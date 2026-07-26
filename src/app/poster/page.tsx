@@ -19,15 +19,15 @@ import {
 import { BaoxPageChrome } from "../BaoxPageChrome";
 
 export const metadata: Metadata = {
-  title: "保险海报",
-  description: "面向保险人高频展业场景的海报模板与出图工作台，覆盖节气问候、保障科普、产品说明和客户服务。",
+  title: "展页",
+  description: "展页面向保险人高频展业场景，提供海报模板与出图能力，覆盖节气问候、保障科普、产品说明和客户服务。",
 };
 
 const promises = ["专业可靠", "高效便捷", "一键下载", "多场景分享"] as const;
 
 const metrics = [
-  ["100+", "保险场景模板"],
-  ["4类", "核心展业内容"],
+  ["1000+", "保险场景模板"],
+  ["10类+", "核心展业内容"],
   ["2分钟", "快速改文出图"],
   ["高清", "无水印下载"],
 ] as const;
@@ -199,32 +199,32 @@ export default function PosterPage() {
 
       <section className="baox-subhero relative isolate overflow-hidden px-4 sm:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(245,158,11,0.22),transparent_30%),radial-gradient(circle_at_86%_18%,rgba(20,184,166,0.14),transparent_30%),linear-gradient(180deg,#11100c_0%,#070707_78%)]" />
-        <div className="baox-subhero-grid relative mx-auto grid w-full max-w-[1500px] gap-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
-          <div className="max-w-3xl" data-poster-reveal>
-            <p className="inline-flex rounded-full border border-amber-300/25 bg-amber-300/10 px-5 py-2 text-sm font-black text-amber-200">
-              保险海报
+        <div className="baox-subhero-grid relative mx-auto grid w-full max-w-[1500px] gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-center">
+          <div className="max-w-4xl max-lg:mx-auto max-lg:text-center" data-poster-reveal>
+            <p className="inline-flex border-l-2 border-amber-300/80 pl-3 text-sm font-black tracking-[0.18em] text-amber-200/90 max-lg:border-l-0 max-lg:border-t-2 max-lg:px-3 max-lg:pt-3">
+              专业保险海报模版
             </p>
-            <h1 className="baox-subhero-title mt-5 font-black tracking-tight sm:mt-6">
-              成品海报，
-              <span className="block text-amber-300">拿来就能发。</span>
+            <h1 className="mt-5 text-[2.55rem] font-black leading-[0.98] tracking-tight text-white sm:mt-6 sm:text-[4.6rem] lg:text-[5.25rem]">
+              专业海报，
+              <span className="block whitespace-nowrap text-amber-300">用「展页」轻松搞定</span>
             </h1>
-            <p className="baox-subhero-copy max-w-2xl text-base leading-8 text-white/62 sm:text-lg">
-              面向保险人高频展业场景，把文案、画面和传播目的打包成可复用模板。改好一句话，就能快速产出专业素材。
+            <p className="mt-6 max-w-2xl text-base leading-8 text-white/58 sm:text-lg">
+              面向保险人高频展业场景，把文案、画面和传播目的打包成可复用模板，快速产出专业素材。
             </p>
-            <div className="baox-subhero-actions flex flex-col gap-3 sm:flex-row sm:gap-4">
+            <div className="baox-subhero-actions flex flex-col gap-3 sm:flex-row sm:gap-4 max-lg:justify-center">
               <Link href="https://baox.ai/index.html" className="baox-subhero-action inline-flex items-center justify-center gap-3 rounded-full bg-amber-400 px-7 text-base font-black text-black shadow-[0_28px_70px_rgba(245,158,11,0.32)] transition hover:bg-amber-300">
-                打开海报工作台
+                打开「展页」
                 <ArrowRight size={18} />
               </Link>
               <Link href="#cases" className="baox-subhero-action inline-flex items-center justify-center gap-3 rounded-full bg-white px-7 text-base font-black text-black transition hover:bg-zinc-100">
-                查看海报案例
+                查看案例
                 <ArrowRight size={18} />
               </Link>
             </div>
-            <div className="mt-5 flex flex-wrap gap-2 sm:mt-6 sm:gap-3">
+            <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 sm:mt-6 sm:gap-x-6 max-lg:justify-center">
               {promises.map((item) => (
-                <span key={item} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-sm font-bold text-white/72">
-                  <CheckCircle2 size={16} className="text-amber-300" />
+                <span key={item} className="inline-flex items-center gap-2 text-sm font-bold text-white/66">
+                  <CheckCircle2 size={15} className="text-amber-300" />
                   {item}
                 </span>
               ))}
@@ -232,11 +232,13 @@ export default function PosterPage() {
           </div>
 
           <div className="relative lg:self-center" data-poster-reveal>
-            <div className="absolute -inset-3 rounded-[2.2rem] bg-[radial-gradient(circle_at_40%_40%,rgba(245,158,11,0.18),transparent_38%),radial-gradient(circle_at_70%_72%,rgba(20,184,166,0.15),transparent_38%)] blur-2xl sm:-inset-5 sm:rounded-[3rem]" />
-            <div className="relative rounded-[1.6rem] bg-white/[0.035] p-1.5 shadow-[0_38px_110px_rgba(0,0,0,0.42)] sm:rounded-[2.4rem]" data-poster-tilt>
-              <div className="relative aspect-video overflow-hidden rounded-[1.35rem] bg-[#fff5df] sm:rounded-[2rem]">
-                <img src="/insurance/landing/baox-poster-hero-template-wall.png" alt="保险海报模板展示" className="baox-subhero-media h-full object-contain" />
-              </div>
+            <div className="absolute -inset-4 bg-[radial-gradient(circle_at_42%_44%,rgba(245,158,11,0.2),transparent_36%),radial-gradient(circle_at_74%_72%,rgba(20,184,166,0.18),transparent_36%)] blur-3xl sm:-inset-7" />
+            <div className="relative overflow-hidden rounded-[1.8rem] bg-[#fff5df] shadow-[0_42px_120px_rgba(0,0,0,0.48)] sm:rounded-[2.4rem]" data-poster-tilt>
+              <img
+                src="/insurance/landing/baox-poster-hero-template-wall.png"
+                alt="保险海报模板展示"
+                className="w-full object-contain"
+              />
             </div>
           </div>
         </div>

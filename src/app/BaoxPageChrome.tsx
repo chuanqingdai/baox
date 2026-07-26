@@ -1,11 +1,12 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Menu } from "lucide-react";
+import { LanguageToggle } from "./I18nBridge";
 
 const navItems = [
   { href: "/", label: "首页" },
   { href: "/masterclass", label: "保险大师课" },
-  { href: "/poster", label: "保险海报" },
+  { href: "/poster", label: "展页" },
   { href: "/tool", label: "工具包" },
   { href: "/lab", label: "作品集" },
   { href: "/about", label: "关于我们" },
@@ -18,8 +19,8 @@ type BaoxPageChromeProps = {
 
 export function BaoxPageChrome({ active, children }: BaoxPageChromeProps) {
   return (
-    <main className="min-h-screen bg-[#070707] text-white">
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-black/78 backdrop-blur-2xl">
+    <main className="min-h-screen bg-[#070707] pt-16 text-white">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/78 backdrop-blur-2xl">
         <div className="mx-auto flex min-h-16 w-full max-w-[1500px] items-center justify-between gap-3 px-4 py-3 sm:px-8 md:h-16 md:py-0">
           <Link href="/" className="inline-flex items-center gap-3" aria-label="保罗万相首页">
             <img
@@ -41,11 +42,17 @@ export function BaoxPageChrome({ active, children }: BaoxPageChromeProps) {
               </Link>
             ))}
           </nav>
+          <div className="hidden md:block">
+            <LanguageToggle />
+          </div>
           <details className="baox-mobile-menu relative md:hidden">
             <summary className="inline-flex h-10 w-10 list-none items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white transition hover:bg-white/10">
               <Menu size={20} />
             </summary>
             <nav className="absolute right-0 top-12 z-50 w-56 rounded-[1.4rem] border border-white/10 bg-[#090909]/96 p-2 shadow-[0_28px_90px_rgba(0,0,0,0.48)] backdrop-blur-2xl">
+              <div className="mb-2 px-2">
+                <LanguageToggle />
+              </div>
               {navItems.map((item) => (
                 <Link
                   key={item.href}
@@ -75,7 +82,7 @@ export function BaoxPageChrome({ active, children }: BaoxPageChromeProps) {
           </Link>
           <div className="flex flex-wrap gap-4">
             <Link href="/masterclass" className="transition hover:text-amber-300">保险大师课</Link>
-            <Link href="/poster" className="transition hover:text-amber-300">保险海报</Link>
+            <Link href="/poster" className="transition hover:text-amber-300">展页</Link>
             <Link href="/tool" className="transition hover:text-amber-300">工具包</Link>
             <Link href="/lab" className="transition hover:text-amber-300">作品集</Link>
             <Link href="/about" className="transition hover:text-amber-300">关于我们</Link>

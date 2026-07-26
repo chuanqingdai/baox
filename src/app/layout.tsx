@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { I18nBridge } from "./I18nBridge";
 
 export const viewport: Viewport = {
   themeColor: "#070707"
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     default: "保罗万相｜保险人的人工智能增长系统",
     template: "%s · 保罗万相"
   },
-  description: "保罗万相面向保险从业者提供AI保险大师课、保险海报和AI工具包，帮助保险人用人工智能完成内容、获客、服务和成交。",
+  description: "保罗万相面向保险从业者提供AI保险大师课、「展页」和AI工具包，帮助保险人用人工智能完成内容、获客、服务和成交。",
   applicationName: "保罗万相",
   authors: [{ name: "保罗万相" }],
   creator: "保罗万相",
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
     "BAOX.AI",
     "保险AI",
     "AI保险大师课",
-    "保险海报",
+    "展页",
     "保险工具包",
     "保险获客"
   ],
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
     url: "https://baox.ai",
     siteName: "保罗万相",
     title: "保罗万相｜保险人的人工智能增长系统",
-    description: "保险大师课、保险海报、AI工具包与学员作品集，帮助保险人把AI能力变成真实展业成果。",
+    description: "保险大师课、「展页」、AI工具包与学员作品集，帮助保险人把AI能力变成真实展业成果。",
     images: [
       {
         url: "/insurance/landing/baox-home-masterclass-banner.png",
@@ -56,7 +57,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "保罗万相｜保险人的人工智能增长系统",
-    description: "保险大师课、保险海报、AI工具包与学员作品集，帮助保险人把AI能力变成真实展业成果。",
+    description: "保险大师课、「展页」、AI工具包与学员作品集，帮助保险人把AI能力变成真实展业成果。",
     images: ["/insurance/landing/baox-home-masterclass-banner.png"]
   },
   robots: {
@@ -72,7 +73,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" className="h-full antialiased">
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full">
+        <I18nBridge />
+        {children}
+      </body>
     </html>
   );
 }

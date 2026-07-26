@@ -36,6 +36,31 @@ body {
   overflow-x: hidden;
 }
 
+html[data-lang="en"] body {
+  font-family:
+    "Inter", "Avenir Next", "SF Pro Display", "Helvetica Neue", Arial,
+    sans-serif;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
+
+html[data-lang="en"] .baox-subhero-title,
+html[data-lang="en"] .baox-simple-hero-title {
+  line-height: 1.04;
+  letter-spacing: 0;
+}
+
+html[data-lang="en"] h1,
+html[data-lang="en"] h2,
+html[data-lang="en"] h3,
+html[data-lang="en"] .font-black {
+  letter-spacing: 0;
+}
+
+html[data-lang="en"] .baox-subhero-copy,
+html[data-lang="en"] p {
+  line-height: 1.65;
+}
+
 img {
   display: block;
 }

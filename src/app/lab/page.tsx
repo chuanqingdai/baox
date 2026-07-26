@@ -34,11 +34,11 @@ export default function LabPage() {
           <div>
             <p className="inline-flex items-center gap-2 rounded-full border border-amber-300/25 bg-amber-300/10 px-5 py-2 text-sm font-black text-amber-200">
               <FlaskConical size={16} />
-              大师课学员作品集
+              往期优秀学员作品
             </p>
             <h1 className="baox-subhero-title mt-5 font-black tracking-tight sm:mt-6">
-              上完大师课
-              <span className="block text-amber-300">作品直接落地</span>
+              往期优秀
+              <span className="block text-amber-300">学员作品</span>
             </h1>
             <p className="baox-subhero-copy mx-auto max-w-3xl text-base leading-8 text-white/62 sm:text-lg">
               这些不是概念演示，而是AI保险大师课学员完成的真实作业。把增额寿、年金、重疾等复杂产品做成可展示、可转发、可讲解的专业页面。

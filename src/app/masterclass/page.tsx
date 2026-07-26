@@ -177,15 +177,11 @@ export default function MasterclassPage() {
               AI保险
               <span className="block text-amber-300">大师课</span>
             </h1>
-            <p className="baox-subhero-copy max-w-2xl text-lg font-semibold leading-8 text-white/72 sm:text-xl">不是学AI，而是用AI。不是讲概念，而是做实战。</p>
+            <p className="baox-subhero-copy max-w-2xl text-lg font-semibold leading-8 text-white/72 sm:text-xl">实战演练，终身陪跑，人人都是AI保险大师。</p>
             <p className="mt-4 max-w-2xl text-base leading-8 text-white/50">5天密集实战，从图文创作到全流程自动化，构建你的完整AI保险工作流。</p>
             <div className="baox-subhero-actions flex flex-col gap-3 sm:flex-row sm:gap-4">
               <Link href="#curriculum" className="baox-subhero-action inline-flex items-center justify-center gap-3 rounded-full bg-white px-7 text-base font-black text-black transition hover:bg-zinc-100">
                 查看课程大纲
-                <ArrowRight size={18} />
-              </Link>
-              <Link href="https://baox.ai/index.html" className="baox-subhero-action inline-flex items-center justify-center gap-3 rounded-full bg-amber-400 px-7 text-base font-black text-black shadow-[0_28px_70px_rgba(245,158,11,0.28)] transition hover:bg-amber-300">
-                学完进入工作台
                 <ArrowRight size={18} />
               </Link>
             </div>

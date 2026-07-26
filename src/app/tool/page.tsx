@@ -9,16 +9,16 @@ export const metadata: Metadata = {
 
 const groups = [
   {
-    eyebrow: "OPENCLAW",
-    title: "小龙虾",
-    desc: "Agent 与技能市场入口，适合搭建自动化工作流。",
+    eyebrow: "AI AGENT",
+    title: "智能体",
+    desc: "智能体、技能市场与自动化工作流入口，适合把重复任务交给AI执行。",
     tools: [
-      ["OpenClaw", "官方小龙虾", "openclaw.jpg", "https://openclaw.ai/"],
+      ["OpenClaw", "智能体工作流平台", "openclaw.jpg", "https://openclaw.ai/"],
       ["ClawHub", "官方 Skills 技能市场", "clawhub.jpg", "https://clawhub.ai/"],
-      ["ArkClaw", "字节跳动的方舟小龙虾", "arkclaw.jpg", "https://www.volcengine.com/experience/ark?mode=claw"],
-      ["WorkBuddy", "腾讯的 CodeBuddy 小龙虾", "workbuddy.jpg", "https://www.codebuddy.cn/work/"],
-      ["QClaw", "腾讯的微信小龙虾", "qclaw.jpg", "https://qclaw.qq.com/"],
-      ["MaxClaw", "Minimax 的性价比小龙虾", "maxclaw.jpg", "https://agent.minimaxi.com/"],
+      ["ArkClaw", "字节跳动方舟智能体体验", "arkclaw.jpg", "https://www.volcengine.com/experience/ark?mode=claw"],
+      ["WorkBuddy", "腾讯 CodeBuddy 智能协作助手", "workbuddy.jpg", "https://www.codebuddy.cn/work/"],
+      ["QClaw", "腾讯微信智能体工具", "qclaw.jpg", "https://qclaw.qq.com/"],
+      ["MaxClaw", "Minimax 智能体平台", "maxclaw.jpg", "https://agent.minimaxi.com/"],
     ],
   },
   {
@@ -52,7 +52,6 @@ const groups = [
       ["Hera", "AI 动效设计云端平台，支持文生专业级动态图形与动画，内置海量模板。", "hera.jpg", "https://hera.video/"],
       ["AnyGen", "字节跳动推出的 AI 办公协作平台，覆盖办公全链路并生成可编辑可交付的结构化成果。", "anygen.jpg", "https://www.anygen.io/"],
       ["Google AI Studio", "AI 集成开发平台，主打免费低代码 / 无代码体验，实现 AI 应用快速开发。", "aistudio.jpg", "https://aistudio.google.com/"],
-      ["Sora", "OpenAI 推出的旗舰级 AI 视频与音频生成模型，同步生成音画与对话。", "sora.jpg", "https://openai.com/zh-Hans-CN/sora/"],
       ["Runway", "全球领先的 AI 多模态创意视频创作平台，支持文 / 图生专业级视频。", "runway.jpg", "https://runwayml.com/"],
       ["Grok", "xAI 打造的旗舰级多模态 AI 大模型，深度整合 X 平台实现实时联网检索。", "grok.jpg", "https://grok.com/"],
       ["Suno", "麻省理工团队打造的全球顶尖 AI 音乐创作平台，实现文 / 图 / 视频生完整歌曲。", "suno.jpg", "https://suno.com/home"],
