@@ -647,7 +647,11 @@ const dictionary: Record<string, string> = {
 
 function getInitialLang(): Lang {
   if (typeof window === "undefined") return "zh";
-  return window.localStorage.getItem(STORAGE_KEY) === "en" ? "en" : "zh";
+  const saved = window.localStorage.getItem(STORAGE_KEY);
+  if (saved === "en" || saved === "zh") return saved;
+
+  const browserLanguages = navigator.languages?.length ? navigator.languages : [navigator.language];
+  return browserLanguages.some((language) => language.toLowerCase().startsWith("zh")) ? "zh" : "en";
 }
 
 function preserveWhitespace(original: string, translated: string) {
@@ -778,18 +782,19 @@ export function LanguageToggle() {
   };
 
   return (
-    <div className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.06] p-1 text-xs font-black text-white/58 shadow-[0_12px_34px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+    <div className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.06] p-1 text-xs font-black text-white/58 shadow-[0_12px_34px_rgba(0,0,0,0.22)] backdrop-blur-xl" aria-label="Language">
       {(["zh", "en"] as const).map((item) => (
         <button
           key={item}
           type="button"
           onClick={() => changeLang(item)}
-          className={`h-8 min-w-10 rounded-full px-3 transition ${
+          aria-pressed={lang === item}
+          className={`h-8 min-w-12 rounded-full px-3 transition ${
             lang === item ? "bg-amber-400 text-black shadow-[0_8px_22px_rgba(245,158,11,0.26)]" : "hover:bg-white/10 hover:text-white"
           }`}
           aria-label={item === "zh" ? "切换到中文" : "Switch to English"}
         >
-          {item === "zh" ? "中" : "EN"}
+          {item === "zh" ? "中文" : "EN"}
         </button>
       ))}
     </div>
