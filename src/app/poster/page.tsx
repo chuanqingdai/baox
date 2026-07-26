@@ -242,7 +242,7 @@ export default function PosterPage() {
           <div className="relative flex justify-center lg:self-center" data-poster-reveal>
             <div className="relative w-[94%] overflow-hidden rounded-[1.1rem] shadow-[0_32px_90px_rgba(0,0,0,0.38)] sm:rounded-[1.55rem]" data-poster-tilt>
               <img
-                src="/insurance/landing/baox-poster-hero-template-wall.webp"
+                src="/insurance/landing/baox-home-poster-banner.webp"
                 alt="保险海报模板展示"
                 className="w-full object-contain"
               />
