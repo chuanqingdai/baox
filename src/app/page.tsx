@@ -25,16 +25,19 @@ const slides = [
   {
     title: "保罗万相 BAOX",
     image: "/insurance/landing/baox-brand-banner.webp",
+    mobileImage: "/insurance/landing/baox-brand-banner-mobile.webp",
   },
   {
     title: "AI保险大师课",
     image: "/insurance/landing/baox-home-masterclass-banner.webp",
+    mobileImage: "/insurance/landing/baox-home-masterclass-banner-mobile.webp",
     href: "/masterclass",
     cta: "查看大师课",
   },
   {
     title: "展页",
     image: "/insurance/landing/baox-home-poster-banner.webp",
+    mobileImage: "/insurance/landing/baox-home-poster-banner-mobile.webp",
     href: "https://knowlens.ai/baox",
     cta: "查看展页",
   },
@@ -115,13 +118,16 @@ export default function BaoxHomePage() {
             @media (max-width: 767px) {
               .baox-carousel-stage {
                 min-height: 100svh !important;
+                perspective: 1200px;
               }
               .baox-carousel-card {
-                top: 46%;
-                width: 100vw;
+                top: calc(50% + 1rem);
+                width: min(108vw, calc((100svh - 4.8rem) * .5625), 470px);
+                aspect-ratio: 9 / 16;
                 border-left-width: 0;
                 border-right-width: 0;
-                box-shadow: 0 28px 86px rgba(0,0,0,.58);
+                border-radius: clamp(.9rem, 4vw, 1.35rem);
+                box-shadow: 0 30px 90px rgba(0,0,0,.62), 0 0 0 1px rgba(245,158,11,.16);
               }
               .baox-carousel-stage[data-active="0"] [data-slide-index="0"],
               .baox-carousel-stage[data-active="1"] [data-slide-index="1"],
@@ -131,22 +137,28 @@ export default function BaoxHomePage() {
               .baox-carousel-stage[data-active="0"] [data-slide-index="2"],
               .baox-carousel-stage[data-active="1"] [data-slide-index="0"],
               .baox-carousel-stage[data-active="2"] [data-slide-index="1"] {
-                opacity: .1;
-                filter: blur(8px) saturate(.65) brightness(.38);
-                transform: translate3d(calc(-50% - 58vw), -50%, 0) scale(.82);
+                opacity: .18;
+                filter: blur(9px) saturate(.7) brightness(.42);
+                transform: translate3d(calc(-50% - 64vw), -50%, 0) scale(.86) rotateY(13deg);
               }
               .baox-carousel-stage[data-active="0"] [data-slide-index="1"],
               .baox-carousel-stage[data-active="1"] [data-slide-index="2"],
               .baox-carousel-stage[data-active="2"] [data-slide-index="0"] {
-                opacity: .1;
-                filter: blur(8px) saturate(.65) brightness(.38);
-                transform: translate3d(calc(-50% + 58vw), -50%, 0) scale(.82);
+                opacity: .18;
+                filter: blur(9px) saturate(.7) brightness(.42);
+                transform: translate3d(calc(-50% + 64vw), -50%, 0) scale(.86) rotateY(-13deg);
               }
               .baox-carousel-cta {
                 display: none;
               }
               .baox-mobile-slide-cta {
-                top: calc(46% + 28.125vw + 1.25rem);
+                bottom: max(1.95rem, env(safe-area-inset-bottom));
+                top: auto;
+                padding: .68rem 1.35rem;
+                font-size: .88rem;
+                border-color: rgba(255,236,179,.62);
+                background: linear-gradient(90deg, rgba(252,211,77,.92), rgba(251,191,36,.92), rgba(249,115,22,.92));
+                box-shadow: 0 12px 34px rgba(245,158,11,.34);
               }
               .baox-carousel-stage[data-active="0"] [data-mobile-cta="0"],
               .baox-carousel-stage[data-active="1"] [data-mobile-cta="1"],
@@ -154,18 +166,34 @@ export default function BaoxHomePage() {
                 display: inline-flex;
               }
               .baox-carousel-controls {
-                top: 46%;
-                width: calc(100vw - 1.25rem);
+                top: calc(50% + 1rem);
+                width: calc(100vw - .5rem);
                 padding-inline: 0;
               }
               .baox-carousel-controls button {
-                height: 2.75rem;
-                width: 2.75rem;
-                font-size: 2rem;
+                height: 2.5rem;
+                width: 2.5rem;
+                border-color: rgba(245,158,11,.24);
+                background: rgba(0,0,0,.28);
+                font-size: 1.75rem;
               }
               .baox-carousel-dots {
-                bottom: auto;
-                top: calc(46% + 28.125vw + 5.85rem);
+                bottom: max(.85rem, env(safe-area-inset-bottom));
+                top: auto;
+              }
+            }
+            @media (max-width: 767px) and (max-height: 700px) {
+              .baox-carousel-card {
+                width: min(104vw, calc((100svh - 5.2rem) * .5625), 380px);
+                top: calc(50% + .75rem);
+              }
+              .baox-mobile-slide-cta {
+                bottom: max(1.55rem, env(safe-area-inset-bottom));
+                padding: .62rem 1.2rem;
+                font-size: .82rem;
+              }
+              .baox-carousel-dots {
+                bottom: max(.55rem, env(safe-area-inset-bottom));
               }
             }
           `,
@@ -230,14 +258,19 @@ export default function BaoxHomePage() {
         {slides.map((slide, index) => {
           const cardContent = (
             <div className="relative h-full bg-black">
-              <img
-                src={slide.image}
-                alt={slide.title}
-                loading={index === 0 ? "eager" : "lazy"}
-                decoding="async"
-                fetchPriority={index === 0 ? "high" : "low"}
-                className={`h-full w-full object-cover transition duration-700 ${"href" in slide ? "group-hover:scale-[1.02]" : ""}`}
-              />
+              <picture className="block h-full w-full">
+                <source srcSet={slide.mobileImage} media="(max-width: 767px)" type="image/webp" />
+                <img
+                  src={slide.image}
+                  alt={slide.title}
+                  width={1672}
+                  height={941}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  fetchPriority={index === 0 ? "high" : "low"}
+                  className={`h-full w-full object-cover transition duration-700 ${"href" in slide ? "group-hover:scale-[1.02]" : ""}`}
+                />
+              </picture>
               <div className="absolute inset-0 bg-gradient-to-t from-black/42 via-transparent to-black/8" />
               {"cta" in slide && (
                 <span className="baox-carousel-cta absolute bottom-6 left-1/2 inline-flex -translate-x-1/2 items-center justify-center whitespace-nowrap rounded-full border border-amber-200/70 bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 px-7 py-3 text-sm font-black text-black shadow-[0_18px_48px_rgba(245,158,11,0.42)] transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_64px_rgba(245,158,11,0.55)] sm:bottom-8 sm:px-9 sm:py-3.5 sm:text-base">

@@ -3,9 +3,13 @@
 import { useEffect } from "react";
 
 const TOTAL_SLIDES = 3;
-const eagerImagePaths = [
+const desktopWarmImagePaths = [
   "/insurance/landing/baox-home-masterclass-banner.webp",
   "/insurance/landing/baox-home-poster-banner.webp",
+];
+const mobileWarmImagePaths = [
+  "/insurance/landing/baox-home-masterclass-banner-mobile.webp",
+  "/insurance/landing/baox-home-poster-banner-mobile.webp",
 ];
 
 export function HomeCarouselController() {
@@ -27,7 +31,9 @@ export function HomeCarouselController() {
     };
 
     const warmImages = () => {
-      eagerImagePaths.forEach((src) => {
+      const shouldUseMobileImages = window.matchMedia("(max-width: 767px)").matches;
+      const paths = shouldUseMobileImages ? mobileWarmImagePaths : desktopWarmImagePaths;
+      paths.forEach((src) => {
         const image = new Image();
         image.decoding = "async";
         image.fetchPriority = "low";
