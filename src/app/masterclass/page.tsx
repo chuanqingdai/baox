@@ -168,7 +168,7 @@ export default function MasterclassPage() {
       <section className="baox-subhero relative isolate overflow-hidden px-4 sm:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_14%,rgba(245,158,11,0.24),transparent_30%),radial-gradient(circle_at_84%_18%,rgba(20,184,166,0.14),transparent_28%),linear-gradient(180deg,#11100c_0%,#070707_78%)]" />
         <div className="baox-subhero-grid relative mx-auto grid w-full max-w-[1500px] gap-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
-          <div>
+          <div className="max-lg:mx-auto max-lg:text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-300/25 bg-amber-300/10 px-5 py-2 text-sm font-bold text-amber-200">
               <Sparkles size={16} />
               保险人专属 AI 实战课
@@ -177,9 +177,9 @@ export default function MasterclassPage() {
               AI保险
               <span className="block text-amber-300">大师课</span>
             </h1>
-            <p className="baox-subhero-copy max-w-2xl text-lg font-semibold leading-8 text-white/72 sm:text-xl">实战演练，终身陪跑，人人都是AI保险大师。</p>
-            <p className="mt-4 max-w-2xl text-base leading-8 text-white/50">5天密集实战，从图文创作到全流程自动化，构建你的完整AI保险工作流。</p>
-            <div className="baox-subhero-actions flex flex-col gap-3 sm:flex-row sm:gap-4">
+            <p className="baox-subhero-copy max-w-2xl text-lg font-semibold leading-8 text-white/72 sm:text-xl max-lg:mx-auto">实战演练，终身陪跑，人人都是AI保险大师。</p>
+            <p className="mt-4 max-w-2xl text-base leading-8 text-white/50 max-lg:mx-auto">5天密集实战，从图文创作到全流程自动化，构建你的完整AI保险工作流。</p>
+            <div className="baox-subhero-actions flex flex-col gap-3 sm:flex-row sm:gap-4 max-lg:justify-center">
               <Link href="#curriculum" className="baox-subhero-action inline-flex items-center justify-center gap-3 rounded-full bg-white px-7 text-base font-black text-black transition hover:bg-zinc-100">
                 查看课程大纲
                 <ArrowRight size={18} />
@@ -187,10 +187,8 @@ export default function MasterclassPage() {
             </div>
           </div>
           <div className="relative lg:self-center">
-            <div className="absolute -inset-3 rounded-[2.2rem] bg-[radial-gradient(circle_at_40%_40%,rgba(245,158,11,0.2),transparent_40%),radial-gradient(circle_at_74%_80%,rgba(20,184,166,0.18),transparent_38%)] blur-2xl sm:-inset-8 sm:rounded-[4rem]" />
-            <div className="relative rounded-[1.8rem] border border-white/10 bg-white/[0.06] p-1.5 shadow-[0_46px_130px_rgba(0,0,0,0.5)] sm:rounded-[3rem] sm:p-4">
-              <img src="/insurance/landing/baox-masterclass-hero-shield-course.png" alt="保险大师课宣传图" className="baox-subhero-media aspect-video rounded-[1.5rem] sm:rounded-[2.3rem]" />
-            </div>
+            <div className="absolute -inset-4 bg-[radial-gradient(circle_at_46%_48%,rgba(245,158,11,0.18),transparent_42%),radial-gradient(circle_at_76%_78%,rgba(20,184,166,0.16),transparent_40%)] blur-3xl sm:-inset-8" />
+            <img src="/insurance/landing/baox-masterclass-hero-shield-course.png" alt="保险大师课宣传图" className="baox-subhero-media relative aspect-video rounded-[1.5rem] object-cover shadow-[0_46px_130px_rgba(0,0,0,0.5)] sm:rounded-[2rem]" />
           </div>
         </div>
       </section>

@@ -356,8 +356,8 @@ const dictionary: Record<string, string> = {
   "私域运营 · 周同学": "Private-Domain Operator · Student Zhou",
 
   "专业保险海报模版": "Premium Insurance Poster Templates",
-  "专业海报，": "Ready-to-Post Campaigns,",
-  "用「展页」轻松搞定": "Powered by “ZhanYe”",
+  "专业海报，": "Ready-to-Post Insurance Campaigns",
+  "用「展页」轻松搞定": "Made Easy with “ZhanYe”",
   "做海报用「展页」，省心！面向保险人高频展业场景，把文案、画面和传播目的打包成可复用模板，快速产出专业素材。": "Create polished insurance marketing assets without starting from a blank canvas. ZhanYe packages strategy, copy, and visuals into reusable templates built for real advisory work.",
   "面向保险人高频展业场景，把文案、画面和传播目的打包成可复用模板，快速产出专业素材。": "Built for recurring insurance marketing moments, with reusable templates that combine copy, visuals, and a clear communication goal.",
   "打开海报工作台": "Launch ZhanYe",

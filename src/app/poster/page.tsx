@@ -204,9 +204,9 @@ export default function PosterPage() {
             <p className="inline-flex border-l-2 border-amber-300/80 pl-3 text-sm font-black tracking-[0.18em] text-amber-200/90 max-lg:border-l-0 max-lg:border-t-2 max-lg:px-3 max-lg:pt-3">
               专业保险海报模版
             </p>
-            <h1 className="mt-5 text-[2.55rem] font-black leading-[0.98] tracking-tight text-white sm:mt-6 sm:text-[4.6rem] lg:text-[5.25rem]">
+            <h1 className="baox-poster-hero-title mt-5 text-[2.55rem] font-black leading-[0.98] tracking-tight text-white sm:mt-6 sm:text-[4.6rem] lg:text-[5.25rem]">
               专业海报，
-              <span className="block whitespace-nowrap text-amber-300">用「展页」轻松搞定</span>
+              <span className="baox-poster-hero-accent block text-amber-300">用「展页」轻松搞定</span>
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/58 sm:text-lg">
               面向保险人高频展业场景，把文案、画面和传播目的打包成可复用模板，快速产出专业素材。
@@ -470,9 +470,10 @@ export default function PosterPage() {
               <p className="mt-5 max-w-2xl text-base leading-8 text-zinc-600">
                 海报模板可以直接下载发布，也可以按客户场景微调文案。先跑起来，再用大师课把选题、沟通和服务流程系统化。
               </p>
-              <div className="mt-7 flex flex-wrap gap-3 text-sm font-black text-zinc-700">
+              <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm font-black text-zinc-700">
                 {["成品可发", "文案可改", "团队可复用"].map((item) => (
-                  <span key={item} className="rounded-full border border-black/10 bg-white/70 px-4 py-2 shadow-sm">
+                  <span key={item} className="inline-flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
                     {item}
                   </span>
                 ))}

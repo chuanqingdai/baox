@@ -89,6 +89,26 @@ export default function BaoxHomePage() {
               width: 1.75rem;
               background: rgba(252, 211, 77, .62);
             }
+            .baox-mobile-slide-cta {
+              display: none;
+            }
+            @media (min-width: 768px) and (min-height: 820px) {
+              .baox-carousel-cta {
+                display: none;
+              }
+              .baox-mobile-slide-cta {
+                top: calc(50% + min(23.625vw, 360px) + 1.1rem);
+              }
+              .baox-carousel-stage[data-active="0"] [data-mobile-cta="0"],
+              .baox-carousel-stage[data-active="1"] [data-mobile-cta="1"],
+              .baox-carousel-stage[data-active="2"] [data-mobile-cta="2"] {
+                display: inline-flex;
+              }
+              .baox-carousel-dots {
+                bottom: auto;
+                top: calc(50% + min(23.625vw, 360px) + 5.35rem);
+              }
+            }
             @media (prefers-reduced-motion: reduce) {
               .baox-carousel-card {
                 transition: none !important;
@@ -125,9 +145,15 @@ export default function BaoxHomePage() {
                 transform: translate3d(calc(-50% + 58vw), -50%, 0) scale(.82);
               }
               .baox-carousel-cta {
-                bottom: -4.25rem;
-                padding: .9rem 1.55rem;
-                font-size: .95rem;
+                display: none;
+              }
+              .baox-mobile-slide-cta {
+                top: calc(46% + 28.125vw + 1.25rem);
+              }
+              .baox-carousel-stage[data-active="0"] [data-mobile-cta="0"],
+              .baox-carousel-stage[data-active="1"] [data-mobile-cta="1"],
+              .baox-carousel-stage[data-active="2"] [data-mobile-cta="2"] {
+                display: inline-flex;
               }
               .baox-carousel-controls {
                 top: 46%;
@@ -141,7 +167,7 @@ export default function BaoxHomePage() {
               }
               .baox-carousel-dots {
                 bottom: auto;
-                top: calc(46% + 28.125vw + 6.35rem);
+                top: calc(46% + 28.125vw + 5.85rem);
               }
             }
           `,
@@ -262,11 +288,24 @@ export default function BaoxHomePage() {
           </Link>
         ))}
 
+        {slides.map((slide, index) => (
+          <Link
+            key={`${slide.title}-mobile-cta`}
+            href={slide.href}
+            data-mobile-cta={index}
+            className="baox-mobile-slide-cta absolute left-1/2 z-40 -translate-x-1/2 items-center justify-center whitespace-nowrap rounded-full border border-amber-200/70 bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 px-8 py-4 text-base font-black text-black shadow-[0_18px_48px_rgba(245,158,11,0.42)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_64px_rgba(245,158,11,0.5)] active:scale-[0.98]"
+            aria-label={slide.cta}
+          >
+            {slide.cta}
+            <span className="ml-2 text-lg leading-none">→</span>
+          </Link>
+        ))}
+
         <div className="baox-carousel-controls pointer-events-none absolute left-1/2 top-1/2 z-40 flex w-[min(88vw,1360px)] -translate-x-1/2 -translate-y-1/2 items-center justify-between px-2 sm:px-4">
           <button type="button" data-baox-prev className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/18 bg-black/42 text-3xl font-light text-white shadow-[0_18px_54px_rgba(0,0,0,0.36)] backdrop-blur-2xl transition hover:-translate-x-1 hover:border-amber-300/50 hover:bg-white hover:text-black sm:h-14 sm:w-14" aria-label="上一个 banner">
             ‹
           </button>
-          <button type="button" data-baox-next className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-amber-200/40 bg-amber-400/92 text-3xl font-light text-black shadow-[0_20px_58px_rgba(245,158,11,0.42)] backdrop-blur-2xl transition hover:translate-x-1 hover:bg-amber-300 hover:shadow-[0_24px_68px_rgba(245,158,11,0.55)] sm:h-14 sm:w-14" aria-label="下一个 banner">
+          <button type="button" data-baox-next className="pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-amber-200/28 bg-black/38 text-3xl font-light text-amber-200 shadow-[0_18px_54px_rgba(0,0,0,0.36)] backdrop-blur-2xl transition hover:translate-x-1 hover:border-amber-200/48 hover:bg-amber-300/18 hover:text-amber-100 sm:h-14 sm:w-14" aria-label="下一个 banner">
             ›
           </button>
         </div>
