@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 const team = [
   ["孔晶", "JAYDEN KONG", "jk.jpg", ["保罗万相创始人", "高级人工智能训练师", "COT全球寿险百万圆桌"]],
-  ["戴传庆", "CHUANQINGDAI", "chuanqingdai.webp", ["CTO", "前AI公司合伙人", "前互联网公司部门负责人"]],
+  ["戴传庆", "CHUANQING DAI", "chuanqingdai.webp", ["CTO", "前AI公司合伙人", "前互联网公司部门负责人"]],
   ["俞璐", "RURU YU", "ruru.jpg", ["MDRT全球寿险百万圆桌", "RFP国际注册财务规划师", "前字节跳动设计总监"]],
   ["王斯瑶", "SHARON WANG", "siyao.jpg", ["MDRT全球寿险百万圆桌", "RFP国际注册财务规划师", "前互联网产品总监"]],
   ["潘玉婷", "JANICE PAN", "panyuting.png", ["MDRT全球寿险百万圆桌", "十年外资药企采购专家", "海外寿险专家"]],
