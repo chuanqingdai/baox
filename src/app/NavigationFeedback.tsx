@@ -65,23 +65,36 @@ export function NavigationFeedback() {
 
   if (!isNavigating) return null;
 
-  return <RouteSkeletonOverlay />;
+  return <RouteSkeletonOverlay belowHeader />;
 }
 
-export function RouteSkeletonOverlay() {
+type RouteSkeletonOverlayProps = {
+  belowHeader?: boolean;
+};
+
+export function RouteSkeletonOverlay({ belowHeader = false }: RouteSkeletonOverlayProps) {
   return (
-    <div className="baox-route-skeleton fixed inset-0 z-[999] bg-[var(--background-primary)] text-[var(--text-primary-dark)]" role="status" aria-live="polite" aria-label="页面加载中">
+    <div
+      className={`baox-route-skeleton fixed inset-x-0 bottom-0 bg-[var(--background-primary)] text-[var(--text-primary-dark)] ${
+        belowHeader ? "top-16 z-40" : "top-0 z-[999]"
+      }`}
+      role="status"
+      aria-live="polite"
+      aria-label="页面加载中"
+    >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(195,161,120,0.18),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(104,119,137,0.12),transparent_28%),linear-gradient(180deg,var(--background-secondary)_0%,var(--background-primary)_78%)]" />
-      <div className="relative mx-auto flex h-16 w-full max-w-[1280px] items-center justify-between px-4 sm:px-8">
-        <div className="h-7 w-36 rounded-full bg-white/16" />
-        <div className="hidden items-center gap-2 md:flex">
-          <div className="h-9 w-16 rounded-full bg-white/18" />
-          <div className="h-9 w-24 rounded-full bg-white/10" />
-          <div className="h-9 w-16 rounded-full bg-white/10" />
-          <div className="h-9 w-20 rounded-full bg-white/10" />
+      {!belowHeader && (
+        <div className="relative mx-auto flex h-16 w-full max-w-[1280px] items-center justify-between px-4 sm:px-8">
+          <div className="h-7 w-36 rounded-full bg-white/16" />
+          <div className="hidden items-center gap-2 md:flex">
+            <div className="h-9 w-16 rounded-full bg-white/18" />
+            <div className="h-9 w-24 rounded-full bg-white/10" />
+            <div className="h-9 w-16 rounded-full bg-white/10" />
+            <div className="h-9 w-20 rounded-full bg-white/10" />
+          </div>
+          <div className="h-10 w-10 rounded-full bg-white/12 md:w-28" />
         </div>
-        <div className="h-10 w-10 rounded-full bg-white/12 md:w-28" />
-      </div>
+      )}
       <div className="relative mx-auto grid w-full max-w-[1280px] gap-8 px-4 py-12 sm:px-8 lg:min-h-[calc(100svh-4rem)] lg:grid-cols-[0.86fr_1.14fr] lg:items-center">
         <div>
           <div className="h-8 w-52 rounded-full bg-amber-300/18" />
