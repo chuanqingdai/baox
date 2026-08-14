@@ -602,6 +602,10 @@ const dictionary: Record<string, string> = {
   "保罗万相创始人": "Founder of BAOX.AI",
   "高级人工智能训练师": "Senior AI Trainer",
   "COT全球寿险百万圆桌": "COT, Million Dollar Round Table",
+  "戴传庆": "Chuanqing Dai",
+  "CTO": "CTO",
+  "前AI公司合伙人": "Former Partner at an AI Company",
+  "前互联网公司部门负责人": "Former Department Head at an Internet Company",
   "俞璐": "Ruru Yu",
   "MDRT全球寿险百万圆桌": "MDRT, Million Dollar Round Table",
   "RFP国际注册财务规划师": "RFP International Registered Financial Planner",
@@ -651,8 +655,16 @@ function getInitialLang(): Lang {
   const saved = window.localStorage.getItem(STORAGE_KEY);
   if (saved === "en" || saved === "zh") return saved;
 
+  const shellLang = document.documentElement.dataset.lang;
+  if (shellLang === "en" || shellLang === "zh") return shellLang;
+
   const browserLanguages = navigator.languages?.length ? navigator.languages : [navigator.language];
   return browserLanguages.some((language) => language.toLowerCase().startsWith("zh")) ? "zh" : "en";
+}
+
+function persistLang(lang: Lang) {
+  window.localStorage.setItem(STORAGE_KEY, lang);
+  document.cookie = `${STORAGE_KEY}=${lang}; path=/; max-age=31536000; SameSite=Lax`;
 }
 
 function preserveWhitespace(original: string, translated: string) {
@@ -695,6 +707,16 @@ function syncLanguageShell(lang: Lang) {
   syncSeo(lang);
 }
 
+function markI18nReady() {
+  delete document.documentElement.dataset.i18nPending;
+  document.documentElement.dataset.i18nReady = "true";
+}
+
+function markI18nPending() {
+  document.documentElement.dataset.i18nPending = "true";
+  delete document.documentElement.dataset.i18nReady;
+}
+
 function translateDocument(lang: Lang) {
   syncLanguageShell(lang);
 
@@ -714,7 +736,8 @@ function translateDocument(lang: Lang) {
     const original = textOriginals.get(node) ?? node.textContent ?? "";
     if (!textOriginals.has(node)) textOriginals.set(node, original);
     const key = original.trim();
-    node.textContent = lang === "en" && dictionary[key] ? preserveWhitespace(original, dictionary[key]) : original;
+    const nextText = lang === "en" && dictionary[key] ? preserveWhitespace(original, dictionary[key]) : original;
+    if (node.textContent !== nextText) node.textContent = nextText;
   });
 
   document.querySelectorAll<HTMLElement>("[aria-label], [alt], [title]").forEach((element) => {
@@ -724,28 +747,36 @@ function translateDocument(lang: Lang) {
       const dataKey = `i18nOriginal${attribute.replace(/[^a-z]/gi, "")}`;
       const original = element.dataset[dataKey] ?? value;
       element.dataset[dataKey] = original;
-      element.setAttribute(attribute, lang === "en" && dictionary[original] ? dictionary[original] : original);
+      const nextValue = lang === "en" && dictionary[original] ? dictionary[original] : original;
+      if (value !== nextValue) element.setAttribute(attribute, nextValue);
     });
   });
+
+  markI18nReady();
 }
 
 export function I18nBridge() {
   const pathname = usePathname();
-  const langRef = useRef<Lang>("zh");
+  const langRef = useRef<Lang | null>(null);
 
   useEffect(() => {
     const current = getInitialLang();
     langRef.current = current;
-    syncLanguageShell(current);
+    if (current === "en") translateDocument(current);
+    else {
+      syncLanguageShell(current);
+      markI18nReady();
+    }
 
-    const headObserver = new MutationObserver(() => syncSeo(langRef.current));
+    const headObserver = new MutationObserver(() => syncSeo(langRef.current ?? getInitialLang()));
     headObserver.observe(document.head, { attributes: true, childList: true, subtree: true });
 
     const onLangChange = (event: Event) => {
       const next = (event as CustomEvent<Lang>).detail === "en" ? "en" : "zh";
       langRef.current = next;
-      window.localStorage.setItem(STORAGE_KEY, next);
-      translateDocument(next);
+      persistLang(next);
+      if (next === "en") markI18nPending();
+      window.requestAnimationFrame(() => translateDocument(next));
     };
 
     window.addEventListener("baox-language-change", onLangChange);
@@ -756,12 +787,13 @@ export function I18nBridge() {
   }, []);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      const current = langRef.current;
-      if (current === "en") translateDocument(current);
-      else syncLanguageShell(current);
-    }, 900);
-    return () => window.clearTimeout(timer);
+    const current = langRef.current ?? getInitialLang();
+    langRef.current = current;
+    if (current === "en") translateDocument(current);
+    else {
+      syncLanguageShell(current);
+      markI18nReady();
+    }
   }, [pathname]);
 
   return null;
@@ -777,8 +809,8 @@ export function LanguageToggle() {
 
   const changeLang = (next: Lang) => {
     setLang(next);
-    window.localStorage.setItem(STORAGE_KEY, next);
-    translateDocument(next);
+    persistLang(next);
+    if (next === "en") markI18nPending();
     window.dispatchEvent(new CustomEvent("baox-language-change", { detail: next }));
   };
 

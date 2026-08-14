@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { cookies, headers } from "next/headers";
 import "./globals.css";
 import { I18nBridge } from "./I18nBridge";
 import { NavigationFeedback } from "./NavigationFeedback";
@@ -67,13 +68,26 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const headerStore = await headers();
+  const savedLang = cookieStore.get("baox-lang")?.value;
+  const acceptLanguage = headerStore.get("accept-language")?.toLowerCase() ?? "";
+  const initialLang = savedLang === "en" || savedLang === "zh" ? savedLang : acceptLanguage.includes("zh") ? "zh" : "en";
+
   return (
-    <html lang="zh-CN" className="h-full antialiased">
+    <html
+      lang={initialLang === "en" ? "en" : "zh-CN"}
+      className="h-full antialiased"
+      data-lang={initialLang}
+      data-i18n-pending={initialLang === "en" ? "true" : undefined}
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
       <body className="min-h-full">
         <I18nBridge />
         <NavigationFeedback />

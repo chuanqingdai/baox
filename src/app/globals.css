@@ -59,6 +59,10 @@ body {
   overflow-x: hidden;
 }
 
+html[data-i18n-pending="true"] body {
+  opacity: 0;
+}
+
 .text-amber-100,
 .text-amber-200,
 .text-amber-200\/90,
