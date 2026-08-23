@@ -5,7 +5,7 @@ import { LanguageToggle } from "./I18nBridge";
 
 const navItems = [
   { href: "/", label: "首页" },
-  { href: "/masterclass", label: "保险大师课" },
+  { href: "/masterclass", label: "AI大师课" },
   { href: "/poster", label: "展页" },
   { href: "/tool", label: "工具包" },
   { href: "/lab", label: "作品集" },
@@ -81,7 +81,7 @@ export function BaoxPageChrome({ active, children }: BaoxPageChromeProps) {
             />
           </Link>
           <div className="flex flex-wrap gap-4">
-            <Link href="/masterclass" className="transition hover:text-amber-300">保险大师课</Link>
+            <Link href="/masterclass" className="transition hover:text-amber-300">AI大师课</Link>
             <Link href="/poster" className="transition hover:text-amber-300">展页</Link>
             <Link href="/tool" className="transition hover:text-amber-300">工具包</Link>
             <Link href="/lab" className="transition hover:text-amber-300">作品集</Link>

@@ -52,10 +52,10 @@ const values = [
 const curriculum = [
   {
     day: "DAY 01",
-    title: "AI图文创作实战",
+    title: "文章/海报",
     meta: "6个工具 · 6个实战项目",
     intro: "掌握保险行业高质量图文内容的AI创作技术：批量生产文章、AI配图、信息图、早报、爆款定制，一站式搞定内容营销。",
-    image: "/insurance/baox-original/images/01.jpg",
+    image: "/insurance/landing/baox-masterclass-day-01.jpg",
     tools: ["飞书+AI", "Gemini", "NotebookLM", "AI Studio", "Claude Code", "ChatGPT Image"],
     projects: [
       [Table2, "飞书多维表格 + AI", "文案批量生产", "10分钟生成1000篇保险科普文章", ["飞书多维表格AI功能介绍", "保险文章内容模板设计", "批量生成与内容优化技巧"]],
@@ -68,10 +68,10 @@ const curriculum = [
   },
   {
     day: "DAY 02",
-    title: "AI视频制作全方位",
+    title: "视频/播客",
     meta: "6个工具 · 6个实战项目",
     intro: "一个人就是一个内容团队：数字分身帮你出镜，AI帮你剪辑，播客帮你传播，音乐帮你造势。",
-    image: "/insurance/baox-original/images/02.jpg",
+    image: "/insurance/landing/baox-masterclass-day-02.jpg",
     tools: ["即梦模板", "Seedance", "Coze AI播客", "Hera", "Suno", "声音模型"],
     projects: [
       [MonitorPlay, "即梦模板", "数字分身 · 产品讲解视频", "保险产品讲解数字分身视频", ["数字分身技术原理", "即梦模板使用方法", "保险场景数字分身应用"]],
@@ -84,9 +84,10 @@ const curriculum = [
   },
   {
     day: "DAY 03",
-    title: "智能化展业工具",
+    title: "知识库",
     meta: "4个工具 · 4个实战项目",
     intro: "知识库是保险人的第二大脑：客户问什么，3秒给出专业解答，不再是翻资料找半天。",
+    image: "/insurance/landing/baox-masterclass-day-03.jpg",
     tools: ["NotebookLM", "IMA", "AnyGen", "Obsidian"],
     projects: [
       [BookOpenCheck, "NotebookLM", "多模态知识库", "保险产品知识库", ["多格式解析与自动摘要", "保险知识分类与标签", "多模态内容整合与PPT生成"]],
@@ -97,9 +98,10 @@ const curriculum = [
   },
   {
     day: "DAY 04",
-    title: "智能体 Agent 实战",
+    title: "智能体",
     meta: "4个模块 · 4个实战项目",
     intro: "AI智能体是保险人的超级助手：WorkBuddy多智能体协作、Codex代码自动化，让AI替你干活，真正实现一人即团队。",
+    image: "/insurance/landing/baox-masterclass-day-04.jpg",
     tools: ["WorkBuddy", "Codex", "Agent Skill", "工作流编排"],
     projects: [
       [Network, "模块一：WorkBuddy 多智能体协作", "Agent团队编排", "搭建保险内容生产Agent团队", ["WorkBuddy平台介绍与安装配置", "多Agent协作原理与任务分工", "保险场景Agent团队编排实战"]],
@@ -110,10 +112,10 @@ const curriculum = [
   },
   {
     day: "DAY 05",
-    title: "搭建个人网站",
+    title: "个人网站",
     meta: "4个模块 · 4个实战项目",
     intro: "保险人的数字名片：从域名到上线，亲手搭建属于自己的个人品牌网站，告别第三方平台依赖，打造专业线上形象。",
-    image: "/insurance/baox-original/images/03.jpg",
+    image: "/insurance/landing/baox-masterclass-day-05.jpg",
     tools: ["云服务器", "Node.js + Nginx", "DNS + SSL", "网站发布"],
     projects: [
       [Server, "模块一：选择服务器", "云服务器选型", "选购并配置一台个人云服务器", ["云服务器对比与选型指南", "轻量应用服务器配置入门", "保险从业者建站场景分析"]],
@@ -188,7 +190,7 @@ export default function MasterclassPage() {
           </div>
           <div className="relative lg:self-center">
             <div className="absolute -inset-4 bg-[radial-gradient(circle_at_46%_48%,rgba(195,161,120,0.18),transparent_42%),radial-gradient(circle_at_76%_78%,rgba(104,119,137,0.16),transparent_40%)] blur-3xl sm:-inset-8" />
-            <img src="/insurance/landing/baox-masterclass-hero-shield-course.webp" alt="保险大师课宣传图" className="baox-subhero-media relative aspect-video rounded-[1.5rem] object-cover shadow-[0_46px_130px_rgba(0,0,0,0.5)] sm:rounded-[2rem]" />
+            <img src="/insurance/landing/baox-masterclass-magic-academy-banner.jpg" alt="AI大师课魔法学院宣传图" className="baox-subhero-media relative aspect-video rounded-[1.5rem] object-cover shadow-[0_46px_130px_rgba(0,0,0,0.5)] sm:rounded-[2rem]" />
           </div>
         </div>
       </section>
@@ -236,45 +238,63 @@ export default function MasterclassPage() {
           </div>
           <p className="max-w-3xl text-lg leading-8 text-white/54">从图文到视频，从知识库到Agent，再到个人网站，把AI真正接入保险展业现场。</p>
         </div>
-        <div className="space-y-10">
+        <div className="space-y-8">
           {curriculum.map((day) => (
-            <article key={day.day} className="overflow-hidden rounded-[2.8rem] border border-white/10 bg-[#17171B]">
-              <div className="grid gap-0 xl:grid-cols-[0.7fr_1.3fr]">
-                <div className="relative min-h-[360px] border-b border-white/10 p-8 sm:p-10 xl:border-b-0 xl:border-r">
-                  <p className="text-sm font-black tracking-[0.18em] text-amber-300">{day.day}</p>
-                  <h3 className="mt-5 text-4xl font-black tracking-tight">{day.title}</h3>
-                  <p className="mt-2 text-sm font-bold text-white/38">{day.meta}</p>
-                  <p className="mt-6 text-base leading-8 text-white/56">{day.intro}</p>
-                  <div className="mt-7 flex flex-wrap gap-2">
-                    {day.tools.map((tool) => (
-                      <span key={tool} className="rounded-full border border-white/10 bg-white/[0.055] px-3 py-1.5 text-xs font-bold text-white/62">
-                        {tool}
-                      </span>
+            <article key={day.day} className="overflow-hidden rounded-[2.4rem] border border-white/10 bg-[#17171B] shadow-[0_28px_90px_rgba(0,0,0,0.24)]">
+              <div className="grid gap-0 xl:grid-cols-[0.42fr_0.58fr]">
+                <div className="relative border-b border-white/10 bg-[#0D0D10] p-4 sm:p-5 xl:border-b-0 xl:border-r">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_18%,rgba(195,161,120,0.18),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.04),transparent_48%)]" />
+                  <div className="relative overflow-hidden rounded-[1.8rem] border border-white/10 bg-black shadow-[0_26px_70px_rgba(0,0,0,0.38)]">
+                    <img
+                      src={day.image}
+                      alt={`${day.day} ${day.title}`}
+                      loading="lazy"
+                      decoding="async"
+                      className="aspect-[9/16] max-h-[760px] w-full object-cover object-center"
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(13,13,16,0.08),transparent_28%,rgba(13,13,16,0.18))]" />
+                  </div>
+                  <div className="relative mt-4 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.045] px-4 py-3">
+                    <span className="text-xs font-black tracking-[0.16em] text-amber-200">{day.day}</span>
+                    <span className="text-sm font-black text-white/82">{day.title}</span>
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <div className="border-b border-white/10 p-7 sm:p-9">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <p className="rounded-full border border-amber-300/25 bg-amber-300/10 px-4 py-1.5 text-xs font-black tracking-[0.18em] text-amber-200">{day.day}</p>
+                      <p className="text-sm font-bold text-white/38">{day.meta}</p>
+                    </div>
+                    <h3 className="mt-5 text-4xl font-black tracking-tight sm:text-5xl">{day.title}</h3>
+                    <p className="mt-5 max-w-3xl text-base leading-8 text-white/58">{day.intro}</p>
+                    <div className="mt-6 flex flex-wrap gap-2">
+                      {day.tools.map((tool) => (
+                        <span key={tool} className="rounded-full border border-white/10 bg-white/[0.055] px-3 py-1.5 text-xs font-bold text-white/62">
+                          {tool}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="grid flex-1 gap-px bg-white/10 md:grid-cols-2">
+                    {day.projects.map(([Icon, title, type, result, bullets]) => (
+                      <div key={title} className="bg-[#17171B] p-6 sm:p-7">
+                        <Icon size={25} className="text-amber-300" />
+                        <h4 className="mt-5 text-xl font-black">{title}</h4>
+                        <p className="mt-2 text-sm font-bold text-white/34">{type}</p>
+                        <ul className="mt-5 space-y-2 text-sm leading-6 text-white/50">
+                          {bullets.map((item) => (
+                            <li key={item} className="flex gap-2">
+                              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-300" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                        <div className="mt-5 rounded-2xl border border-amber-300/18 bg-amber-300/8 px-4 py-3 text-sm font-bold text-amber-200">
+                          实战：{result}
+                        </div>
+                      </div>
                     ))}
                   </div>
-                  {"image" in day && day.image ? (
-                    <img src={day.image} alt={day.title} className="mt-8 aspect-video w-full rounded-[1.8rem] object-cover object-top" />
-                  ) : null}
-                </div>
-                <div className="grid gap-px bg-white/10 md:grid-cols-2">
-                  {day.projects.map(([Icon, title, type, result, bullets]) => (
-                    <div key={title} className="min-h-[280px] bg-[#17171B] p-7">
-                      <Icon size={26} className="text-amber-300" />
-                      <h4 className="mt-6 text-xl font-black">{title}</h4>
-                      <p className="mt-2 text-sm font-bold text-white/34">{type}</p>
-                      <ul className="mt-5 space-y-2 text-sm leading-6 text-white/50">
-                        {bullets.map((item) => (
-                          <li key={item} className="flex gap-2">
-                            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-300" />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="mt-5 rounded-2xl border border-amber-300/18 bg-amber-300/8 px-4 py-3 text-sm font-bold text-amber-200">
-                        实战：{result}
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </div>
             </article>
@@ -302,7 +322,7 @@ export default function MasterclassPage() {
         <div className="grid gap-5 lg:grid-cols-[0.62fr_1.38fr]">
           <div className="rounded-[2.6rem] bg-[#F0E7DC] p-8 text-black sm:p-10">
             <Users size={30} className="text-amber-700" />
-            <h2 className="mt-8 text-4xl font-black leading-tight">适合这些保险从业者</h2>
+            <h2 className="mt-8 text-4xl font-black leading-tight">适合哪些人</h2>
             <p className="mt-5 text-base leading-8 text-zinc-600">不管你在保险行业哪个岗位，AI都能帮你降本增效。</p>
           </div>
           <div className="grid gap-5 md:grid-cols-2">
@@ -325,7 +345,7 @@ export default function MasterclassPage() {
       <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="mb-10 max-w-3xl">
           <p className="text-sm font-black text-amber-300">学员评价</p>
-          <h2 className="mt-4 text-4xl font-black leading-tight tracking-tight sm:text-5xl">学完以后，开始真正把AI用在展业里</h2>
+          <h2 className="mt-4 text-4xl font-black leading-tight tracking-tight sm:text-5xl">口碑是真正的试金石</h2>
         </div>
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {studentReviews.map(([student, quote]) => (
@@ -345,7 +365,7 @@ export default function MasterclassPage() {
             <div>
               <p className="text-sm font-black text-amber-700">5天 · 21+工具 · 18+实战项目</p>
               <h2 className="mt-5 max-w-4xl text-4xl font-black leading-tight tracking-tight sm:text-6xl">
-                不是学AI，而是用AI。
+                人人都是 AI 保险大师。
               </h2>
               <p className="mt-5 max-w-2xl text-base leading-8 text-zinc-600">5天，从0到1，成为AI时代的保险超级个体。</p>
             </div>
