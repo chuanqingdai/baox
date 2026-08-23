@@ -31,8 +31,8 @@ import {
 import { BaoxPageChrome } from "../BaoxPageChrome";
 
 export const metadata: Metadata = {
-  title: "AI保险大师课",
-  description: "5天21+工具18+实战项目，从图文、视频、知识库、智能体到个人网站，构建完整AI保险工作流。",
+  title: "AI大师课",
+  description: "面向保险人的AI实战课程，5天完成文章/海报、视频/播客、知识库、智能体和个人网站，把AI变成可交付的展业能力。",
 };
 
 const stats = [
@@ -158,10 +158,14 @@ const assessments = [
 ] as const;
 
 const studentReviews = [
-  ["寿险顾问 · 王同学", "以前只是零散试工具，学完后知道每天内容怎么选题、怎么生成、怎么承接客户咨询。"],
-  ["团队主管 · 李同学", "最有价值的是流程，不是单个工具。新人照着课程交付作业，团队素材和话术都能统一起来。"],
-  ["保险经纪人 · 陈同学", "图文、视频、知识库和智能体串起来之后，感觉终于有了一套自己的AI展业系统。"],
-  ["私域运营 · 周同学", "课程不是讲概念，每天都有实战项目，做出来的内容可以直接改成团队日常素材。"],
+  ["寿险顾问 · 王同学", "报名之前最担心学完还是不会落地。5天做完文章、海报、知识库和视频作业后，至少知道每天该产出什么、怎么承接咨询。"],
+  ["团队主管 · 李同学", "我更看重课程里的标准流程。新人按作业模板做，选题、素材、话术能统一，不再完全依赖个人经验。"],
+  ["保险经纪人 · 陈同学", "之前买过不少AI工具课，很多停在演示层面。这门课的价值是把保险场景拆得细，能直接改成自己的展业流程。"],
+  ["私域运营 · 周同学", "课程不承诺一夜爆单，这点反而让我放心。它解决的是稳定产出和客户跟进效率，适合愿意长期经营私域的人。"],
+  ["资深代理人 · 赵同学", "以前活动前做海报和文章，经常临时找人改。现在有模板和提示词，提前一天也能把基础素材准备出来。"],
+  ["区域经理 · 刘同学", "团队培训最怕大家听完很热闹，回去不会用。这里每天都有作业和案例，管理者比较容易检查结果。"],
+  ["家庭保障顾问 · 孙同学", "知识库部分对我帮助最大。客户问到产品差异、理赔材料、保障建议时，我查资料和整理回复的时间明显少了。"],
+  ["内容运营 · 何同学", "如果只是想听概念，可能不用报。真正值得付费的是有人把工具组合、案例拆解和交付标准整理好，少走很多弯路。"],
 ] as const;
 
 export default function MasterclassPage() {
@@ -173,17 +177,17 @@ export default function MasterclassPage() {
           <div className="max-lg:mx-auto max-lg:text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-300/25 bg-amber-300/10 px-5 py-2 text-sm font-bold text-amber-200">
               <Sparkles size={16} />
-              保险人专属 AI 实战课
+              保险人专属 AI 实战营
             </div>
             <h1 className="baox-subhero-title mt-5 font-black tracking-tight sm:mt-6">
-              AI保险
+              AI
               <span className="block text-amber-300">大师课</span>
             </h1>
-            <p className="baox-subhero-copy max-w-2xl text-lg font-semibold leading-8 text-white/72 sm:text-xl max-lg:mx-auto">实战演练，终身陪跑，人人都是AI保险大师。</p>
-            <p className="mt-4 max-w-2xl text-base leading-8 text-white/50 max-lg:mx-auto">5天密集实战，从图文创作到全流程自动化，构建你的完整AI保险工作流。</p>
+            <p className="baox-subhero-copy max-w-2xl text-lg font-semibold leading-8 text-white/72 sm:text-xl max-lg:mx-auto">把AI真正用到内容、获客、服务和成交里。</p>
+            <p className="mt-4 max-w-2xl text-base leading-8 text-white/50 max-lg:mx-auto">5天实战，完成文章/海报、视频/播客、知识库、智能体和个人网站，从工具使用到业务交付一步步做出来。</p>
             <div className="baox-subhero-actions flex flex-col gap-3 sm:flex-row sm:gap-4 max-lg:justify-center">
               <Link href="#curriculum" className="baox-subhero-action inline-flex items-center justify-center gap-3 rounded-full bg-white px-7 text-base font-black text-black transition hover:bg-zinc-100">
-                查看课程大纲
+                查看5天课程
                 <ArrowRight size={18} />
               </Link>
             </div>

@@ -6,7 +6,7 @@ import { LanguageToggle } from "./I18nBridge";
 
 export const metadata: Metadata = {
   title: "保罗万相｜保险人的一站式AI引擎",
-  description: "保罗万相面向保险从业者提供AI保险大师课、展页和AI工具包，帮助保险人用人工智能完成内容、获客、服务和成交。",
+  description: "保罗万相面向保险从业者提供AI大师课、展页和AI工具包，帮助保险人用人工智能完成内容、获客、服务和成交。",
   alternates: {
     canonical: "https://baox.ai/",
   },
@@ -28,7 +28,7 @@ const slides = [
     mobileImage: "/insurance/landing/baox-brand-banner-mobile.webp",
   },
   {
-    title: "AI保险大师课",
+    title: "AI大师课",
     image: "/insurance/landing/baox-home-masterclass-banner.webp",
     mobileImage: "/insurance/landing/baox-home-masterclass-banner-mobile.webp",
     href: "/masterclass",

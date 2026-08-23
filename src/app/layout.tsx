@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     default: "保罗万相｜保险人的人工智能增长系统",
     template: "%s · 保罗万相"
   },
-  description: "保罗万相面向保险从业者提供AI保险大师课、「展页」和AI工具包，帮助保险人用人工智能完成内容、获客、服务和成交。",
+  description: "保罗万相面向保险从业者提供AI大师课、「展页」和AI工具包，帮助保险人用人工智能完成内容、获客、服务和成交。",
   applicationName: "保罗万相",
   authors: [{ name: "保罗万相" }],
   creator: "保罗万相",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     "保罗万相",
     "BAOX.AI",
     "保险AI",
-    "AI保险大师课",
+    "AI大师课",
     "展页",
     "保险工具包",
     "保险获客"
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
         url: "/insurance/landing/baox-home-masterclass-banner.webp",
         width: 1672,
         height: 941,
-        alt: "保罗万相AI保险大师课"
+        alt: "保罗万相AI大师课"
       }
     ]
   },

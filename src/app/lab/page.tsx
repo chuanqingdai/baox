@@ -5,7 +5,7 @@ import { BaoxPageChrome } from "../BaoxPageChrome";
 
 export const metadata: Metadata = {
   title: "学员作品集",
-  description: "保罗万相AI保险大师课学员作品集，展示学员围绕保险产品研究、方案对比和客户沟通完成的实战页面。",
+  description: "保罗万相AI大师课学员作品集，展示学员围绕保险产品研究、方案对比和客户沟通完成的实战页面。",
 };
 
 const labs = [
@@ -41,7 +41,7 @@ export default function LabPage() {
               <span className="block text-amber-300">学员作品</span>
             </h1>
             <p className="baox-subhero-copy mx-auto max-w-3xl text-base leading-8 text-white/62 sm:text-lg">
-              这些不是概念演示，而是AI保险大师课学员完成的真实作业。把增额寿、年金、重疾等复杂产品做成可展示、可转发、可讲解的专业页面。
+              这些不是概念演示，而是AI大师课学员完成的真实作业。把增额寿、年金、重疾等复杂产品做成可展示、可转发、可讲解的专业页面。
             </p>
           </div>
 
@@ -119,11 +119,11 @@ export default function LabPage() {
                 你也可以做出这样的保险展业作品。
               </h2>
               <p className="mt-5 max-w-2xl text-base leading-8 text-zinc-600">
-                AI保险大师课不只教工具，而是带你完成图文、海报、知识库、网页和客户沟通素材，把AI能力变成保险业务里的真实交付。
+                AI大师课不只教工具，而是带你完成图文、海报、知识库、网页和客户沟通素材，把AI能力变成保险业务里的真实交付。
               </p>
             </div>
             <Link href="/masterclass" className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-black px-8 text-base font-black text-white transition hover:bg-zinc-900">
-              了解AI保险大师课
+              了解AI大师课
               <ArrowRight size={18} />
             </Link>
           </div>

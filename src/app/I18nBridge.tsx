@@ -12,11 +12,11 @@ const seoCopy = {
   zh: {
     "/": {
       title: "保罗万相｜保险人的一站式AI引擎",
-      description: "保罗万相面向保险从业者提供AI保险大师课、「展页」和AI工具包，帮助保险人用人工智能完成内容、获客、服务和成交。"
+      description: "保罗万相面向保险从业者提供AI大师课、「展页」和AI工具包，帮助保险人用人工智能完成内容、获客、服务和成交。"
     },
     "/masterclass": {
-      title: "AI保险大师课 · 保罗万相",
-      description: "5天21+工具18+实战项目，从图文、视频、知识库、智能体到个人网站，构建完整AI保险工作流。"
+      title: "AI大师课 · 保罗万相",
+      description: "面向保险人的AI实战课程，5天完成文章/海报、视频/播客、知识库、智能体和个人网站，把AI变成可交付的展业能力。"
     },
     "/poster": {
       title: "「展页」专业保险海报模版 · 保罗万相",
@@ -28,7 +28,7 @@ const seoCopy = {
     },
     "/lab": {
       title: "往期优秀学员作品 · 保罗万相",
-      description: "保罗万相AI保险大师课学员作品集，展示学员围绕保险产品研究、方案对比和客户沟通完成的实战页面。"
+      description: "保罗万相AI大师课学员作品集，展示学员围绕保险产品研究、方案对比和客户沟通完成的实战页面。"
     },
     "/about": {
       title: "关于我们 · 保罗万相",
@@ -84,17 +84,17 @@ const dictionary: Record<string, string> = {
   "上一个 banner": "Previous banner",
   "下一个 banner": "Next banner",
   "切换到保罗万相 BAOX": "Switch to BAOX.AI",
-  "切换到AI保险大师课": "Switch to AI Insurance Masterclass",
+  "切换到AI大师课": "Switch to AI Masterclass",
   "切换到展页": "Switch to ZhanYe",
   "© 2026 保罗万相": "© 2026 BAOX.AI",
   "中": "CN",
 
-  "保险人专属 AI 实战课": "Built for Modern Insurance Advisors",
-  "AI保险": "AI-Powered",
+  "保险人专属 AI 实战营": "Hands-On AI Program for Insurance Advisors",
+  "AI": "AI",
   "大师课": "Masterclass",
-  "实战演练，终身陪跑，人人都是AI保险大师。": "Hands-on training. Long-term support. Built to turn every advisor into an AI-powered performer.",
-  "5天密集实战，从图文创作到全流程自动化，构建你的完整AI保险工作流。": "In five focused days, build a practical AI workflow for content, client conversations, and daily insurance growth.",
-  "查看课程大纲": "See the 5-Day Blueprint",
+  "把AI真正用到内容、获客、服务和成交里。": "Turn AI into real work across content, client acquisition, service, and conversion.",
+  "5天实战，完成文章/海报、视频/播客、知识库、智能体和个人网站，从工具使用到业务交付一步步做出来。": "In five hands-on days, build articles, posters, videos, podcasts, a knowledge base, agents, and a personal website, moving from tool use to business-ready delivery.",
+  "查看5天课程": "See the 5-Day Curriculum",
   "天密集实战": "Days of Intensive Practice",
   "AI工具掌握": "AI Tools Covered",
   "实战项目": "Practice Projects",
@@ -355,14 +355,22 @@ const dictionary: Record<string, string> = {
   "在线测验，检验工具掌握程度": "Online quizzes to validate tool mastery.",
   "心得分享": "Reflection Sharing",
   "学习心得与应用效果分享": "Share learning reflections and application results.",
-  "以前只是零散试工具，学完后知道每天内容怎么选题、怎么生成、怎么承接客户咨询。": "Before this, I only tried tools randomly. Now I know how to choose topics, generate content, and follow up with clients every day.",
+  "报名之前最担心学完还是不会落地。5天做完文章、海报、知识库和视频作业后，至少知道每天该产出什么、怎么承接咨询。": "Before enrolling, my biggest concern was that it still would not translate into daily work. After finishing the article, poster, knowledge base, and video assignments, I know what to produce each day and how to follow up with inquiries.",
   "寿险顾问 · 王同学": "Life Insurance Advisor · Student Wang",
-  "最有价值的是流程，不是单个工具。新人照着课程交付作业，团队素材和话术都能统一起来。": "The most valuable part is the workflow, not any single tool. New team members can follow the assignments and align materials and scripts.",
+  "我更看重课程里的标准流程。新人按作业模板做，选题、素材、话术能统一，不再完全依赖个人经验。": "What I value most is the standard workflow. New team members can follow the assignment templates, so topics, materials, and scripts are more consistent instead of relying only on individual experience.",
   "团队主管 · 李同学": "Team Leader · Student Li",
-  "图文、视频、知识库和智能体串起来之后，感觉终于有了一套自己的AI展业系统。": "Once articles, videos, knowledge bases, and agents were connected, I finally had my own AI selling system.",
+  "之前买过不少AI工具课，很多停在演示层面。这门课的价值是把保险场景拆得细，能直接改成自己的展业流程。": "I had bought several AI tool courses before, and many stayed at the demo level. The value here is that insurance scenarios are broken down in detail and can be adapted into my own sales workflow.",
   "保险经纪人 · 陈同学": "Insurance Broker · Student Chen",
-  "课程不是讲概念，每天都有实战项目，做出来的内容可以直接改成团队日常素材。": "The course is not abstract. Every day has a practical project, and the output can become real team content.",
+  "课程不承诺一夜爆单，这点反而让我放心。它解决的是稳定产出和客户跟进效率，适合愿意长期经营私域的人。": "The course does not promise overnight sales, which actually made me trust it more. It improves consistent output and client follow-up efficiency, especially for people building private-domain relationships long term.",
   "私域运营 · 周同学": "Private-Domain Operator · Student Zhou",
+  "以前活动前做海报和文章，经常临时找人改。现在有模板和提示词，提前一天也能把基础素材准备出来。": "Before client events, I often had to ask someone to revise posters and articles at the last minute. Now with templates and prompts, I can prepare the core materials even one day ahead.",
+  "资深代理人 · 赵同学": "Senior Agent · Student Zhao",
+  "团队培训最怕大家听完很热闹，回去不会用。这里每天都有作业和案例，管理者比较容易检查结果。": "The biggest risk in team training is that everyone gets excited but cannot apply it afterward. Here, daily assignments and cases make it easier for managers to check actual results.",
+  "区域经理 · 刘同学": "Regional Manager · Student Liu",
+  "知识库部分对我帮助最大。客户问到产品差异、理赔材料、保障建议时，我查资料和整理回复的时间明显少了。": "The knowledge base section helped me the most. When clients ask about product differences, claim documents, or coverage advice, I spend much less time searching and organizing replies.",
+  "家庭保障顾问 · 孙同学": "Family Protection Advisor · Student Sun",
+  "如果只是想听概念，可能不用报。真正值得付费的是有人把工具组合、案例拆解和交付标准整理好，少走很多弯路。": "If you only want concepts, you may not need this course. What is worth paying for is having the tool combinations, case breakdowns, and delivery standards organized for you, so you avoid many detours.",
+  "内容运营 · 何同学": "Content Operator · Student He",
 
   "专业保险海报模版": "Premium Insurance Poster Templates",
   "专业海报，": "Ready-to-Post Insurance Campaigns",
@@ -553,7 +561,7 @@ const dictionary: Record<string, string> = {
   "往期优秀学员作品": "Student-Built Insurance Work",
   "往期优秀": "Real Student",
   "学员作品": "Deliverables",
-  "这些不是概念演示，而是AI保险大师课学员完成的真实作业。把增额寿、年金、重疾等复杂产品做成可展示、可转发、可讲解的专业页面。": "Real masterclass assignments, built by students and shaped into client-facing pages for complex insurance topics.",
+  "这些不是概念演示，而是AI大师课学员完成的真实作业。把增额寿、年金、重疾等复杂产品做成可展示、可转发、可讲解的专业页面。": "Real masterclass assignments, built by students and shaped into client-facing pages for complex insurance topics.",
   "实战主题": "Business Themes",
   "一页": "One Page",
   "交付成果": "Deliverable",
@@ -562,8 +570,8 @@ const dictionary: Record<string, string> = {
   "从课程训练，到可展示的展业页面": "From Classroom Practice to Client-Ready Pages",
   "学员围绕增额终身寿、即期年金、养老年金、少儿重疾与快返年金等主题完成交付，把产品研究、方案对比和客户沟通沉淀成能直接展示的页面。": "Students turn product research, plan comparison, and client communication into polished pages that can be shown, shared, and reused.",
   "你也可以做出这样的保险展业作品。": "Build Work Like This, Then Use It With Clients.",
-  "AI保险大师课不只教工具，而是带你完成图文、海报、知识库、网页和客户沟通素材，把AI能力变成保险业务里的真实交付。": "The masterclass turns AI into tangible assets: articles, posters, knowledge bases, websites, and client communication materials.",
-  "了解AI保险大师课": "Join the Masterclass",
+  "AI大师课不只教工具，而是带你完成图文、海报、知识库、网页和客户沟通素材，把AI能力变成保险业务里的真实交付。": "The masterclass turns AI into tangible assets: articles, posters, knowledge bases, websites, and client communication materials.",
+  "了解AI大师课": "Join the Masterclass",
   "增": "WL",
   "年": "AN",
   "养": "RT",
