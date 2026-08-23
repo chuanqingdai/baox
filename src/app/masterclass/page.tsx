@@ -229,7 +229,7 @@ export default function MasterclassPage() {
 
       <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="overflow-hidden rounded-[3rem] border border-white/10 bg-white/[0.045] p-4">
-          <img src="/insurance/landing/baox-masterclass-toolkit-map.png" alt="BAOX.AI 工具包 V7 脑图" className="aspect-[2380/1128] w-full rounded-[2.3rem] object-cover object-top" loading="lazy" decoding="async" />
+          <img src="/insurance/landing/baox-masterclass-magic-classroom.jpg" alt="AI大师课高阶班课堂海报" className="aspect-[2082/1174] w-full rounded-[2.3rem] object-cover object-center" loading="lazy" decoding="async" />
         </div>
       </section>
 
