@@ -180,8 +180,7 @@ export default function MasterclassPage() {
               保险人专属 AI 实战营
             </div>
             <h1 className="baox-subhero-title mt-5 font-black tracking-tight sm:mt-6">
-              AI
-              <span className="block text-amber-300">大师课</span>
+              AI<span className="text-amber-300">大师课</span>
             </h1>
             <p className="baox-subhero-copy max-w-2xl text-lg font-semibold leading-8 text-white/72 sm:text-xl max-lg:mx-auto">把AI真正用到内容、获客、服务和成交里。</p>
             <p className="mt-4 max-w-2xl text-base leading-8 text-white/50 max-lg:mx-auto">5天实战，完成文章/海报、视频/播客、知识库、智能体和个人网站，从工具使用到业务交付一步步做出来。</p>
