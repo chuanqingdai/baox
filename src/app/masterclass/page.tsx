@@ -193,7 +193,7 @@ export default function MasterclassPage() {
           </div>
           <div className="relative lg:self-center">
             <div className="absolute -inset-4 bg-[radial-gradient(circle_at_46%_48%,rgba(195,161,120,0.18),transparent_42%),radial-gradient(circle_at_76%_78%,rgba(104,119,137,0.16),transparent_40%)] blur-3xl sm:-inset-8" />
-            <img src="/insurance/landing/baox-masterclass-magic-academy-banner.jpg" alt="AI大师课魔法学院宣传图" className="baox-subhero-media relative aspect-video rounded-[1.5rem] object-cover shadow-[0_46px_130px_rgba(0,0,0,0.5)] sm:rounded-[2rem]" />
+            <img src="/insurance/landing/baox-masterclass-hero-shield-course.webp" alt="AI大师课宣传图" className="baox-subhero-media relative aspect-video rounded-[1.5rem] object-cover shadow-[0_46px_130px_rgba(0,0,0,0.5)] sm:rounded-[2rem]" />
           </div>
         </div>
       </section>
@@ -229,11 +229,11 @@ export default function MasterclassPage() {
 
       <section className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="overflow-hidden rounded-[3rem] border border-white/10 bg-white/[0.045] p-4">
-          <img src="/insurance/baox-original/images/02.jpg" alt="BAOX.AI 工具包 V7" className="aspect-[16/7] w-full rounded-[2.3rem] object-cover object-top" />
+          <img src="/insurance/landing/baox-masterclass-toolkit-map.png" alt="BAOX.AI 工具包 V7 脑图" className="aspect-[2380/1128] w-full rounded-[2.3rem] object-cover object-top" loading="lazy" decoding="async" />
         </div>
       </section>
 
-      <section id="curriculum" className="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
+      <section id="curriculum" className="scroll-mt-24 mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8">
         <div className="mb-12 grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
           <div>
             <p className="text-sm font-black text-amber-300">五天课程</p>

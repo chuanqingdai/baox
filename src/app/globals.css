@@ -277,6 +277,30 @@ img {
 
 .baox-subhero-action {
   min-height: 3.25rem;
+  box-shadow: 0 0 0 rgba(195, 161, 120, 0);
+  transform: translateY(0) scale(1);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    filter 180ms ease,
+    background-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.baox-subhero-action:hover {
+  transform: translateY(-1px);
+}
+
+.baox-subhero-action:active,
+.baox-subhero-action[data-baox-hash-active="true"] {
+  box-shadow: 0 0 0 6px rgba(195, 161, 120, 0.16), 0 18px 48px rgba(195, 161, 120, 0.2);
+  filter: brightness(0.96);
+  transform: translateY(1px) scale(0.985);
+}
+
+.baox-subhero-action:focus-visible {
+  outline: 3px solid rgba(195, 161, 120, 0.64);
+  outline-offset: 4px;
 }
 
 .baox-subhero-media {

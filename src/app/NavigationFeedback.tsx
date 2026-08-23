@@ -9,6 +9,19 @@ const prefetchRoutes = ["/", "/masterclass", "/poster", "/tool", "/lab", "/about
 const isModifiedClick = (event: MouseEvent) =>
   event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
 
+const scrollToHashTarget = (hash: string) => {
+  const id = decodeURIComponent(hash.replace(/^#/, ""));
+  const element = document.getElementById(id);
+  if (!element) return false;
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  element.scrollIntoView({
+    behavior: prefersReducedMotion ? "auto" : "smooth",
+    block: "start",
+  });
+  return true;
+};
+
 export function NavigationFeedback() {
   const pathname = usePathname();
   const router = useRouter();
@@ -48,7 +61,20 @@ export function NavigationFeedback() {
 
       const destination = new URL(anchor.href, window.location.href);
       if (destination.origin !== window.location.origin) return;
-      if (destination.pathname === window.location.pathname && destination.hash) return;
+      if (destination.pathname === window.location.pathname && destination.hash) {
+        event.preventDefault();
+        anchor.dataset.baoxHashActive = "true";
+        window.setTimeout(() => {
+          delete anchor.dataset.baoxHashActive;
+        }, 700);
+        window.history.pushState(null, "", `${destination.pathname}${destination.search}${destination.hash}`);
+        window.requestAnimationFrame(() => {
+          const didScroll = scrollToHashTarget(destination.hash);
+          if (!didScroll) return;
+          window.setTimeout(() => scrollToHashTarget(destination.hash), 120);
+        });
+        return;
+      }
       if (destination.pathname === window.location.pathname && destination.search === window.location.search) return;
 
       event.preventDefault();
