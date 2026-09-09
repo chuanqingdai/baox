@@ -1,0 +1,13 @@
+/* Fluid poster wall: a full-width collection that wraps without cropping. */
+section.hero{height:auto;min-height:0;max-height:none;padding-bottom:55px}
+.hero .poster-stage{position:relative;top:auto;left:auto;width:96%;height:auto;margin:90px auto 0;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));align-items:center;gap:clamp(8px,1vw,22px);transform:translate(var(--mx,0px),var(--my,0px));transform-origin:center}
+.poster-stage .floating{position:relative;top:auto;left:auto;width:100%;border:2px solid #c5b79770;box-shadow:0 14px 28px #0009;transform:rotate(var(--tilt));animation:wall-float 8s ease-in-out infinite;animation-delay:var(--delay);z-index:1}
+.poster-stage .floating img{width:100%;height:auto}
+@keyframes wall-float{0%,100%{transform:translateY(0) rotate(var(--tilt))}50%{transform:translateY(-9px) rotate(calc(var(--tilt) * -.35))}}
+.hero .hero-cta{position:relative;bottom:auto;left:auto;right:auto;margin-top:75px}
+.paused .hero .poster-stage{transform:none}
+@media(min-width:1600px){.hero .poster-stage{margin-top:110px}.hero .hero-cta{margin-top:95px}}
+@media(max-width:1200px){.hero .poster-stage{grid-template-columns:repeat(6,minmax(0,1fr));width:92%;gap:28px 20px;margin-top:65px}.hero .hero-cta{margin-top:60px}}
+@media(max-width:700px){.hero .poster-stage{grid-template-columns:repeat(4,minmax(0,1fr));width:90%;gap:23px 15px;margin-top:50px;transform:none}.hero .hero-cta{margin-top:45px}section.hero{padding-bottom:40px}.poster-stage .floating{border-width:1px}}
+@media(max-width:430px){.hero .poster-stage{grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 14px}}
+@media(prefers-reduced-motion:reduce){.poster-stage .floating{animation:none}}

@@ -1,0 +1,135 @@
+[
+  {
+    "name": "WorkBuddy",
+    "path": "assets/brands/workbuddy.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/workbuddy.jpg"
+  },
+  {
+    "name": "豆包",
+    "path": "assets/brands/doubao.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/doubao.jpg"
+  },
+  {
+    "name": "DeepSeek",
+    "path": "assets/brands/ds.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/ds.jpg"
+  },
+  {
+    "name": "IMA",
+    "path": "assets/brands/ima.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/ima.jpg"
+  },
+  {
+    "name": "Kimi",
+    "path": "assets/brands/kimi.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/kimi.jpg"
+  },
+  {
+    "name": "飞书",
+    "path": "assets/brands/feishu.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/feishu.jpg"
+  },
+  {
+    "name": "即梦",
+    "path": "assets/brands/jimeng.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/jimeng.jpg"
+  },
+  {
+    "name": "可灵",
+    "path": "assets/brands/keling.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/keling.jpg"
+  },
+  {
+    "name": "扣子",
+    "path": "assets/brands/coze.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/coze.jpg"
+  },
+  {
+    "name": "元宝",
+    "path": "assets/brands/yuanbao.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/yuanbao.jpg"
+  },
+  {
+    "name": "千问",
+    "path": "assets/brands/qianwen.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/qianwen.jpg"
+  },
+  {
+    "name": "文心",
+    "path": "assets/brands/wenx.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/wenx.jpg"
+  },
+  {
+    "name": "Gemini3",
+    "path": "assets/brands/gemini.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/gemini.jpg"
+  },
+  {
+    "name": "Midjourney",
+    "path": "assets/brands/mj.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/mj.jpg"
+  },
+  {
+    "name": "ChatGPT",
+    "path": "assets/brands/chatgpt.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/chatgpt.jpg"
+  },
+  {
+    "name": "NotebookLM",
+    "path": "assets/brands/notebooklm.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/notebooklm.jpg"
+  },
+  {
+    "name": "Hera",
+    "path": "assets/brands/hera.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/hera.jpg"
+  },
+  {
+    "name": "AnyGen",
+    "path": "assets/brands/anygen.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/anygen.jpg"
+  },
+  {
+    "name": "Google AI Studio",
+    "path": "assets/brands/aistudio.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/aistudio.jpg"
+  },
+  {
+    "name": "Runway",
+    "path": "assets/brands/runway.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/runway.jpg"
+  },
+  {
+    "name": "Grok",
+    "path": "assets/brands/grok.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/grok.jpg"
+  },
+  {
+    "name": "Suno",
+    "path": "assets/brands/suno.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/suno.jpg"
+  },
+  {
+    "name": "HeyGen",
+    "path": "assets/brands/heygen.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/heygen.jpg"
+  },
+  {
+    "name": "Claude",
+    "path": "assets/brands/claude.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/claude.jpg"
+  },
+  {
+    "name": "Lovart",
+    "path": "assets/brands/lovart.webp",
+    "source": "https://baox.ai/insurance/baox-original/images/lovart.jpg"
+  },
+  {
+    "name": "GitHub",
+    "source": "https://github.githubassets.com/favicons/favicon.svg"
+  },
+  {
+    "name": "Codex",
+    "source": "https://raw.githubusercontent.com/openai/codex/main/.github/codex-cli-splash.png"
+  }
+]

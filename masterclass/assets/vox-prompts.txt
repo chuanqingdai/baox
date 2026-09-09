@@ -1,0 +1,8 @@
+Create one NEW high-resolution ultra-wide landscape website course banner, aspect ratio 2.5:1, ideally 2560x1024. Reference the user supplied MG-VOXSTAGE images: richly tactile 3D miniature cardboard diorama, aged cream newsprint, black halftone cutout people, precise mechanical gears, worn brick-red enamel signs, brass details, dramatic warm studio light against charcoal. Recompose horizontally, never crop or stretch the portrait reference. Crisp detailed main subjects across the frame, restrained depth of field, no blurred foreground covering content. All key objects fully inside canvas with breathing room. No website UI, no extra prose, no logos. 
+
+Generation mode: built-in imagegen. Reference images are style/composition references, not screenshots to enlarge.
+DAY 1: AI editorial printing workshop, central three-cylinder printing press, posters and charts on conveyors, two halftone paper professionals, red DAY 1 sign.
+DAY 2: panoramic video and podcast studio, microphone and console, smartphone presenter, cinema camera and reel-to-reel audio, red DAY 2 sign.
+DAY 3: archive library, question and retrieved dossier, two advisers, routing lines and checkmark, red DAY 3 sign.
+DAY 4: robotic arms processing customer documents, interlocking gears and checked reports, two professionals shaking hands, red DAY 4 sign.
+DAY 5: broad physical browser-window facade under construction, portrait, charts, server cabinets and business card, red DAY 5 sign.

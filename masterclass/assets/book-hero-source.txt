@@ -1,0 +1,7 @@
+Built-in image_gen asset generation.
+
+Use case: precise-object-edit. Asset type: isolated photorealistic 3D website hero asset. From the supplied approved website mockup, extract and faithfully reconstruct ONLY the large central open black book with many dramatically fanning upright pages and finely gilded gold page edges. Preserve the luxurious realistic black paper, brass-gold technical diagrams, BAOX.AI gold lettering printed naturally on the book page, the central symmetrical fan silhouette and 3/4 frontal viewpoint. Output landscape 3:2, high quality. The full book occupies about 85% of width and 90% of height, complete uncropped object, surrounding pure solid black #000000 background seamlessly black to every edge. No plinth needed, subtle black grounding only. Important REMOVE all flowing golden silk filaments and particle trails crossing in front of the book: clean unobstructed book only. REMOVE all website elements: no large AI大师课 heading, no navbar, no slogan, no buttons, no stats, no image strips, no other external text. Keep only small naturally printed gold BAOX.AI lettering and fine diagrams ON the pages. No added objects. This is one isolated product asset, not a website screenshot.
+
+Original image: /Users/jaydenkong/.codex/generated_images/01a079e2-0830-7b81-a531-1fa0af063ece/exec-bf269194-8345-45e7-a5ba-965de7c9e409.png
+Optimized output: assets/book-hero.webp (1536x1024, quality 88)
+

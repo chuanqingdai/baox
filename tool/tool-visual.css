@@ -1,0 +1,9 @@
+.tool-hero{padding-bottom:30px}.tool-hero .hero-heading{position:relative;z-index:2}.engine-stage{width:min(1100px,90vw);margin:-15px auto 0;position:relative;z-index:3;transform:perspective(1200px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .8s ease-out;mix-blend-mode:screen}.engine-float{animation:engine-breathe 8s ease-in-out infinite}.engine-float img{width:100%;height:auto}.tool-hero .orbit{top:38%;height:48%}@keyframes engine-breathe{50%{transform:translateY(-12px)}}.paused .engine-float{animation-play-state:paused}
+.tool-card{overflow:hidden;padding:0 28px 26px}.tool-art{aspect-ratio:2/1;margin:0 -28px 24px;background:#090909;border-bottom:1px solid #ffffff15;overflow:hidden}.tool-art img{width:100%;height:100%;object-fit:contain;transition:transform .6s}.tool-card:hover .tool-art img{transform:scale(1.025)}.tool-card h3{margin-top:16px}.github-art{display:flex;justify-content:center;align-items:center;gap:18px;background:#f4f2ee}.github-art img{width:56px;height:56px}.github-art>span{font:700 36px Arial,sans-serif;color:#171717}
+@media(max-width:700px){.engine-stage{width:110%;max-width:none;margin:12px -5% 0}.tool-hero{padding-bottom:20px}.tool-card{padding:0 16px 20px}.tool-art{margin:0 -16px 18px}.github-art{gap:8px}.github-art img{width:30px;height:30px}.github-art>span{font-size:21px}}
+@media(prefers-reduced-motion:reduce){.engine-float{animation:none}.engine-stage{transform:none;transition:none}}
+/* Match the masterclass book's restrained visual footprint. */
+.engine-stage{width:64vw;max-width:1000px;margin:0 auto}
+.openai-art{display:flex;align-items:center;justify-content:center;background:#efedf9}
+.openai-art img{width:auto;height:100%;max-width:100%;object-fit:contain}
+@media(max-width:700px){.engine-stage{width:88%;max-width:none;margin:18px auto 0}}

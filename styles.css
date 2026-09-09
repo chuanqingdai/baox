@@ -1,0 +1,104 @@
+/* Local, licensed fallback: only the Chinese display glyphs used on this page. */
+@font-face{font-family:"BAOX Song";src:url("assets/fonts/noto-serif-sc-400.ttf") format("truetype");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"BAOX Song";src:url("assets/fonts/noto-serif-sc-500.ttf") format("truetype");font-style:normal;font-weight:500;font-display:swap}
+@font-face{font-family:"BAOX Song";src:url("assets/fonts/noto-serif-sc-700.ttf") format("truetype");font-style:normal;font-weight:700;font-display:swap}
+@font-face{font-family:"BAOX Song Heavy";src:url("assets/fonts/noto-serif-sc-900.ttf") format("truetype");font-style:normal;font-weight:900;font-display:swap}
+:root{color-scheme:dark;--ink:#000;--brand:#f0e4cc;--slogan:#d8c7a9;--english:#bcac91;--gold:#d6b365;--quiet:#737373;--song:"Songti SC","STSong","BAOX Song","Noto Serif CJK SC",SimSun,serif;--roman:Baskerville,"Times New Roman",serif;--sans:Arial,"PingFang SC","Microsoft YaHei",sans-serif;--round:ui-rounded,"SF Pro Rounded","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ink);color:var(--brand)}
+body{-webkit-font-smoothing:antialiased;font-family:var(--sans)}
+button,a{-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible{outline:1px solid var(--gold);outline-offset:6px;border-radius:2px}
+[hidden]{display:none!important}
+.home{position:relative;isolation:isolate;min-height:560px;height:100svh;overflow:hidden;background:#000}
+.visual{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.scene,.flow{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:center}
+.flow{opacity:0;transition:opacity 900ms ease}
+.visual[data-renderer="webgl"] .flow{opacity:1}
+/* The original image remains underneath as the first paint and GPU fallback. */
+.masthead{position:absolute;left:2.5%;right:3.25%;top:max(2.8%,env(safe-area-inset-top));display:flex;align-items:flex-start;justify-content:space-between;z-index:2}
+.brand{display:block;flex:none;line-height:0}
+.logo{display:block;width:clamp(124px,9.25vw,172px);height:auto;object-fit:contain}
+.nav{display:flex;gap:clamp(24px,4.2vw,72px);margin-top:.14vw;font:400 clamp(13px,1.04vw,17px)/1.5 var(--sans)}
+.nav a{position:relative;white-space:nowrap;padding:0 0 clamp(10px,1.1vw,17px);color:#eee;transition:color 220ms ease}
+.nav a::after{content:"";position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 260ms ease}
+.nav a[aria-current],.nav a:hover{color:var(--gold)}
+.nav a[aria-current]::after,.nav a:hover::after{transform:scaleX(1)}
+.copy{position:absolute;left:5.75%;top:31%;width:42%;text-align:center;}
+.title-lockup{width:max-content;max-width:100%;margin-inline:auto}
+.copy h1{display:flex;align-items:center;justify-content:center;gap:.12em;margin:0;color:var(--brand);font-family:"BAOX Song Heavy",var(--song);font-weight:900;font-size:clamp(42px,4.1667vw,76px);line-height:1.22;white-space:nowrap}
+.brand-word{display:block;letter-spacing:.16em;text-indent:.16em}
+.title-bracket{font-family:var(--song);font-size:.48em;font-weight:400;line-height:1;color:#bc995c;opacity:.8}
+.title-ornament{height:1px;width:66%;max-width:230px;margin:22px auto;background:#bc995c;opacity:.6}
+.slogan{margin:0;color:var(--slogan);font-family:var(--song);font-weight:400;font-size:clamp(23px,2.0833vw,38px);line-height:1.5;letter-spacing:.065vw;white-space:nowrap}
+.latin{font-family:var(--song)}
+.english{font-family:var(--roman);font-size:clamp(16px,1.3672vw,25px);font-weight:400;line-height:1.5;letter-spacing:.025vw;color:var(--english);margin:1.08vw 0 0;white-space:nowrap}
+.footer{position:absolute;inset:auto 0 max(2.45%,env(safe-area-inset-bottom))}
+.copyright{margin:0;text-align:center;font-family:var(--round);font-size:clamp(10px,.78125vw,12px);font-weight:300;line-height:1.5;letter-spacing:.015vw;color:var(--quiet)}
+.motion-toggle{position:absolute;right:2.5%;bottom:-8px;width:36px;height:36px;border:0;background:transparent;color:#737373;display:grid;place-items:center;transition:color 180ms}
+.motion-toggle:hover{color:var(--gold)}
+.motion-symbol{display:block;width:9px;height:10px;border-left:2px solid currentColor;border-right:2px solid currentColor}
+.motion-toggle[aria-pressed="true"] .motion-symbol{width:0;height:0;border:5px solid transparent;border-right:0;border-left:8px solid currentColor}
+.menu-toggle{display:none}
+.mobile-menu{border:0;padding:0;margin:0;max-width:none;max-height:none;width:100%;height:100%;background:rgba(5,5,5,.97);color:var(--brand);overflow-y:auto}
+.mobile-menu::backdrop{background:#000}
+.menu-header{display:flex;align-items:center;justify-content:space-between;padding:28px 24px}
+.menu-close{border:0;background:transparent;display:flex;align-items:center;gap:15px;font-size:12px;min-height:44px}
+.menu-close span{font-size:28px;font-weight:200}
+.mobile-menu nav{display:flex;flex-direction:column;padding:16px 28px 48px;max-width:600px;margin:auto}
+.mobile-menu nav a{padding:19px 0;display:flex;align-items:baseline;justify-content:space-between;gap:24px;border-bottom:1px solid #ffffff12}
+.mobile-menu nav a span{font-family:var(--song);font-size:25px}
+.mobile-menu nav a small{font-size:10px;letter-spacing:.1em;color:#8d877b}
+.mobile-menu nav a[aria-current]{color:var(--gold)}
+.menu-copyright{text-align:center;color:var(--quiet);font:300 10px/1.6 var(--round);padding:0 20px max(26px,env(safe-area-inset-bottom))}
+body.menu-open{overflow:hidden}
+/* Portrait phones use the same artwork, recomposed beneath the copy. */
+@media(max-width:760px){
+  .home{min-height:560px}
+  .visual{inset:auto calc(24px - min(15.725vw,9.52svh)) 6% auto;width:min(185vw,112svh);height:auto;aspect-ratio:3/2}
+  .masthead{left:24px;right:20px;top:max(24px,env(safe-area-inset-top));align-items:center}
+  .logo{width:128px}
+  .nav{display:none}
+  .menu-toggle{display:flex;align-items:center;justify-content:center;gap:13px;min-width:66px;min-height:44px;padding:0;border:0;background:transparent;font-size:12px;color:#dedbd5;letter-spacing:1px}
+  .menu-symbol{width:19px;height:8px;border-top:1px solid currentColor;border-bottom:1px solid currentColor}
+  .copy{top:clamp(116px,19svh,176px);left:8%;width:84%}
+  .copy h1{font-size:clamp(38px,10.5vw,52px);line-height:1.25}
+  .title-ornament{margin:17px auto 18px}
+  .slogan{font-size:clamp(20px,5.6vw,28px);letter-spacing:.015em;line-height:1.5;margin:0}
+  .english{font-size:clamp(14px,3.7vw,18px);letter-spacing:0;margin:12px 0 0}
+  .footer{bottom:max(24px,env(safe-area-inset-bottom))}
+  .copyright{font-size:10px;letter-spacing:.02em}
+  .motion-toggle{right:16px;bottom:-10px}
+}
+/* Tablets in portrait need a lower scene, without cropping the gold wordmark. */
+@media(min-width:761px) and (max-aspect-ratio:1/1){
+  .visual{inset:auto auto 0 -30%;width:130%;height:auto;aspect-ratio:3/2}
+  .copy{top:23%;width:70%}
+  .copy h1{font-size:56px}
+  .slogan{font-size:28px;margin-top:0}
+  .english{font-size:19px;margin-top:14px}
+  .nav{gap:24px;font-size:13px}
+}
+@media(max-width:760px) and (min-aspect-ratio:1/1){
+  .home{min-height:360px}
+  .visual{inset:0;width:100%;height:100%;aspect-ratio:auto}
+  .copy{top:32%;left:5.75%;width:45%}
+  .copy h1{font-size:32px}
+  .slogan{font-size:18px;margin-top:0}
+  .english{font-size:13px;margin-top:8px}
+  .footer{bottom:18px}
+}
+@media(max-height:500px) and (orientation:landscape){
+  .home{min-height:360px}
+  .copy{top:32%}
+  .copy h1{font-size:32px}
+  .title-ornament{margin:13px auto}
+  .slogan{font-size:18px;margin-top:0}
+  .english{font-size:13px;margin-top:8px}
+  .footer{bottom:18px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
