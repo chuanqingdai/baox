@@ -3,7 +3,7 @@ section.unified-hero{height:100svh;min-height:0;max-height:none;padding:0;positi
 .unified-hero .hero-heading{position:absolute;top:16%;left:5%;right:5%;padding:0;text-align:center;z-index:2}
 .unified-hero .hero-heading .eyebrow{font-size:clamp(9px,1.4svh,13px);letter-spacing:.5em;margin:0 0 2svh}
 .unified-hero .hero-heading h1{font-size:min(10vw,14svh,145px);line-height:1.08;letter-spacing:.025em;padding:0;margin:0 auto;font-weight:900;background:linear-gradient(170deg,#efe3c7 12%,#d0b47e 70%,#ac8545);background-clip:text;-webkit-background-clip:text;color:transparent}
-.hero-art-frame{position:absolute;top:37%;left:50%;transform:translateX(-50%);width:min(88vw,100svh,1050px);height:45%;z-index:3;pointer-events:none}
+.hero-art-frame{position:absolute;top:39%;left:50%;transform:translateX(-50%);width:min(88vw,100svh,1050px);height:45%;z-index:3;pointer-events:none}
 .hero-art-frame .book-stage,.hero-art-frame .engine-stage{position:absolute;inset:0;width:100%;max-width:none;height:100%;margin:0;transform:none;left:0;top:0}
 .hero-art-frame .book-stage img,.hero-art-frame .engine-float,.hero-art-frame .engine-float img{width:100%;height:100%;object-fit:contain}
 .hero-art-frame .poster-stage{position:absolute;top:50%;left:50%;width:95%;height:auto;aspect-ratio:2.5;transform:translate(-50%,-50%);margin:0}
@@ -16,5 +16,5 @@ section.unified-hero{height:100svh;min-height:0;max-height:none;padding:0;positi
 .unified-hero .hero-cta,.unified-hero .hero-foot{position:absolute;bottom:5%;left:5%;right:5%;margin:0;display:flex;justify-content:center;z-index:4}
 .unified-hero .hero-cta .experience{min-height:44px;padding-top:10px;padding-bottom:10px;font-size:14px}
 .unified-hero #silk{top:32%;height:53%}
-@media(max-width:700px){.unified-hero .hero-heading{top:19%}.unified-hero .hero-heading h1{font-size:min(16vw,11svh)}.hero-art-frame{width:94vw;top:37%;height:43%}.hero-art-frame .floating{border-width:1px}.unified-hero .hero-cta,.unified-hero .hero-foot{bottom:7%}}
+@media(max-width:700px){.unified-hero .hero-heading{top:19%}.unified-hero .hero-heading h1{font-size:min(16vw,11svh)}.hero-art-frame{width:94vw;top:40%;height:43%}.hero-art-frame .floating{border-width:1px}.unified-hero .hero-cta,.unified-hero .hero-foot{bottom:7%}}
 @media(max-height:500px) and (min-width:701px){.unified-hero .hero-heading{top:20%}.hero-art-frame{top:42%;height:38%}.unified-hero .hero-heading h1{font-size:12svh}}
