@@ -1,0 +1,365 @@
+<body>
+
+<div class="app-shell">
+
+  <!-- ========== 侧栏 · 96px 图标窄栏（与 CRM / GEO 同一骨架） ========== -->
+  <aside class="sidebar" aria-label="主导航">
+    <div class="brand brand--mobile" aria-hidden="true"></div>
+
+    <nav>
+      <a class="nav-item active" href="#overview" title="活动量总览 · 核心指标与趋势" aria-label="活动量总览"><i class="fa-solid fa-gauge-high"></i><span>总览</span></a>
+      <a class="nav-item" href="#today" title="今日打卡 · 逐项记录并即时计分" aria-label="今日打卡"><i class="fa-solid fa-circle-check"></i><span>打卡</span><span class="nav-badge" id="nbToday">—</span></a>
+      <a class="nav-item" href="#trend" title="趋势热力 · 30 天日得分分布" aria-label="趋势热力"><i class="fa-solid fa-chart-line"></i><span>趋势</span></a>
+      <a class="nav-item" href="#mix" title="活动量构成 · 各计分项贡献" aria-label="活动量构成"><i class="fa-solid fa-chart-simple"></i><span>构成</span></a>
+      <a class="nav-item" href="#funnel" title="成功方程式 · 三段转化与目标比率" aria-label="成功方程式"><i class="fa-solid fa-filter"></i><span>方程式</span></a>
+      <a class="nav-item" href="#ledger" title="打卡明细 · 30 天逐日流水" aria-label="打卡明细"><i class="fa-solid fa-table-list"></i><span>明细</span></a>
+    </nav>
+
+    <div class="sidebar__foot">
+      <span>BAOX ACTIVITY</span>
+      <strong id="footVer">V1.2</strong>
+    </div>
+  </aside>
+
+  <!-- ========== 主区 ========== -->
+  <main class="main">
+
+    <header class="topbar">
+      <div class="brand">
+        <!-- 头像可换：点击（或聚焦后回车）打开文件选择；有自定义头像时右上角浮出 ✕ 可还原。
+             容器取 tabindex 而非 role="button"，因为里面还有一个真正的 <button>（还原），
+             把 button 嵌进 role=button 会让读屏器把它读成一个不可达的嵌套控件。 -->
+        <div class="brand__mark" id="brandMark" tabindex="0"
+             title="点击更换头像" aria-label="更换头像">
+          <img id="brandAvatar" src="assets/avatar.png" alt="用户头像">
+          <span aria-hidden="true"></span>
+          <i class="fa-solid fa-camera brand__hint" aria-hidden="true"></i>
+          <button class="brand__mark__reset" id="brandReset" type="button"
+                  title="恢复默认头像" aria-label="恢复默认头像"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        </div>
+        <div class="brand__copy">
+          <div class="brand__overline"><span>活动量 · 计分与达标中枢</span><i>BAOX ACTIVITY TRACKER</i><em class="ver-badge" id="verBadge">v1.2</em></div>
+          <!-- 品牌字样可就地改：点击进入编辑，打字即时生效（contenteditable 天然实时），
+               停顿 420ms 落盘；回车 / 失焦提交，Esc 取消；留空即回默认「公子的」。 -->
+          <h1><span id="brandName" tabindex="0" title="点击可修改品牌字样；留空回复默认">公子的</span><strong>活动量面板</strong></h1>
+        </div>
+      </div>
+
+      <div class="topbar__actions">
+        <div class="tb-date">
+          <span class="d1" id="todayStr">—</span>
+          <span class="d2" id="tbSub">样本期 —</span>
+        </div>
+        <div class="tb-search" id="tbSearch">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="searchInput" placeholder="搜索日期 / 星期 / 周次…" autocomplete="off" spellcheck="false"
+                 aria-label="搜索打卡日期" role="combobox" aria-expanded="false" aria-controls="searchPop">
+          <button class="se-clear" id="searchClear" type="button" title="清空" aria-label="清空搜索"><i class="fa-solid fa-xmark"></i></button>
+          <div class="search-pop" id="searchPop" role="listbox" aria-label="搜索结果"></div>
+        </div>
+        <div class="theme-sw" id="themeSw" role="group" aria-label="切换皮肤">
+          <button class="ts-btn on" data-theme-set="dark" onclick="setTheme('dark')" title="暗夜黑金"><i class="fa-solid fa-moon"></i><span>暗夜</span></button>
+          <button class="ts-btn" data-theme-set="light" onclick="setTheme('light')" title="米色深金（浅色）"><i class="fa-solid fa-sun"></i><span>米金</span></button>
+        </div>
+        <button class="tb-btn ghost" id="btnSettings" onclick="openSettings()" title="全量编辑 30 天活动量数据、各周目标与 6 项业务指标"><i class="fa-solid fa-sliders"></i> 设置数据</button>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- ==================== ① 活动量总览 ==================== -->
+      <section class="section fi" id="overview">
+        <div class="sec-head">
+          <h2><i class="fa-solid fa-gauge-high"></i>活动量总览</h2>
+          <span class="sec-sub" id="ovSub">统计窗口 · 读取中…</span>
+        </div>
+
+        <!-- 8 卡：1 张活动量（自动累计）+ 6 张业务指标（手动维护）+ 1 张派生率（自动）
+             v1.1 的 8 卡里有 4 张是「回溯样本」的统计量（打卡天数 / 单日峰值 /
+             零打卡天数 / 件均），样本清零后它们恒为 0，全部换掉。
+             「季度目标完成率」与「累计活动量总分」不可手改，其余 6 项在
+             「设置数据」抽屉里改 —— 所以只有这两张卡不带「手动维护」的语义。 -->
+        <div class="grid g4" style="margin-bottom:16px;">
+          <div class="stat">
+            <div class="stat-top"><span class="stat-label">累计活动量总分</span><span class="stat-ico"><i class="fa-solid fa-star"></i></span></div>
+            <div class="stat-num gold-text" id="kScore">—</div>
+            <div class="stat-foot"><span id="kScoreFoot">连续 <b>—</b> 天 · 最长 <b>—</b> 天</span></div>
+          </div>
+          <div class="stat">
+            <div class="stat-top"><span class="stat-label">本月业绩</span><span class="stat-ico"><i class="fa-solid fa-calendar-day"></i></span></div>
+            <div class="stat-num gold-text" id="kMonthPerf">—</div>
+            <div class="stat-foot"><span id="kMonthPerfFoot">占本季度业绩 <b>—</b></span></div>
+          </div>
+          <div class="stat">
+            <div class="stat-top"><span class="stat-label">本季度业绩</span><span class="stat-ico"><i class="fa-solid fa-chart-simple"></i></span></div>
+            <div class="stat-num gold-text" id="kQuarterPerf">—</div>
+            <div class="stat-foot"><span id="kQuarterPerfFoot">占本年度业绩 <b>—</b></span></div>
+          </div>
+          <div class="stat">
+            <div class="stat-top"><span class="stat-label">本年度业绩</span><span class="stat-ico"><i class="fa-solid fa-chart-line"></i></span></div>
+            <div class="stat-num gold-text" id="kYearPerf">—</div>
+            <div class="stat-foot"><span id="kYearPerfFoot">年度累计</span></div>
+          </div>
+        </div>
+
+        <div class="grid g4">
+          <div class="stat">
+            <div class="stat-top"><span class="stat-label">季度目标业绩</span><span class="stat-ico"><i class="fa-solid fa-bullseye"></i></span></div>
+            <div class="stat-num gold-text" id="kQuarterGoal">—</div>
+            <div class="stat-foot"><span id="kQuarterGoalFoot">完成率的分母</span></div>
+          </div>
+          <div class="stat">
+            <div class="stat-top"><span class="stat-label">季度目标完成率</span><span class="stat-ico"><i class="fa-solid fa-percent"></i></span></div>
+            <div class="stat-num gold-text" id="kQuarterRate">—</div>
+            <div class="stat-foot"><span id="kQuarterRateFoot">本季度业绩 ÷ 季度目标业绩</span></div>
+          </div>
+          <div class="stat">
+            <div class="stat-top"><span class="stat-label">季度成交单数</span><span class="stat-ico"><i class="fa-solid fa-file-signature"></i></span></div>
+            <div class="stat-num gold-text" id="kQuarterDeals">—</div>
+            <div class="stat-foot"><span id="kQuarterDealsFoot">件均 <b>—</b></span></div>
+          </div>
+          <div class="stat">
+            <div class="stat-top"><span class="stat-label">季度成交保费</span><span class="stat-ico"><i class="fa-solid fa-coins"></i></span></div>
+            <div class="stat-num gold-text" id="kQuarterPremium">—</div>
+            <div class="stat-foot"><span id="kQuarterPremiumFoot">本季度累计</span></div>
+          </div>
+        </div>
+
+        <!-- g-fill：图表要长满面板（铁律 16）。同行伙伴是列表，高度由它决定 -->
+        <div class="grid g2-21 g-fill" style="margin-top:16px;">
+          <div class="panel">
+            <div class="panel-head">
+              <span class="pt"><i class="fa-solid fa-chart-column"></i>逐日活动量得分</span>
+              <span class="pl">柱 = 当日得分 · 线 = 7 日移动均线</span>
+            </div>
+            <div class="chart-box"><canvas id="chDaily"></canvas></div>
+          </div>
+          <!-- g-self-top：列表按自身内容收住（见 panel.css ⓪b-2）。
+               不加它的话，洞察空态会被 Grid 拉成与左图等高，底部空 173px。 -->
+          <div class="panel g-self-top">
+            <div class="panel-head"><span class="pt"><i class="fa-solid fa-lightbulb"></i>关键洞察</span><span class="pl">自动派生</span></div>
+            <div id="insights"><div class="empty"><i class="fa-solid fa-hourglass-half"></i>正在读取数据…</div></div>
+          </div>
+        </div>
+
+        <!-- 通栏（原为 1fr : 1.55fr 双栏，右半是「源表口径校验」）。
+             该模块按公子指令整体移除，并排的伙伴随之消失 ——
+             这里不是「补留白」，而是并排本身没了，留白从结构上不存在。 -->
+        <div class="panel" style="margin-top:16px;">
+          <div class="panel-head"><span class="pt"><i class="fa-solid fa-flag-checkered"></i>周保费 vs 周目标</span><span class="pl">各周目标可在「设置数据」里逐周调整</span></div>
+          <div class="chart-box sm"><canvas id="chWeekGoal"></canvas></div>
+        </div>
+      </section>
+
+      <!-- ==================== ② 今日打卡 ==================== -->
+      <section class="section fi" id="today">
+        <div class="sec-head">
+          <h2><i class="fa-solid fa-circle-check"></i>今日打卡</h2>
+          <span class="sec-sub" id="todaySub">逐项点「＋」计分，自动保存在本机浏览器</span>
+        </div>
+
+        <!-- 通栏（原为 1fr : 1.55fr 双栏）：双栏时短的一侧被 Grid 拉成与长的一侧等高，
+             底部空出一大块。11 个计分项本就是「逐项横扫」的离散条目，
+             不需要与「今日得分」横向比较 —— 取消并排，留白从结构上消失。 -->
+        <div class="panel">
+          <div class="panel-head">
+            <span class="pt"><i class="fa-solid fa-list-check"></i>计分项</span>
+            <span class="pl">12 项计分 · 单轮满分 23 分 · 点「＋」即计入今日得分</span>
+          </div>
+          <div class="ck-grid" id="checkGrid"></div>
+        </div>
+
+        <!-- 今日得分：单行横带（分数 / 周进度 / 备注 / 动作）。
+             四段都设 justify-content:center 垂直居中，谁高谁矮都不会在底部留空。 -->
+        <div class="panel" style="margin-top:16px;">
+          <div class="panel-head"><span class="pt"><i class="fa-solid fa-pen-to-square"></i>今日得分</span><span class="pl" id="todayDateLab">—</span></div>
+
+          <div class="today-out" id="todayHint" hidden></div>
+
+          <div class="sd-band">
+            <div class="score-big">
+              <div class="sb-lab">今日活动量得分</div>
+              <div class="sb-num gold-text" id="todayScore">0</div>
+              <div class="sb-sub" id="todayCompare">与本窗日均对照</div>
+            </div>
+
+            <div class="sd-prog">
+              <div class="pg">
+                <div class="pg-top"><span>本周累计得分</span><b id="wkScoreVal">0</b></div>
+                <div class="pg-track"><div class="pg-fill" id="wkScoreBar"></div></div>
+              </div>
+              <div class="pg">
+                <div class="pg-top"><span>本周保费 / 目标 <span id="wkPremTgt">¥8,750</span></span><b id="wkPremVal">¥0</b></div>
+                <div class="pg-track"><div class="pg-fill" id="wkPremBar"></div></div>
+              </div>
+            </div>
+
+            <div class="sd-note">
+              <div class="sd-lab"><i class="fa-solid fa-note-sticky"></i>今日备注</div>
+              <input class="inp" id="todayNote" type="text" placeholder="今天最重要的一件事…" aria-label="今日备注">
+              <div class="ins-s" id="saveHint">记录仅存本机浏览器，不上传任何服务器。</div>
+            </div>
+
+            <div class="sd-act">
+              <button class="btn-gold" id="btnSaveToday" onclick="saveToday()"><i class="fa-solid fa-floppy-disk"></i> 保存打卡</button>
+              <button class="btn-ghost" id="btnCopyYest" onclick="copyYesterday()"><i class="fa-solid fa-clone"></i> 沿用昨日</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== ③ 趋势热力 ==================== -->
+      <section class="section fi" id="trend">
+        <div class="sec-head">
+          <h2><i class="fa-solid fa-chart-line"></i>趋势热力</h2>
+          <span class="sec-sub" id="trendSub">30 天逐日得分强度</span>
+        </div>
+
+        <div class="panel" style="margin-bottom:16px;">
+          <div class="panel-head">
+            <span class="pt"><i class="fa-solid fa-fire"></i>30 天打卡热力</span>
+            <span class="pl"><span class="heat-legend"><i class="lv0"></i>0<i class="lv1"></i>1–9<i class="lv2"></i>10–19<i class="lv3"></i>20–34<i class="lv4"></i>≥35</span></span>
+          </div>
+          <div class="heat" id="heatGrid"></div>
+        </div>
+
+        <div class="grid g2">
+          <div class="panel">
+            <div class="panel-head"><span class="pt"><i class="fa-solid fa-calendar-day"></i>按星期平均得分</span><span class="pl">识别高效日</span></div>
+            <div class="chart-box sm"><canvas id="chDow"></canvas></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><span class="pt"><i class="fa-solid fa-arrow-trend-up"></i>累计得分曲线</span><span class="pl">斜率反映节奏稳定性</span></div>
+            <div class="chart-box sm"><canvas id="chCum"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== ④ 活动量构成 ==================== -->
+      <section class="section fi" id="mix">
+        <div class="sec-head">
+          <h2><i class="fa-solid fa-chart-simple"></i>活动量构成</h2>
+          <span class="sec-sub" id="mixSub">各计分项对总分的贡献</span>
+        </div>
+
+        <!-- 通栏：排行条与明细表原本并排（1fr : 1.55fr），两侧行数不同 → 短的一侧留白。
+             两者其实是「同一份数据的两种视图」（图形 vs 数字），本就该上下读，
+             不该横向比。通栏后横条拿到整行宽度，明细表也不再横向滚动。 -->
+        <div class="panel">
+          <div class="panel-head">
+            <span class="pt"><i class="fa-solid fa-ranking-star"></i>得分贡献排行</span>
+            <span class="pl">通栏横条 · 按加权得分降序</span>
+          </div>
+          <div class="mix" id="mixBars"></div>
+        </div>
+
+        <div class="panel" style="margin-top:16px;">
+          <div class="panel-head">
+            <span class="pt"><i class="fa-solid fa-table-cells-large"></i>计分项明细</span>
+            <span class="pl">次数 · 分值 · 得分 · 日频</span>
+          </div>
+          <div class="tbl-wrap">
+            <table class="ledger-tb">
+              <thead><tr>
+                <th>计分项</th><th>分组</th><th class="n">累计次数</th><th class="n">单次分值</th>
+                <th class="n">加权得分</th><th class="n">占比</th><th class="n">日均次数</th>
+              </tr></thead>
+              <tbody id="mixTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== ⑤ 成功方程式 ==================== -->
+      <section class="section fi" id="funnel">
+        <div class="sec-head">
+          <h2><i class="fa-solid fa-filter"></i>成功方程式</h2>
+          <span class="sec-sub" id="funnelSub">三段转化 · 分子分母均取自计分项</span>
+        </div>
+
+        <!-- 通栏：漏斗 4 级与右侧「3 张转化卡 + 4 格比率」高度差大，并排必然一侧留白。
+             通栏后漏斗横条铺满整行（层级差更直观），转化卡与比率格各自成行、整齐对齐。 -->
+        <div class="panel">
+          <div class="panel-head"><span class="pt"><i class="fa-solid fa-arrow-down-wide-short"></i>业务漏斗</span><span class="pl">按累计次数</span></div>
+          <div class="funnel" id="funnelBox"></div>
+          <div class="ins-s" style="margin-top:14px;" id="funnelNote"></div>
+        </div>
+
+        <div class="panel" style="margin-top:16px;">
+          <div class="panel-head"><span class="pt"><i class="fa-solid fa-percent"></i>三段转化率</span><span class="pl">参考下限 50% / 67% / 50%</span></div>
+          <div class="fn-row2" id="fnCards"></div>
+
+          <div class="panel-head" style="margin:22px 0 10px;">
+            <span class="pt" style="font-size:12.5px;"><i class="fa-solid fa-scale-balanced"></i>目标比率对照</span>
+            <span class="pl" id="ratioSrc">约访：需求分析：方案呈现：促成签单 = 15：9：6：3</span>
+          </div>
+          <div class="ratio-grid" id="ratioGrid"></div>
+        </div>
+      </section>
+
+      <!-- ==================== ⑥ 打卡明细 ==================== -->
+      <section class="section fi" id="ledger">
+        <div class="sec-head">
+          <h2><i class="fa-solid fa-table-list"></i>打卡明细</h2>
+          <span class="sec-sub" id="ledgerSub">—</span>
+        </div>
+
+        <div class="panel">
+          <div class="fbar" id="weekChips" role="group" aria-label="筛选周次">
+            <span class="f-lab">周次</span>
+          </div>
+          <div class="fbar" role="group" aria-label="筛选得分区间">
+            <span class="f-lab">得分</span>
+            <span class="chip sel" data-band="all">全部</span>
+            <span class="chip" data-band="zero">零打卡</span>
+            <span class="chip" data-band="low">1–9</span>
+            <span class="chip" data-band="mid">10–19</span>
+            <span class="chip" data-band="high">20–34</span>
+            <span class="chip" data-band="top">≥35</span>
+            <span class="pl" id="ledgerSummary" style="margin-left:auto;font-size:11px;color:var(--dim);">—</span>
+          </div>
+          <div class="tbl-wrap">
+            <table class="ledger-tb">
+              <thead><tr id="ledgerHead"></tr></thead>
+              <tbody id="ledgerBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="footer-brand">BAOX ACTIVITY</div>
+        <div class="footer-note">展业活动量面板 · 数据仅存本机浏览器</div>
+      </footer>
+
+    </div>
+  </main>
+</div>
+
+<!-- ==================== 设置数据抽屉（与 CRM / GEO 同一套 .drawer 设计系统） ==================== -->
+<div class="drawer-mask" id="setMask" onclick="closeSettings()"></div>
+<aside class="drawer" id="setDrawer" role="dialog" aria-modal="true" aria-label="设置活动量数据">
+  <div class="drawer-head">
+    <div>
+      <div class="dh-title">设置活动量数据</div>
+      <div class="dh-sub">逐日 30 天的 12 项活动量、当日保费、各周目标，以及 6 项业务指标<br>改动先在此抽屉内预演重算结果，点「保存并应用」才写入本机浏览器</div>
+    </div>
+    <button class="dh-close" onclick="closeSettings()" aria-label="关闭"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="drawer-body" id="setBody"></div>
+  <div class="drawer-foot">
+    <button class="btn-gold" id="btnSetSave" onclick="saveSettings()"><i class="fa-solid fa-check"></i> 保存并应用</button>
+    <button class="btn-ghost" onclick="exportData()" title="导出为 JSON 备份"><i class="fa-solid fa-download"></i><span>导出</span></button>
+    <button class="btn-ghost" onclick="triggerImport()" title="从 JSON 恢复"><i class="fa-solid fa-upload"></i><span>导入</span></button>
+    <button class="btn-ghost" id="btnRestore" onclick="restoreSource()" title="放弃本机改动，回到初始数据" hidden><i class="fa-solid fa-rotate-left"></i><span>恢复初始数据</span></button>
+    <span class="foot-spacer"></span>
+    <input type="file" id="importFile" accept=".json,application/json" hidden onchange="importData(this)">
+  </div>
+</aside>
+
+<!-- 头像选择的文件框。刻意**不做** accept="image/*" 之外的格式限制，
+     也不用 capture —— 移动端要能同时从相册和相机取图。
+     选完立即由 app.js 压缩成 256px 正方形再入库（见 compressAvatar）。 -->
+<input type="file" id="avatarFile" accept="image/*" hidden>
+
+<div id="toast"></div>

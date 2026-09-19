@@ -1,0 +1,352 @@
+/* ============================================================================
+   core.js · 活动量面板 · 唯一口径计算层
+   ----------------------------------------------------------------------------
+   ⚠️ 本文件是「计分与聚合」的唯一实现。
+     构建期（build.py 用 node 跑它导出快照做断言）
+     与运行期（浏览器直接加载它）
+     读的是同一个文件、同一组函数 —— 从结构上根除
+     「前后端两份口径分叉、数字全对但结论整体倒置」这类缺陷。
+
+   口径约定
+     · 单日得分 = Σ(次数 × 分值)，分值取自源模板活动量 3.xlsx 的计分说明
+     · 「成交家庭数」不计分（源表标注「不计」）
+     · 周区间沿用源表 O/P/Q/S 列的纵向合并块（首周 4 天、末周 5 天）
+     · 首周周目标 8750、其余周 17500、月目标 70000（源表 P35）
+   ============================================================================ */
+(function (global) {
+  'use strict';
+
+  var SEED = global.ACT_SEED || { rules: [], days: [], weeks: [], targets: {} };
+  var RULES = SEED.rules || [];
+  var UNSCORED = SEED.unscored || [];
+  var TARGETS = SEED.targets || {};
+
+  /* ------------------------------------------------------------------ 工具 */
+
+  /* 方向写进函数名：只收「目标日」，未来为正、过去为负。
+     绝不暴露 daysBetween(a,b) 这种「谁是 a 谁是 b 靠记忆」的签名 —— 传反不报错。 */
+  function daysFromToday(target, base) {
+    var t0 = new Date(base.getFullYear(), base.getMonth(), base.getDate());
+    var t1 = new Date(target.getFullYear(), target.getMonth(), target.getDate());
+    return Math.round((t1 - t0) / 86400000);
+  }
+
+  function parseDay(s) {
+    var p = String(s).split('-');
+    return new Date(+p[0], +p[1] - 1, +p[2]);
+  }
+
+  function isoOf(d) {
+    var m = d.getMonth() + 1, dd = d.getDate();
+    return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (dd < 10 ? '0' : '') + dd;
+  }
+
+  function round(n, p) {
+    var f = Math.pow(10, p || 0);
+    return Math.round(n * f) / f;
+  }
+
+  function num(v) {
+    var n = parseFloat(v);
+    return isFinite(n) ? n : 0;
+  }
+
+  /* ------------------------------------------------------- 单日 / 集合聚合 */
+
+  /** 单日得分（唯一实现）。rec 中每个计分项存的是「次数」。 */
+  function dayScore(rec) {
+    var s = 0;
+    for (var i = 0; i < RULES.length; i++) {
+      s += num(rec[RULES[i].key]) * RULES[i].pts;
+    }
+    return s;
+  }
+
+  /** 把一个日集合聚合成各项次数、加权得分、保费与成交计数。 */
+  function aggregate(list) {
+    var counts = {}, score = 0, premium = 0, closeCount = 0, familyCount = 0;
+    for (var i = 0; i < RULES.length; i++) { counts[RULES[i].key] = 0; }
+    for (var j = 0; j < UNSCORED.length; j++) { counts[UNSCORED[j].key] = 0; }
+    for (var k = 0; k < list.length; k++) {
+      var d = list[k];
+      for (var a = 0; a < RULES.length; a++) {
+        counts[RULES[a].key] += num(d[RULES[a].key]);
+      }
+      for (var b = 0; b < UNSCORED.length; b++) {
+        counts[UNSCORED[b].key] += num(d[UNSCORED[b].key]);
+      }
+      score += dayScore(d);
+      premium += num(d.premium);
+      closeCount += num(d.close);
+      familyCount += num(d.family);
+    }
+    return {
+      days: list.length,
+      counts: counts,
+      score: score,
+      premium: round(premium, 2),
+      closeCount: closeCount,
+      familyCount: familyCount,
+      avgScore: list.length ? round(score / list.length, 1) : 0,
+      perDeal: closeCount ? round(premium / closeCount, 2) : 0
+    };
+  }
+
+  /* ------------------------------------------------------------- 周维度聚合 */
+
+  /** 按 seed.weeks 的分块（源自源表合并区），给出每周聚合与达标率。 */
+  function weekRows(days) {
+    var byDate = {};
+    for (var i = 0; i < days.length; i++) { byDate[days[i].date] = days[i]; }
+    return (SEED.weeks || []).map(function (w) {
+      var seg = w.days.map(function (d) { return byDate[d]; }).filter(Boolean);
+      var agg = aggregate(seg);
+      var target = w.target || TARGETS.week;
+      return {
+        idx: w.idx, from: w.from, to: w.to, dayCount: w.dayCount,
+        /* days 必须随行带出：调用方按「某天属于哪一周」反查时要用它。
+           曾经漏掉这个字段，症状是 weekOfDate() 里 .indexOf 撞上 undefined ——
+           整个 boot 抛异常中断，页面 DOM 全空、KPI 全为占位符「—」，
+           而静态门禁（内容断言 / 语法 / 图标 / 数据计数）一个都没报错。
+           这正是运行期门禁 E 存在的理由。 */
+        days: w.days,
+        target: target, targetNote: w.targetNote,
+        score: agg.score, premium: agg.premium,
+        closeCount: agg.closeCount, familyCount: agg.familyCount,
+        perDeal: agg.perDeal,
+        rate: target ? round(agg.premium / target * 100, 1) : 0,
+        avgScore: agg.avgScore,
+        counts: agg.counts
+      };
+    });
+  }
+
+  /* --------------------------------------------------------- 成功方程式/漏斗 */
+
+  /**
+   * 三段转化率。严格镜像源表 F35/F36/F37 的公式方向：
+   *   约访成功率   = 需求分析 / 约访      （源 F35 = F33/E33）
+   *   面谈成功率   = 方案呈现 / 需求分析  （源 F36 = G33/F33）
+   *   方案促成率   = 成交家庭数 / 方案呈现（源 F37 = I33/G33）
+   * 源表存的是比值（3.667），面板按百分比呈现（366.7%），参考值直接沿用源表文本。
+   */
+  function funnelOf(agg) {
+    var c = agg.counts;
+    var defs = [
+      { label: '约访 → 需求分析', numKey: 'need', denKey: 'visit', ref: '≥50%', srcCell: 'F35' },
+      { label: '需求分析 → 方案呈现', numKey: 'plan', denKey: 'need', ref: '≥67%', srcCell: 'F36' },
+      { label: '方案呈现 → 促成签单', numKey: 'family', denKey: 'plan', ref: '≥50%', srcCell: 'F37' }
+    ];
+    return defs.map(function (d) {
+      var n = c[d.numKey] || 0, den = c[d.denKey] || 0;
+      var ratio = den ? n / den : 0;
+      return {
+        label: d.label, ref: d.ref, srcCell: d.srcCell,
+        numerator: n, denominator: den,
+        ratio: ratio,
+        pct: round(ratio * 100, 1),
+        stdPct: round(ratio * 100, 0),
+        ok: ratio * 100 >= parseFloat(d.ref.replace(/[^0-9.]/g, ''))
+      };
+    });
+  }
+
+  /** 源表 A38 的目标比率「约访：需求分析：方案呈现：成交=15：9：6：3」 */
+  function targetRatio() {
+    return { visit: 15, need: 9, plan: 6, family: 3 };
+  }
+
+  /* --------------------------------------------------------------- 连续打卡 */
+
+  /** 以最后一天为基准往前数：连续「得分 > 0」的天数。 */
+  function streakEndingAt(days) {
+    var n = 0;
+    for (var i = days.length - 1; i >= 0; i--) {
+      if (dayScore(days[i]) > 0) { n++; } else { break; }
+    }
+    return n;
+  }
+
+  /** 历史最长连续打卡。 */
+  function longestStreak(days) {
+    var best = 0, cur = 0;
+    for (var i = 0; i < days.length; i++) {
+      if (dayScore(days[i]) > 0) { cur++; best = Math.max(best, cur); }
+      else { cur = 0; }
+    }
+    return best;
+  }
+
+  /* ----------------------------------------------------------- 本机打卡记录 */
+
+  var LS_LOG = 'baox.act.log';
+  var LS_WEEK = 'baox.act.week';
+  var LS_THEME = 'baox.act.theme';
+
+  function readJSON(key, fallback) {
+    try {
+      var raw = global.localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch (e) { return fallback; }
+  }
+
+  function writeJSON(key, val) {
+    try { global.localStorage.setItem(key, JSON.stringify(val)); return true; }
+    catch (e) { return false; }
+  }
+
+  function localLog() { return readJSON(LS_LOG, {}); }
+
+  function saveLocalDay(date, rec) {
+    var log = localLog();
+    var empty = true;
+    for (var k in rec) {
+      if (k === 'note') { if (rec[k]) { empty = false; } continue; }
+      if (num(rec[k]) > 0) { empty = false; }
+    }
+    if (empty) { delete log[date]; } else { log[date] = rec; }
+    writeJSON(LS_LOG, log);
+    return log;
+  }
+
+  /** 把本机记录叠加成完整日集合（历史样本 + 本机新增日期）。 */
+  function mergedDays() {
+    var log = localLog();
+    var byDate = {}, out = [];
+    var seedDays = SEED.days || [];
+    for (var i = 0; i < seedDays.length; i++) {
+      byDate[seedDays[i].date] = seedDays[i];
+      out.push(seedDays[i]);
+    }
+    for (var d in log) {
+      if (byDate[d]) { continue; }
+      var p = parseDay(d);
+      var rec = { date: d, dow: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][p.getDay()],
+                  serial: 0, premium: num(log[d].premium), local: true, note: log[d].note || '' };
+      for (var j = 0; j < RULES.length; j++) { rec[RULES[j].key] = num(log[d][RULES[j].key]); }
+      for (var u = 0; u < UNSCORED.length; u++) { rec[UNSCORED[u].key] = num(log[d][UNSCORED[u].key]); }
+      out.push(rec);
+    }
+    out.sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+    return out;
+  }
+
+  /* ------------------------------------------------------------------ 汇总 */
+
+  function computeAll() {
+    var hist = (SEED.days || []).slice();
+    var all = mergedDays();
+    var localDates = all.filter(function (d) { return d.local; });
+    var histAgg = aggregate(hist);
+    var localAgg = aggregate(localDates);
+    var monthRate = TARGETS.month ? round(histAgg.premium / TARGETS.month * 100, 1) : 0;
+    var mdrt = round(num(TARGETS.mdrtCarry) + histAgg.premium, 2);
+    return {
+      hist: hist,
+      histAgg: histAgg,
+      local: localDates,
+      localAgg: localAgg,
+      weeks: weekRows(hist),
+      funnel: funnelOf(histAgg),
+      targetRatio: targetRatio(),
+      streakEnd: streakEndingAt(hist),
+      streakLongest: longestStreak(hist),
+      monthRate: monthRate,
+      mdrt: mdrt,
+      weekRowsAll: weekRows(all),
+      allAgg: aggregate(all)
+    };
+  }
+
+  /** 源表口径对照（用于把源模板的口径缺陷摊开讲清楚） */
+  function sourceComparison() {
+    var s = SEED.sourceTotal || {};
+    var days = SEED.days || [];
+    var hist = aggregate(days);
+    var agg30 = aggregate(days.filter(function (d, i) { return i < 28; }));
+    var wk = weekRows(days);
+    var lastWeek = wk.length ? wk[wk.length - 1] : { premium: 0, idx: 0 };
+    var srcWeeksSum = round(num(s.P), 2);
+    return {
+      /* ① 累计总分 */
+      srcTotalScore: num(s.N),
+      srcFormula: s.formula_N33 || '',
+      recomputed: hist.score,
+      recomputedRows3_30: agg30.score,
+      scoreGap: hist.score - num(s.N),
+      scoreMissed: [
+        { name: '「新增好友」整列未纳入公式', count: agg30.counts.friend,
+          lost: agg30.counts.friend * 1 },
+        { name: '「约聊增员」整列未纳入公式', count: agg30.counts.recTalk,
+          lost: agg30.counts.recTalk * 1 },
+        { name: '合计区间止于第 30 行，末 2 天（6/23、6/24）未计入',
+          count: 2, lost: hist.score - agg30.score }
+      ],
+      /* ② 周保费合计 */
+      srcPremium: srcWeeksSum,
+      srcPremiumFormula: s.formula_P33 || '',
+      recomputedPremium: hist.premium,
+      premiumGap: round(hist.premium - srcWeeksSum, 2),
+      premiumMissedWeek: { idx: lastWeek.idx, premium: lastWeek.premium },
+      /* ③ 月达标率与 MDRT */
+      srcRatio: num(s.Q),
+      srcRatioFormula: s.formula_Q33 || '',
+      recomputedRatio: hist.premium && TARGETS.month
+        ? round(hist.premium / TARGETS.month, 6) : 0,
+      srcMdrt: num(s.mdrt),
+      srcMdrtFormula: s.formula_Q34 || '',
+      recomputedMdrt: round(num(TARGETS.mdrtCarry) + hist.premium, 2),
+      /* ④ 件均 */
+      srcPerDeal: num(s.S),
+      srcPerDealFormula: s.formula_S33 || '',
+      srcCloseCount: num(s.close),
+      recomputedPerDeal: hist.perDeal,
+      recomputedCloseCount: hist.closeCount,
+      /* ⑤ 逐列对照 —— 上面四条是「结论」，这里是「证据」。
+         源表「总」行的每一列都可能与全区间重算不符，成因有三类，
+         用同一套判据机器可判，不必逐个手工核对：
+           · consistent —— 源值与全 30 天重算一致（该列正常）
+           · truncated  —— 源值等于**前 28 天**的重算值，
+                           说明 SUM 区间止于第 30 行，末 2 天被截掉
+           · excluded   —— 两者都不等，说明该列压根没进公式
+         有这张表，「求和区间止于第 30 行」这句话在页面上就是可核对的，
+         而不只是一句断言。 */
+      columns: RULES.concat(UNSCORED).map(function (r) {
+        var src = num(s[r.key]);
+        var all = hist.counts[r.key] || 0;
+        var first28 = agg30.counts[r.key] || 0;
+        var verdict = Math.abs(src - all) < 1e-9 ? 'consistent'
+          : Math.abs(src - first28) < 1e-9 ? 'truncated' : 'excluded';
+        return {
+          key: r.key, col: r.col, name: r.name,
+          pts: num(r.pts), scored: num(r.pts) > 0,
+          src: src, all: all, first28: first28,
+          gap: round(all - src, 2), verdict: verdict
+        };
+      })
+    };
+  }
+
+  /* ------------------------------------------------------------------ 导出 */
+
+  global.ACT = {
+    SEED: SEED,
+    RULES: RULES,
+    UNSCORED: UNSCORED,
+    TARGETS: TARGETS,
+    dayScore: dayScore,
+    aggregate: aggregate,
+    weekRows: weekRows,
+    funnelOf: funnelOf,
+    targetRatio: targetRatio,
+    streakEndingAt: streakEndingAt,
+    longestStreak: longestStreak,
+    mergedDays: mergedDays,
+    computeAll: computeAll,
+    sourceComparison: sourceComparison,
+    localLog: localLog,
+    saveLocalDay: saveLocalDay,
+    LS_THEME: LS_THEME,
+    helpers: { parseDay: parseDay, isoOf: isoOf, daysFromToday: daysFromToday, round: round, num: num }
+  };
+})(typeof window !== 'undefined' ? window : globalThis);

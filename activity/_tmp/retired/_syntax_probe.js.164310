@@ -1,0 +1,1695 @@
+/* 首屏防闪烁：先于样式生效设置 data-theme（.app-shell 此时尚未解析） */
+(function(){try{
+  var t=localStorage.getItem('baox.act.theme');
+  document.documentElement.setAttribute('data-theme', t==='light'?'light':'dark');
+}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();
+/* 本文件由 src/gen_data.py 从 data/raw/*.xlsx 自动生成，请勿手工修改。
+   权威事实源：data/activity.json（两者内容一致）。 */
+window.ACT_SEED = {"meta":{"generatedAt":"2026-09-18 16:28:25","sources":[{"file":"活动量 1.xlsx","sheets":[{"name":"活动量","kind":"周工作日志模板（含计分口径，无数据）"},{"name":"Sheet1","kind":"周汇总骨架（13 字段，无数据）"}]},{"file":"活动量 3.xlsx","sheets":[{"name":"日活动量打卡","kind":"逐日打卡实绩（唯一含真实数据）"}]}],"period":{"start":"2022-05-26","end":"2022-06-24","days":30},"owner":"日活动量管理表（杨晋楠）"},"targets":{"week":17500,"weekShort":8750,"month":70000,"mdrtCarry":178103,"targetText":"目标月保费70000元\n目标周保费1.75万元"},"rules":[{"key":"circle","col":"B","name":"朋友圈","pts":1,"group":"个人品牌","note":"一条 1 分，不限内容"},{"key":"article","col":"D","name":"文章|视频","pts":1,"group":"个人品牌","note":"一条 1 分，不限内容"},{"key":"friend","col":"C","name":"新增好友","pts":1,"group":"销售流程","note":"一人 1 分"},{"key":"visit","col":"E","name":"约访","pts":1,"group":"销售流程","note":"一人 1 分，有约对方做进一步需求分析沟通动作就算，成败不限"},{"key":"need","col":"F","name":"需求分析","pts":2,"group":"销售流程","note":"初次面谈一次 2 分"},{"key":"plan","col":"G","name":"方案呈现","pts":3,"group":"销售流程","note":"二次面谈一次 3 分"},{"key":"close","col":"H","name":"促成签单","pts":5,"group":"销售流程","note":"成交一个单子 5 分，不限险种不限人数"},{"key":"refer","col":"J","name":"转介绍","pts":1,"group":"销售流程","note":"一人 1 分，自己开口要或客户主动来都算"},{"key":"service","col":"K","name":"客户服务","pts":1,"group":"销售流程","note":"续保理赔、下午茶叙旧、跟进询问、修改方案都算；首次需求分析与方案呈现不算"},{"key":"recTalk","col":"L","name":"约聊增员","pts":1,"group":"增员流程","note":"一人 1 分"},{"key":"recJoin","col":"M","name":"入职增员","pts":5,"group":"增员流程","note":"一人 5 分（源表第 2 行标注 5 分），只要录入系统就算"}],"unscored":[{"key":"family","col":"I","name":"成交家庭数","pts":0,"group":"成交","note":"不计分，仅记录"}],"days":[{"date":"2022-05-26","dow":"周四","serial":44707,"circle":1.0,"article":0,"friend":1.0,"visit":0,"need":2.0,"plan":0,"close":0,"refer":1.0,"service":3.0,"recTalk":3.0,"recJoin":0,"family":0,"premium":0},{"date":"2022-05-27","dow":"周五","serial":44708,"circle":4.0,"article":1.0,"friend":1.0,"visit":0,"need":0,"plan":1.0,"close":3.0,"refer":1.0,"service":0,"recTalk":1.0,"recJoin":0,"family":1.0,"premium":5021.0},{"date":"2022-05-28","dow":"周六","serial":44709,"circle":1.0,"article":0,"friend":1.0,"visit":0,"need":0,"plan":0,"close":0,"refer":0,"service":1.0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-05-29","dow":"周日","serial":44710,"circle":1.0,"article":0,"friend":0,"visit":0,"need":0,"plan":0,"close":0,"refer":0,"service":0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-05-30","dow":"周一","serial":44711,"circle":1.0,"article":0,"friend":0,"visit":0,"need":0,"plan":1.0,"close":0,"refer":0,"service":6.0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-05-31","dow":"周二","serial":44712,"circle":5.0,"article":0,"friend":2.0,"visit":1.0,"need":0,"plan":2.0,"close":0,"refer":1.0,"service":2.0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-06-01","dow":"周三","serial":44713,"circle":1.0,"article":0,"friend":1.0,"visit":0,"need":1.0,"plan":1.0,"close":3.0,"refer":0,"service":3.0,"recTalk":0,"recJoin":0,"family":2.0,"premium":774.0},{"date":"2022-06-02","dow":"周四","serial":44714,"circle":1.0,"article":0,"friend":0,"visit":0,"need":0,"plan":1.0,"close":3.0,"refer":0,"service":3.0,"recTalk":0,"recJoin":0,"family":0,"premium":5961.0},{"date":"2022-06-03","dow":"周五","serial":44715,"circle":3.0,"article":0,"friend":0,"visit":1.0,"need":0,"plan":0,"close":1.0,"refer":0,"service":2.0,"recTalk":0,"recJoin":0,"family":1.0,"premium":395.0},{"date":"2022-06-04","dow":"周六","serial":44716,"circle":0.0,"article":0,"friend":1.0,"visit":0,"need":1.0,"plan":0,"close":0,"refer":0,"service":1.0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-06-05","dow":"周日","serial":44717,"circle":0.0,"article":0,"friend":3.0,"visit":0,"need":0,"plan":0,"close":0,"refer":0,"service":1.0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-06-06","dow":"周一","serial":44718,"circle":4.0,"article":0,"friend":0,"visit":0,"need":1.0,"plan":2.0,"close":0,"refer":0,"service":6.0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-06-07","dow":"周二","serial":44719,"circle":3.0,"article":0,"friend":0,"visit":0,"need":0,"plan":0,"close":1.0,"refer":0,"service":4.0,"recTalk":0,"recJoin":0,"family":1.0,"premium":50000.0},{"date":"2022-06-08","dow":"周三","serial":44720,"circle":4.0,"article":0,"friend":0,"visit":0,"need":0,"plan":1.0,"close":2.0,"refer":0,"service":3.0,"recTalk":1.0,"recJoin":0,"family":1.0,"premium":3203.77},{"date":"2022-06-09","dow":"周四","serial":44721,"circle":3.0,"article":0,"friend":1.0,"visit":0,"need":0,"plan":1.0,"close":8.0,"refer":0,"service":8.0,"recTalk":0,"recJoin":0,"family":2.0,"premium":5118.49},{"date":"2022-06-10","dow":"周五","serial":44722,"circle":1.0,"article":0,"friend":0,"visit":0,"need":1.0,"plan":0,"close":2.0,"refer":0,"service":5.0,"recTalk":0,"recJoin":0,"family":1.0,"premium":707.0},{"date":"2022-06-11","dow":"周六","serial":44723,"circle":0.0,"article":0,"friend":3.0,"visit":0,"need":0,"plan":0,"close":0,"refer":0,"service":0.0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-06-12","dow":"周日","serial":44724,"circle":2.0,"article":0,"friend":0,"visit":0,"need":0,"plan":0,"close":0,"refer":0,"service":1.0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-06-13","dow":"周一","serial":44725,"circle":1.0,"article":0,"friend":3.0,"visit":0,"need":0,"plan":0,"close":2.0,"refer":2.0,"service":8.0,"recTalk":1.0,"recJoin":0,"family":2.0,"premium":2775.35},{"date":"2022-06-14","dow":"周二","serial":44726,"circle":1.0,"article":0,"friend":1.0,"visit":1.0,"need":0,"plan":2.0,"close":0,"refer":0,"service":3.0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-06-15","dow":"周三","serial":44727,"circle":2.0,"article":0,"friend":0,"visit":0,"need":1.0,"plan":0,"close":0,"refer":0,"service":2.0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-06-16","dow":"周四","serial":44728,"circle":0.0,"article":0,"friend":1.0,"visit":0,"need":0,"plan":0,"close":1.0,"refer":1.0,"service":3.0,"recTalk":0,"recJoin":0,"family":1.0,"premium":6400.0},{"date":"2022-06-17","dow":"周五","serial":44729,"circle":2.0,"article":0,"friend":0,"visit":0,"need":0,"plan":0,"close":0,"refer":0,"service":10.0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-06-18","dow":"周六","serial":44730,"circle":1.0,"article":0,"friend":0,"visit":0,"need":0,"plan":0,"close":0,"refer":0,"service":1.0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-06-19","dow":"周日","serial":44731,"circle":0.0,"article":0,"friend":0,"visit":0,"need":0,"plan":0,"close":0,"refer":0,"service":0.0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-06-20","dow":"周一","serial":44732,"circle":2.0,"article":0,"friend":1.0,"visit":0,"need":1.0,"plan":1.0,"close":0,"refer":0,"service":2.0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-06-21","dow":"周二","serial":44733,"circle":2.0,"article":0,"friend":0,"visit":0,"need":3.0,"plan":1.0,"close":2.0,"refer":0,"service":10.0,"recTalk":0,"recJoin":0,"family":0,"premium":950.0},{"date":"2022-06-22","dow":"周三","serial":44734,"circle":3.0,"article":0,"friend":0,"visit":0,"need":0,"plan":2.0,"close":4.0,"refer":0,"service":7.0,"recTalk":0,"recJoin":0,"family":2.0,"premium":2974.0},{"date":"2022-06-23","dow":"周四","serial":44735,"circle":5.0,"article":0,"friend":0,"visit":0,"need":0,"plan":2.0,"close":0,"refer":0,"service":6.0,"recTalk":0,"recJoin":0,"family":0,"premium":0},{"date":"2022-06-24","dow":"周五","serial":44736,"circle":3.0,"article":0,"friend":0,"visit":0,"need":0,"plan":3.0,"close":2.0,"refer":0,"service":5.0,"recTalk":0,"recJoin":0,"family":0,"premium":4196.77}],"weeks":[{"idx":1,"from":"2022-05-26","to":"2022-05-29","rows":[3,6],"days":["2022-05-26","2022-05-27","2022-05-28","2022-05-29"],"dayCount":4,"target":8750,"targetNote":"首周 4 天，周目标按 8750 计"},{"idx":2,"from":"2022-05-30","to":"2022-06-05","rows":[7,13],"days":["2022-05-30","2022-05-31","2022-06-01","2022-06-02","2022-06-03","2022-06-04","2022-06-05"],"dayCount":7,"target":17500,"targetNote":"标准周目标 17500"},{"idx":3,"from":"2022-06-06","to":"2022-06-12","rows":[14,20],"days":["2022-06-06","2022-06-07","2022-06-08","2022-06-09","2022-06-10","2022-06-11","2022-06-12"],"dayCount":7,"target":17500,"targetNote":"标准周目标 17500"},{"idx":4,"from":"2022-06-13","to":"2022-06-19","rows":[21,27],"days":["2022-06-13","2022-06-14","2022-06-15","2022-06-16","2022-06-17","2022-06-18","2022-06-19"],"dayCount":7,"target":17500,"targetNote":"标准周目标 17500"},{"idx":5,"from":"2022-06-20","to":"2022-06-24","rows":[28,32],"days":["2022-06-20","2022-06-21","2022-06-22","2022-06-23","2022-06-24"],"dayCount":5,"target":8750,"targetNote":"首周 4 天，周目标按 8750 计"}],"sourceTotal":{"circle":49.0,"friend":20.0,"article":1.0,"visit":3.0,"need":11.0,"plan":16.0,"close":32.0,"family":14.0,"refer":6.0,"service":95.0,"recTalk":0,"recJoin":0,"N":384.0,"P":80355.61,"Q":1.14793728571429,"S":2511.1128125,"mdrt":258458.61,"formula_N33":"B33+D33+E33+F33*2+G33*3+H33*5+J33+K33","formula_P33":"P3+P7+P14+P21","formula_Q33":"P33/70000","formula_S33":"P33/H33","formula_Q34":"178103+P33"},"funnel":[{"label":"约访成功率","cell":"F35","val":3.66666666666667,"ref":"≥50%","formula":"F33/E33"},{"label":"面谈成功率","cell":"F36","val":1.45454545454545,"ref":"≥67%","formula":"G33/F33"},{"label":"方案促成率","cell":"F37","val":0.875,"ref":"≥50%","formula":"I33/G33"}],"funnelRatioText":"约访：需求分析：方案呈现：成交=15：9：6：3","rulesText":"计分说明：\n1 朋友圈：一条1分，不限内容 \n2 输入文章视频号等：一条1分，不限内容 \n3 约访：一人1分，有约对方做进一步需求分析沟通动作就算，成败不限 \n4 初次面谈：一次2分，即需求分析 \n5 二次面谈：一次3分，即方案呈现 \n6 促成签单：成交一个单子5分，不限险种不限人数 \n7 转介绍：一人1分，自己开口要或者客户主动来的都算 \n8 客户服务：一人1分，除以上行动外，老客户的续保理赔下午茶叙旧都算。跟进阶段询问，修改方案也算。但是第一次需求分析方案呈现不算。\n9 其他：\n   1）约谈增员：一人1分\n   2）入职增员：一人1分，只要录入系统就算\n   3）接触：一人1分，除了上面，只要接触人都算","templates":{"weeklyLog":{"title":"周 工 作 日 志","dateLine":"年     月     日     —     月    日","timeSlots":["0.375","0.416666666666667","0.458333333333333","0.5","0.541666666666667","0.583333333333333","0.625","0.666666666666667","0.708333333333333","0.75","0.791666666666667","0.833333333333333","0.875","0.916666666666667"],"timeSlotsRaw":[0.375,0.416666666666667,0.458333333333333,0.5,0.541666666666667,0.583333333333333,0.625,0.666666666666667,0.708333333333333,0.75,0.791666666666667,0.833333333333333,0.875,0.916666666666667],"weekdays":["周一","周二","周三","周四","周五","周六","周日"],"recordCats":[{"cat":"输入","items":["专业基本功","其他学习"]},{"cat":"输出","items":["朋友圈","其他自媒体"]},{"cat":"业务","items":["招募选材","客户服务"]},{"cat":"团队","items":["辅导组员","管理事务"]}],"scoreRows":[{"group":"个人\n品牌","item":"发圈/文章/视频(1分)"},{"group":"销\n售\n流\n程","item":"新加微信（1分）"},{"group":"","item":"链接/调频（2分）"},{"group":"","item":"约访(1分)"},{"group":"","item":"需求分析(2分)"},{"group":"","item":"方案/跟进/促成(2分)"},{"group":"","item":"成交签单\n（1件1分）"},{"group":"","item":"客户服务(1分)"},{"group":"增\n员\n流\n程","item":"开拓/链接(2分)"},{"group":"","item":"约访(1分)"},{"group":"","item":"面谈(3分)"},{"group":"","item":"跟进（1分）"},{"group":"团队","item":"跟进辅导(1分)"}]},"weekSummary":{"headers":["周次","客户时间","增员时间","学习时间","管理时间","辅导时间","总时长","每工作日时长","每日时长","活动量总分","成交件数","成交保费（万）","备注"],"weekKeys":["1017-1023","1024-1030","1031-1106","1107-1113","1114-1120","1121-1127","1128-1204","1205-1211","1212-1218","1219-1225","1226-0101"]}}};
+
+/* ============================================================================
+   core.js · 活动量面板 · 唯一口径计算层
+   ----------------------------------------------------------------------------
+   ⚠️ 本文件是「计分与聚合」的唯一实现。
+     构建期（build.py 用 node 跑它导出快照做断言）
+     与运行期（浏览器直接加载它）
+     读的是同一个文件、同一组函数 —— 从结构上根除
+     「前后端两份口径分叉、数字全对但结论整体倒置」这类缺陷。
+
+   口径约定
+     · 单日得分 = Σ(次数 × 分值)，分值取自源模板活动量 3.xlsx 的计分说明
+     · 「成交家庭数」不计分（源表标注「不计」）
+     · 周区间沿用源表 O/P/Q/S 列的纵向合并块（首周 4 天、末周 5 天）
+     · 首周周目标 8750、其余周 17500、月目标 70000（源表 P35）
+   ============================================================================ */
+(function (global) {
+  'use strict';
+
+  var SEED = global.ACT_SEED || { rules: [], days: [], weeks: [], targets: {} };
+  var RULES = SEED.rules || [];
+  var UNSCORED = SEED.unscored || [];
+  var TARGETS = SEED.targets || {};
+
+  /* ------------------------------------------------------------------ 工具 */
+
+  /* 方向写进函数名：只收「目标日」，未来为正、过去为负。
+     绝不暴露 daysBetween(a,b) 这种「谁是 a 谁是 b 靠记忆」的签名 —— 传反不报错。 */
+  function daysFromToday(target, base) {
+    var t0 = new Date(base.getFullYear(), base.getMonth(), base.getDate());
+    var t1 = new Date(target.getFullYear(), target.getMonth(), target.getDate());
+    return Math.round((t1 - t0) / 86400000);
+  }
+
+  function parseDay(s) {
+    var p = String(s).split('-');
+    return new Date(+p[0], +p[1] - 1, +p[2]);
+  }
+
+  function isoOf(d) {
+    var m = d.getMonth() + 1, dd = d.getDate();
+    return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (dd < 10 ? '0' : '') + dd;
+  }
+
+  function round(n, p) {
+    var f = Math.pow(10, p || 0);
+    return Math.round(n * f) / f;
+  }
+
+  function num(v) {
+    var n = parseFloat(v);
+    return isFinite(n) ? n : 0;
+  }
+
+  /* ------------------------------------------------------- 单日 / 集合聚合 */
+
+  /** 单日得分（唯一实现）。rec 中每个计分项存的是「次数」。 */
+  function dayScore(rec) {
+    var s = 0;
+    for (var i = 0; i < RULES.length; i++) {
+      s += num(rec[RULES[i].key]) * RULES[i].pts;
+    }
+    return s;
+  }
+
+  /** 把一个日集合聚合成各项次数、加权得分、保费与成交计数。 */
+  function aggregate(list) {
+    var counts = {}, score = 0, premium = 0, closeCount = 0, familyCount = 0;
+    for (var i = 0; i < RULES.length; i++) { counts[RULES[i].key] = 0; }
+    for (var j = 0; j < UNSCORED.length; j++) { counts[UNSCORED[j].key] = 0; }
+    for (var k = 0; k < list.length; k++) {
+      var d = list[k];
+      for (var a = 0; a < RULES.length; a++) {
+        counts[RULES[a].key] += num(d[RULES[a].key]);
+      }
+      for (var b = 0; b < UNSCORED.length; b++) {
+        counts[UNSCORED[b].key] += num(d[UNSCORED[b].key]);
+      }
+      score += dayScore(d);
+      premium += num(d.premium);
+      closeCount += num(d.close);
+      familyCount += num(d.family);
+    }
+    return {
+      days: list.length,
+      counts: counts,
+      score: score,
+      premium: round(premium, 2),
+      closeCount: closeCount,
+      familyCount: familyCount,
+      avgScore: list.length ? round(score / list.length, 1) : 0,
+      perDeal: closeCount ? round(premium / closeCount, 2) : 0
+    };
+  }
+
+  /* ------------------------------------------------------------- 周维度聚合 */
+
+  /** 按 seed.weeks 的分块（源自源表合并区），给出每周聚合与达标率。 */
+  function weekRows(days) {
+    var byDate = {};
+    for (var i = 0; i < days.length; i++) { byDate[days[i].date] = days[i]; }
+    return (SEED.weeks || []).map(function (w) {
+      var seg = w.days.map(function (d) { return byDate[d]; }).filter(Boolean);
+      var agg = aggregate(seg);
+      var target = w.target || TARGETS.week;
+      return {
+        idx: w.idx, from: w.from, to: w.to, dayCount: w.dayCount,
+        /* days 必须随行带出：调用方按「某天属于哪一周」反查时要用它。
+           曾经漏掉这个字段，症状是 weekOfDate() 里 .indexOf 撞上 undefined ——
+           整个 boot 抛异常中断，页面 DOM 全空、KPI 全为占位符「—」，
+           而静态门禁（内容断言 / 语法 / 图标 / 数据计数）一个都没报错。
+           这正是运行期门禁 E 存在的理由。 */
+        days: w.days,
+        target: target, targetNote: w.targetNote,
+        score: agg.score, premium: agg.premium,
+        closeCount: agg.closeCount, familyCount: agg.familyCount,
+        perDeal: agg.perDeal,
+        rate: target ? round(agg.premium / target * 100, 1) : 0,
+        avgScore: agg.avgScore,
+        counts: agg.counts
+      };
+    });
+  }
+
+  /* --------------------------------------------------------- 成功方程式/漏斗 */
+
+  /**
+   * 三段转化率。严格镜像源表 F35/F36/F37 的公式方向：
+   *   约访成功率   = 需求分析 / 约访      （源 F35 = F33/E33）
+   *   面谈成功率   = 方案呈现 / 需求分析  （源 F36 = G33/F33）
+   *   方案促成率   = 成交家庭数 / 方案呈现（源 F37 = I33/G33）
+   * 源表存的是比值（3.667），面板按百分比呈现（366.7%），参考值直接沿用源表文本。
+   */
+  function funnelOf(agg) {
+    var c = agg.counts;
+    var defs = [
+      { label: '约访 → 需求分析', numKey: 'need', denKey: 'visit', ref: '≥50%', srcCell: 'F35' },
+      { label: '需求分析 → 方案呈现', numKey: 'plan', denKey: 'need', ref: '≥67%', srcCell: 'F36' },
+      { label: '方案呈现 → 促成签单', numKey: 'family', denKey: 'plan', ref: '≥50%', srcCell: 'F37' }
+    ];
+    return defs.map(function (d) {
+      var n = c[d.numKey] || 0, den = c[d.denKey] || 0;
+      var ratio = den ? n / den : 0;
+      return {
+        label: d.label, ref: d.ref, srcCell: d.srcCell,
+        numerator: n, denominator: den,
+        ratio: ratio,
+        pct: round(ratio * 100, 1),
+        stdPct: round(ratio * 100, 0),
+        ok: ratio * 100 >= parseFloat(d.ref.replace(/[^0-9.]/g, ''))
+      };
+    });
+  }
+
+  /** 源表 A38 的目标比率「约访：需求分析：方案呈现：成交=15：9：6：3」 */
+  function targetRatio() {
+    return { visit: 15, need: 9, plan: 6, family: 3 };
+  }
+
+  /* --------------------------------------------------------------- 连续打卡 */
+
+  /** 以最后一天为基准往前数：连续「得分 > 0」的天数。 */
+  function streakEndingAt(days) {
+    var n = 0;
+    for (var i = days.length - 1; i >= 0; i--) {
+      if (dayScore(days[i]) > 0) { n++; } else { break; }
+    }
+    return n;
+  }
+
+  /** 历史最长连续打卡。 */
+  function longestStreak(days) {
+    var best = 0, cur = 0;
+    for (var i = 0; i < days.length; i++) {
+      if (dayScore(days[i]) > 0) { cur++; best = Math.max(best, cur); }
+      else { cur = 0; }
+    }
+    return best;
+  }
+
+  /* ----------------------------------------------------------- 本机打卡记录 */
+
+  var LS_LOG = 'baox.act.log';
+  var LS_WEEK = 'baox.act.week';
+  var LS_THEME = 'baox.act.theme';
+
+  function readJSON(key, fallback) {
+    try {
+      var raw = global.localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch (e) { return fallback; }
+  }
+
+  function writeJSON(key, val) {
+    try { global.localStorage.setItem(key, JSON.stringify(val)); return true; }
+    catch (e) { return false; }
+  }
+
+  function localLog() { return readJSON(LS_LOG, {}); }
+
+  function saveLocalDay(date, rec) {
+    var log = localLog();
+    var empty = true;
+    for (var k in rec) {
+      if (k === 'note') { if (rec[k]) { empty = false; } continue; }
+      if (num(rec[k]) > 0) { empty = false; }
+    }
+    if (empty) { delete log[date]; } else { log[date] = rec; }
+    writeJSON(LS_LOG, log);
+    return log;
+  }
+
+  /** 把本机记录叠加成完整日集合（历史样本 + 本机新增日期）。 */
+  function mergedDays() {
+    var log = localLog();
+    var byDate = {}, out = [];
+    var seedDays = SEED.days || [];
+    for (var i = 0; i < seedDays.length; i++) {
+      byDate[seedDays[i].date] = seedDays[i];
+      out.push(seedDays[i]);
+    }
+    for (var d in log) {
+      if (byDate[d]) { continue; }
+      var p = parseDay(d);
+      var rec = { date: d, dow: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][p.getDay()],
+                  serial: 0, premium: num(log[d].premium), local: true, note: log[d].note || '' };
+      for (var j = 0; j < RULES.length; j++) { rec[RULES[j].key] = num(log[d][RULES[j].key]); }
+      for (var u = 0; u < UNSCORED.length; u++) { rec[UNSCORED[u].key] = num(log[d][UNSCORED[u].key]); }
+      out.push(rec);
+    }
+    out.sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+    return out;
+  }
+
+  /* ------------------------------------------------------------------ 汇总 */
+
+  function computeAll() {
+    var hist = (SEED.days || []).slice();
+    var all = mergedDays();
+    var localDates = all.filter(function (d) { return d.local; });
+    var histAgg = aggregate(hist);
+    var localAgg = aggregate(localDates);
+    var monthRate = TARGETS.month ? round(histAgg.premium / TARGETS.month * 100, 1) : 0;
+    var mdrt = round(num(TARGETS.mdrtCarry) + histAgg.premium, 2);
+    return {
+      hist: hist,
+      histAgg: histAgg,
+      local: localDates,
+      localAgg: localAgg,
+      weeks: weekRows(hist),
+      funnel: funnelOf(histAgg),
+      targetRatio: targetRatio(),
+      streakEnd: streakEndingAt(hist),
+      streakLongest: longestStreak(hist),
+      monthRate: monthRate,
+      mdrt: mdrt,
+      weekRowsAll: weekRows(all),
+      allAgg: aggregate(all)
+    };
+  }
+
+  /** 源表口径对照（用于把源模板的口径缺陷摊开讲清楚） */
+  function sourceComparison() {
+    var s = SEED.sourceTotal || {};
+    var days = SEED.days || [];
+    var hist = aggregate(days);
+    var agg30 = aggregate(days.filter(function (d, i) { return i < 28; }));
+    var wk = weekRows(days);
+    var lastWeek = wk.length ? wk[wk.length - 1] : { premium: 0, idx: 0 };
+    var srcWeeksSum = round(num(s.P), 2);
+    return {
+      /* ① 累计总分 */
+      srcTotalScore: num(s.N),
+      srcFormula: s.formula_N33 || '',
+      recomputed: hist.score,
+      recomputedRows3_30: agg30.score,
+      scoreGap: hist.score - num(s.N),
+      scoreMissed: [
+        { name: '「新增好友」整列未纳入公式', count: agg30.counts.friend,
+          lost: agg30.counts.friend * 1 },
+        { name: '「约聊增员」整列未纳入公式', count: agg30.counts.recTalk,
+          lost: agg30.counts.recTalk * 1 },
+        { name: '合计区间止于第 30 行，末 2 天（6/23、6/24）未计入',
+          count: 2, lost: hist.score - agg30.score }
+      ],
+      /* ② 周保费合计 */
+      srcPremium: srcWeeksSum,
+      srcPremiumFormula: s.formula_P33 || '',
+      recomputedPremium: hist.premium,
+      premiumGap: round(hist.premium - srcWeeksSum, 2),
+      premiumMissedWeek: { idx: lastWeek.idx, premium: lastWeek.premium },
+      /* ③ 月达标率与 MDRT */
+      srcRatio: num(s.Q),
+      srcRatioFormula: s.formula_Q33 || '',
+      recomputedRatio: hist.premium && TARGETS.month
+        ? round(hist.premium / TARGETS.month, 6) : 0,
+      srcMdrt: num(s.mdrt),
+      srcMdrtFormula: s.formula_Q34 || '',
+      recomputedMdrt: round(num(TARGETS.mdrtCarry) + hist.premium, 2),
+      /* ④ 件均 */
+      srcPerDeal: num(s.S),
+      srcPerDealFormula: s.formula_S33 || '',
+      srcCloseCount: num(s.close),
+      recomputedPerDeal: hist.perDeal,
+      recomputedCloseCount: hist.closeCount,
+      /* ⑤ 逐列对照 —— 上面四条是「结论」，这里是「证据」。
+         源表「总」行的每一列都可能与全区间重算不符，成因有三类，
+         用同一套判据机器可判，不必逐个手工核对：
+           · consistent —— 源值与全 30 天重算一致（该列正常）
+           · truncated  —— 源值等于**前 28 天**的重算值，
+                           说明 SUM 区间止于第 30 行，末 2 天被截掉
+           · excluded   —— 两者都不等，说明该列压根没进公式
+         有这张表，「求和区间止于第 30 行」这句话在页面上就是可核对的，
+         而不只是一句断言。 */
+      columns: RULES.concat(UNSCORED).map(function (r) {
+        var src = num(s[r.key]);
+        var all = hist.counts[r.key] || 0;
+        var first28 = agg30.counts[r.key] || 0;
+        var verdict = Math.abs(src - all) < 1e-9 ? 'consistent'
+          : Math.abs(src - first28) < 1e-9 ? 'truncated' : 'excluded';
+        return {
+          key: r.key, col: r.col, name: r.name,
+          pts: num(r.pts), scored: num(r.pts) > 0,
+          src: src, all: all, first28: first28,
+          gap: round(all - src, 2), verdict: verdict
+        };
+      })
+    };
+  }
+
+  /* ------------------------------------------------------------------ 导出 */
+
+  global.ACT = {
+    SEED: SEED,
+    RULES: RULES,
+    UNSCORED: UNSCORED,
+    TARGETS: TARGETS,
+    dayScore: dayScore,
+    aggregate: aggregate,
+    weekRows: weekRows,
+    funnelOf: funnelOf,
+    targetRatio: targetRatio,
+    streakEndingAt: streakEndingAt,
+    longestStreak: longestStreak,
+    mergedDays: mergedDays,
+    computeAll: computeAll,
+    sourceComparison: sourceComparison,
+    localLog: localLog,
+    saveLocalDay: saveLocalDay,
+    LS_THEME: LS_THEME,
+    helpers: { parseDay: parseDay, isoOf: isoOf, daysFromToday: daysFromToday, round: round, num: num }
+  };
+})(typeof window !== 'undefined' ? window : globalThis);
+
+/* ============================================================================
+   app.js · 公子的活动量面板 · 应用层
+   ----------------------------------------------------------------------------
+   依赖：src/data.js（权威数据）→ src/core.js（唯一口径计算）→ 本文件（渲染与交互）
+   本文件不含任何计分/聚合逻辑 —— 全部走 window.ACT，避免口径分叉（铁律 12）
+   ============================================================================ */
+(function () {
+  'use strict';
+
+  var A = window.ACT;
+  var H = A.helpers;
+  var RULES = A.RULES;
+  var UNSCORED = A.UNSCORED;
+  var charts = {};
+  var R = null;                 /* computeAll() 结果 */
+  var state = { week: 'all', band: 'all', kw: '' };
+  var todayCounts = {};         /* 今日打卡的内存状态 */
+
+  /* ========================================================================
+     ① 主题 —— 运行期唯一写入口，函数内两处锚点同写（铁律 13）
+     ======================================================================== */
+  function applyThemeAttr(name) {
+    var t = name === 'light' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+    var shell = document.querySelector('.app-shell');
+    if (shell) { shell.setAttribute('data-theme', t); }
+    return t;
+  }
+
+  function curTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  }
+
+  function setTheme(name) {
+    var t = applyThemeAttr(name);
+    try { localStorage.setItem(A.LS_THEME, t); } catch (e) {}
+    var btns = document.querySelectorAll('.theme-sw .ts-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].classList.toggle('on', btns[i].getAttribute('data-theme-set') === t);
+    }
+    /* getComputedStyle 读色值有滞后（实测约 300ms），图表重建须等沉降 */
+    setTimeout(function () { buildCharts(); }, 360);
+  }
+  window.setTheme = setTheme;
+
+  function tok(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  /* ========================================================================
+     ② 小工具
+     ======================================================================== */
+  function el(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function money(n, dp) {
+    var v = Number(n) || 0;
+    return '¥' + v.toLocaleString('zh-CN', {
+      minimumFractionDigits: dp == null ? (v % 1 ? 2 : 0) : dp,
+      maximumFractionDigits: dp == null ? 2 : dp
+    });
+  }
+  function moneyWan(n) {
+    return (Number(n) / 10000).toFixed(2);
+  }
+  function mdShort(iso) {
+    var p = iso.split('-');
+    return (+p[1]) + '/' + (+p[2]);
+  }
+  function todayISO() { return H.isoOf(new Date()); }
+  function dowOf(iso) { return A.SEED.days.length ? null : null; }
+  function toast(msg) {
+    var t = el('toast');
+    if (!t) { return; }
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._tm);
+    t._tm = setTimeout(function () { t.classList.remove('show'); }, 1900);
+  }
+
+  /* 周区间（周一–周日） */
+  function weekRangeOf(date) {
+    var d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    var wd = (d.getDay() + 6) % 7;              /* 周一 = 0 */
+    var mon = new Date(d); mon.setDate(d.getDate() - wd);
+    var sun = new Date(mon); sun.setDate(mon.getDate() + 6);
+    return { from: mon, to: sun };
+  }
+
+  /* ========================================================================
+     ③ 渲染 · KPI 概览
+     ======================================================================== */
+  function renderKPI() {
+    var a = R.histAgg;
+    var scores = R.hist.map(A.dayScore);
+    var peak = Math.max.apply(null, scores);
+    var peakIdx = scores.indexOf(peak);
+    var zero = scores.filter(function (s) { return s === 0; }).length;
+
+    el('kDays').textContent = a.days;
+    el('kDaysFoot').innerHTML = '连续 <b>' + R.streakEnd + '</b> 天 · 最长 <b>' +
+      R.streakLongest + '</b> 天';
+    el('kScore').textContent = a.score;
+    el('kScoreFoot').innerHTML = '日均 <b>' + a.avgScore + '</b> 分';
+    el('kPrem').textContent = money(a.premium);
+    el('kPremFoot').innerHTML = '人民币口径 · 件均 <b>' + money(a.perDeal) + '</b>';
+    el('kMdrt').textContent = money(R.mdrt);
+    el('kMdrtFoot').innerHTML = '含期初结余 <b>' +
+      money(A.TARGETS.mdrtCarry, 0) + '</b>';
+    el('kRate').textContent = R.monthRate + '%';
+    el('kRateFoot').innerHTML = '月目标 ' + money(A.TARGETS.month, 0) +
+      ' · 实收 <b>' + money(a.premium, 0) + '</b>';
+    el('kDeals').textContent = R.histAgg.closeCount + ' / ' + a.familyCount;
+    el('kDealsFoot').textContent = '促成签单次数 / 成交家庭数';
+    el('kPeak').textContent = peak;
+    el('kPeakFoot').innerHTML = peakIdx >= 0 ?
+      H.parseDay(R.hist[peakIdx].date).getMonth() + 1 + ' 月 ' +
+      H.parseDay(R.hist[peakIdx].date).getDate() + ' 日 · ' + R.hist[peakIdx].dow : '—';
+    el('kZero').textContent = zero;
+    el('kZeroFoot').textContent = '得分为 0 的日期';
+
+    el('ovSub').textContent = '历史样本 ' + A.SEED.meta.period.start.replace(/-/g, '/') +
+      ' – ' + A.SEED.meta.period.end.replace(/-/g, '/') +
+      ' · ' + A.SEED.meta.period.days + ' 天';
+    el('tbSub').textContent = '样本期 ' + mdShort(A.SEED.meta.period.start) +
+      ' – ' + mdShort(A.SEED.meta.period.end);
+  }
+
+  /* ========================================================================
+     ④ 渲染 · 关键洞察
+     ======================================================================== */
+  function renderInsights() {
+    var out = [];
+    var a = R.histAgg;
+
+    /* 周维度极值 */
+    var byPrem = R.weeks.slice().sort(function (x, y) { return y.premium - x.premium; });
+    var best = byPrem[0], worst = byPrem[byPrem.length - 1];
+    out.push({
+      c: 'g', i: 'fa-trophy',
+      t: '第 ' + best.idx + ' 周是保费峰值周，达标率 ' + best.rate + '%',
+      s: mdShort(best.from) + ' – ' + mdShort(best.to) + ' 入账 <b>' + money(best.premium) +
+         '</b>，占样本期总额 <em>' +
+         (a.premium ? (best.premium / a.premium * 100).toFixed(1) : '0') + '%</em>'
+    });
+    if (worst.premium < worst.target) {
+      out.push({
+        c: 'o', i: 'fa-triangle-exclamation',
+        t: '第 ' + worst.idx + ' 周未达周目标，缺口 ' + money(worst.target - worst.premium),
+        s: mdShort(worst.from) + ' – ' + mdShort(worst.to) + ' 达标率仅 <b>' +
+           worst.rate + '%</b>，该周活动量得分 <em>' + worst.score + '</em> 分'
+      });
+    }
+
+    /* 星期维度 */
+    var byDow = dowStats();
+    var sorted = byDow.filter(function (d) { return d.n > 0; })
+      .sort(function (x, y) { return y.avg - x.avg; });
+    if (sorted.length) {
+      out.push({
+        c: 'b', i: 'fa-calendar-day',
+        t: '活动量最高的是' + sorted[0].dow + '（日均 ' + sorted[0].avg + ' 分）',
+        s: '最低是' + sorted[sorted.length - 1].dow + '（日均 ' +
+           sorted[sorted.length - 1].avg + ' 分），差值 <b>' +
+           (sorted[0].avg - sorted[sorted.length - 1].avg).toFixed(1) + '</b> 分'
+      });
+    }
+
+    /* 结构失衡 */
+    var c = a.counts;
+    var serviceShare = a.score ? c.service * 1 / a.score * 100 : 0;
+    var frontShare = a.score ? (c.visit * 1 + c.need * 2) / a.score * 100 : 0;
+    out.push({
+      c: serviceShare > 25 ? 'o' : 'b', i: 'fa-scale-unbalanced',
+      t: '「客户服务」占活动量得分 ' + serviceShare.toFixed(1) + '%',
+      s: '累计 <b>' + c.service + '</b> 次、<b>' + c.service + '</b> 分；' +
+         '前端开发动作（约访 + 需求分析）合计仅占 <em>' + frontShare.toFixed(1) + '%</em>，' +
+         '收入结构偏维护、轻开拓'
+    });
+
+    /* 源表口径 */
+    var cmp = A.sourceComparison();
+    out.push({
+      c: 'r', i: 'fa-triangle-exclamation',
+      t: '源模板「总」行少计 ' + cmp.scoreGap + ' 分、' + money(cmp.premiumGap) + ' 保费',
+      s: '总分行公式为 <code>' + esc(cmp.srcFormula) + '</code>，漏计「新增好友」「约聊增员」两列且区间止于第 30 行；' +
+         '周保费公式 <code>' + esc(cmp.srcPremiumFormula) + '</code> 漏掉第 ' +
+         cmp.premiumMissedWeek.idx + ' 周。详见「源表口径校验」'
+    });
+
+    /* 连续打卡 */
+    out.push({
+      c: R.streakLongest >= 10 ? 'g' : 'b', i: 'fa-fire',
+      t: '最长连续打卡 ' + R.streakLongest + ' 天（样本期末 ' + R.streakEnd + ' 天）',
+      s: '30 天样本中零打卡 <b>' +
+         R.hist.map(A.dayScore).filter(function (s) { return s === 0; }).length +
+         '</b> 天，日均得分 <em>' + a.avgScore + '</em> 分'
+    });
+
+    el('insights').innerHTML = out.map(function (o) {
+      return '<div class="ins"><div class="ins-ico ' + o.c + '"><i class="fa-solid ' + o.i +
+        '"></i></div><div class="ins-b"><div class="ins-t">' + o.t +
+        '</div><div class="ins-s">' + o.s + '</div></div></div>';
+    }).join('');
+  }
+
+  function dowStats() {
+    var order = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+    var sum = {}, n = {};
+    order.forEach(function (d) { sum[d] = 0; n[d] = 0; });
+    R.hist.forEach(function (d) {
+      sum[d.dow] += A.dayScore(d);
+      n[d.dow] += 1;
+    });
+    return order.map(function (d) {
+      return { dow: d, sum: sum[d], n: n[d], avg: n[d] ? +(sum[d] / n[d]).toFixed(1) : 0 };
+    });
+  }
+
+  /* ========================================================================
+     ⑤ 渲染 · 源表口径校验
+     ======================================================================== */
+  function renderAudit() {
+    var c = A.sourceComparison();
+    var rows = [
+      ['累计总分', c.srcTotalScore + ' 分', c.recomputed + ' 分',
+        '公式 ' + c.srcFormula + ' 漏计「新增好友」' + c.scoreMissed[0].count +
+        ' 次（' + c.scoreMissed[0].lost + ' 分）与「约聊增员」' + c.scoreMissed[1].count +
+        ' 次（' + c.scoreMissed[1].lost + ' 分），且求和区间止于第 30 行，末 2 天 ' +
+        c.scoreMissed[2].lost + ' 分未计入'],
+      ['本期保费', money(c.srcPremium), money(c.recomputedPremium),
+        '公式 ' + c.srcPremiumFormula + ' 只累加到第 4 周，漏掉第 ' +
+        c.premiumMissedWeek.idx + ' 周 ' + money(c.premiumMissedWeek.premium)],
+      ['月达标率', (c.srcRatio * 100).toFixed(1) + '%',
+        (c.recomputedRatio * 100).toFixed(1) + '%',
+        '沿用 ' + c.srcRatioFormula + '，分母 ¥70,000；分子随保费口径修正'],
+      ['件均保费', money(c.srcPerDeal), money(c.recomputedPerDeal),
+        '源公式 ' + c.srcPerDealFormula + ' 的分母 H33=' + c.srcCloseCount +
+        ' 只统计到第 30 行；重算用全 30 天促成签单 ' + c.recomputedCloseCount + ' 次'],
+      ['计入 MDRT 总保费', money(c.srcMdrt), money(c.recomputedMdrt),
+        '源公式 ' + c.srcMdrtFormula + '；期初结余 ¥178,103 加上本期保费']
+    ];
+    var html = rows.map(function (r) {
+      return '<div class="audit-row"><div class="audit-k">' + r[0] + '</div>' +
+        '<div class="audit-v">源表 <span class="old">' + r[1] +
+        '</span> → 重算 <span class="new">' + r[2] + '</span>' +
+        '<div class="audit-why">' + esc(r[3]) + '</div></div>' +
+        '<span class="bd ' + (r[0] === '累计总分' || r[0] === '本期保费' ? 'bad' : 'warn') +
+        '">口径不一致</span></div>';
+    }).join('');
+
+    /* 逐列对照 —— 把上面的结论拆成可逐格核对的证据。
+       结论（383→454 差 70 分）说得再清楚，读者也无法在页面上验证；
+       这张表把「哪几列被截断、哪几列压根没进公式」直接摊开。 */
+    var cols = c.columns || [];
+    var VERD = {
+      consistent: ['一致', 'ok'],
+      truncated: ['区间截断', 'warn'],
+      excluded: ['未纳入公式', 'bad']
+    };
+    var colHtml = '';
+    if (cols.length) {
+      var nBad = cols.filter(function (x) { return x.verdict !== 'consistent'; }).length;
+      colHtml = '<div class="panel-head" style="margin:20px 0 10px;">' +
+        '<span class="pt" style="font-size:12.5px;">' +
+        '<i class="fa-solid fa-table-columns"></i>逐列对照（源表「总」行 vs 重算）</span>' +
+        '<span class="pl">' + cols.length + ' 列中 ' + nBad + ' 列与全区间重算不符</span></div>' +
+        '<div class="tbl-wrap"><table class="rules-tb col-tb">' +
+        '<thead><tr><th>列</th><th>计分项</th><th class="n">分值</th>' +
+        '<th class="n">源表总行</th><th class="n">前 28 天</th>' +
+        '<th class="n">全 30 天</th><th class="n">差值</th><th>判定</th></tr></thead><tbody>' +
+        cols.map(function (x) {
+          var v = VERD[x.verdict] || ['—', 'mute'];
+          return '<tr><td class="cc">' + x.col + '</td>' +
+            '<td>' + esc(x.name) + (x.scored ? '' : '<span class="nt">不计分</span>') + '</td>' +
+            '<td class="n">' + (x.scored ? x.pts : '—') + '</td>' +
+            '<td class="n">' + x.src + '</td>' +
+            '<td class="n">' + x.first28 + '</td>' +
+            '<td class="n"><b class="' + (x.verdict === 'consistent' ? '' : 'new') + '">' +
+            x.all + '</b></td>' +
+            '<td class="n">' + (x.gap ? (x.gap > 0 ? '+' + x.gap : x.gap) : '0') + '</td>' +
+            '<td><span class="bd ' + v[1] + '">' + v[0] + '</span></td></tr>';
+        }).join('') + '</tbody></table></div>';
+    }
+    el('auditBox').innerHTML = html;
+    el('auditFull').innerHTML = html + colHtml;
+  }
+
+  /* ========================================================================
+     ⑥ 渲染 · 今日打卡
+     ======================================================================== */
+  function renderToday() {
+    var iso = todayISO();
+    var log = A.localLog();
+    var rec = log[iso] || {};
+    var d = H.parseDay(iso);
+    var dow = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][d.getDay()];
+    el('todayDateLab').textContent = iso.replace(/-/g, '/') + ' ' + dow;
+
+    todayCounts = {};
+    RULES.concat(UNSCORED).forEach(function (r) {
+      todayCounts[r.key] = H.num(rec[r.key]);
+    });
+    el('todayNote').value = rec.note || '';
+
+    el('checkGrid').innerHTML = RULES.map(function (r) {
+      var v = todayCounts[r.key];
+      return '<div class="ck' + (v > 0 ? ' on' : ' zero') + '" data-key="' + r.key + '">' +
+        '<div class="ck-top"><span class="ck-nm">' + esc(r.name) +
+        '</span><span class="ck-pt">' + r.pts + ' 分</span></div>' +
+        '<div class="ck-ctl">' +
+        '<button class="ck-btn" type="button" data-d="-1"' + (v <= 0 ? ' disabled' : '') +
+        ' aria-label="减少' + esc(r.name) + '">−</button>' +
+        '<b class="ck-cnt">' + v + '</b>' +
+        '<span class="ck-unit">次</span>' +
+        '<button class="ck-btn" type="button" data-d="1" aria-label="增加' +
+        esc(r.name) + '">＋</button>' +
+        '</div>' +
+        '<div class="ck-bar"><i style="width:' + Math.min(100, v * 12) + '%"></i></div>' +
+        '<div class="ck-unit" style="margin-top:7px;">' + v + ' × ' + r.pts +
+        ' = <b style="color:var(--gold1)">' + (v * r.pts) + '</b> 分</div>' +
+        '</div>';
+    }).join('');
+
+    paintTodayScore();
+    renderWeekStrip();
+    renderWeekKPI();
+  }
+
+  function paintTodayScore() {
+    var s = 0;
+    RULES.forEach(function (r) { s += todayCounts[r.key] * r.pts; });
+    el('todayScore').textContent = s;
+    var base = R.histAgg.avgScore || 0;
+    var d = base ? ((s / base - 1) * 100) : 0;
+    el('todayCompare').innerHTML = s >= base
+      ? '高于样本日均 <b>' + base + '</b> 分，幅度 <b>+' + d.toFixed(0) + '%</b>'
+      : '距样本日均 <b>' + base + '</b> 分还差 <b>' + (base - s).toFixed(1) + '</b> 分';
+
+    /* 本周累计 */
+    var wk = weekRangeOf(new Date());
+    var log = A.localLog();
+    var sum = 0, prem = 0;
+    for (var i = 0; i < 7; i++) {
+      var dd = new Date(wk.from); dd.setDate(wk.from.getDate() + i);
+      var iso = H.isoOf(dd);
+      if (iso === todayISO()) { sum += s; prem += H.num(todayCounts.premium); continue; }
+      var rec = log[iso];
+      if (!rec) { continue; }
+      var tmp = {}; RULES.forEach(function (r) { tmp[r.key] = H.num(rec[r.key]); });
+      sum += A.dayScore(tmp);
+      prem += H.num(rec.premium);
+    }
+    el('wkScoreVal').textContent = sum;
+    el('wkPremVal').textContent = money(prem);
+    var maxScore = R.weeks.reduce(function (m, w) { return Math.max(m, w.score); }, 1);
+    el('wkScoreBar').style.width = Math.min(100, sum / maxScore * 100) + '%';
+    var tgt = A.TARGETS.weekShort;
+    el('wkPremBar').style.width = Math.min(100, prem / tgt * 100) + '%';
+    el('wkPremBar').classList.toggle('over', prem > tgt);
+  }
+
+  window.saveToday = function () {
+    var iso = todayISO();
+    var rec = { note: el('todayNote').value.trim() };
+    RULES.concat(UNSCORED).forEach(function (r) { rec[r.key] = todayCounts[r.key]; });
+    A.saveLocalDay(iso, rec);
+    var s = 0; RULES.forEach(function (r) { s += todayCounts[r.key] * r.pts; });
+    el('saveHint').innerHTML = '已于 ' + new Date().toLocaleTimeString('zh-CN', { hour12: false }) +
+      ' 保存 · 今日 <b style="color:var(--gold1)">' + s + '</b> 分';
+    refreshAll();
+    toast('打卡已保存 · ' + s + ' 分');
+  };
+
+  window.copyYesterday = function () {
+    var y = new Date(); y.setDate(y.getDate() - 1);
+    var rec = A.localLog()[H.isoOf(y)];
+    if (!rec) { toast('昨日没有打卡记录'); return; }
+    RULES.concat(UNSCORED).forEach(function (r) { todayCounts[r.key] = H.num(rec[r.key]); });
+    renderToday();
+    toast('已沿用昨日数据，记得点保存');
+  };
+
+  /* ========================================================================
+     ⑦ 渲染 · 周进度
+     ======================================================================== */
+  function renderWeekKPI() {
+    var wk = weekRangeOf(new Date());
+    var isos = [];
+    for (var i = 0; i < 7; i++) {
+      var dd = new Date(wk.from); dd.setDate(wk.from.getDate() + i);
+      isos.push(H.isoOf(dd));
+    }
+    var log = A.localLog();
+    var sum = 0, prem = 0;
+    isos.forEach(function (iso) {
+      if (iso === todayISO()) {
+        RULES.forEach(function (r) { sum += todayCounts[r.key] * r.pts; });
+        prem += H.num(todayCounts.premium);
+      } else if (log[iso]) {
+        var tmp = {}; RULES.forEach(function (r) { tmp[r.key] = H.num(log[iso][r.key]); });
+        sum += A.dayScore(tmp);
+        prem += H.num(log[iso].premium);
+      }
+    });
+    var tgt = A.TARGETS.weekShort;
+    el('wScore').textContent = sum;
+    var sampleAvg = R.weeks.length
+      ? +(R.weeks.reduce(function (s2, w) { return s2 + w.score; }, 0) / R.weeks.length).toFixed(1) : 0;
+    el('wScoreFoot').innerHTML = '样本周均 <b>' + sampleAvg + '</b> 分';
+    el('wPrem').textContent = money(prem);
+    el('wPremFoot').textContent = '目标 ' + money(tgt, 0);
+    el('wRate').textContent = (prem / tgt * 100).toFixed(1) + '%';
+    el('wRateFoot').textContent = '周目标 ' + money(tgt, 0);
+    var left = isos.filter(function (iso) { return iso >= todayISO(); }).length;
+    el('wLeft').textContent = left;
+    el('wLeftFoot').innerHTML = left ? '含今天 · 剩余 <b>' + (left - 1) + '</b> 天' : '本周已结束';
+  }
+
+  function renderWeekStrip() {
+    var wk = weekRangeOf(new Date());
+    var log = A.localLog();
+    var today = todayISO();
+    var html = '';
+    for (var i = 0; i < 7; i++) {
+      var dd = new Date(wk.from); dd.setDate(wk.from.getDate() + i);
+      var iso = H.isoOf(dd);
+      var dow = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][dd.getDay()];
+      var v = null;
+      if (iso === today) {
+        var s = 0; RULES.forEach(function (r) { s += todayCounts[r.key] * r.pts; }); v = s;
+      } else if (log[iso]) {
+        var tmp = {}; RULES.forEach(function (r) { tmp[r.key] = H.num(log[iso][r.key]); });
+        v = A.dayScore(tmp);
+      }
+      html += '<div class="ws-cell' + (iso === today ? ' now' : '') +
+        (v === null ? ' empty' : '') + '" title="' + iso + ' ' + dow + '">' +
+        '<span class="ws-dow">' + dow.slice(1) + '</span>' +
+        '<span class="ws-date">' + mdShort(iso) + '</span>' +
+        '<span class="ws-v">' + (v === null ? '—' : v) +
+        (v === null ? '' : '<small>分</small>') + '</span></div>';
+    }
+    el('weekStrip').innerHTML = html;
+    el('wstripLab').textContent = H.isoOf(wk.from).replace(/-/g, '/') + ' – ' +
+      H.isoOf(wk.to).replace(/-/g, '/');
+  }
+
+  /* --------------------------------------------------- 周汇总（可录入） */
+
+  var WS_FIELDS = ['client', 'recruit', 'study', 'manage', 'coach'];
+  var WS_LABELS = { client: '客户时间', recruit: '增员时间', study: '学习时间',
+                    manage: '管理时间', coach: '辅导时间' };
+
+  function weekStore() {
+    try { return JSON.parse(localStorage.getItem('baox.act.week') || '{}'); }
+    catch (e) { return {}; }
+  }
+  function saveWeekStore(o) {
+    try { localStorage.setItem('baox.act.week', JSON.stringify(o)); } catch (e) {}
+  }
+
+  function renderWeekSummary() {
+    var heads = A.SEED.templates.weekSummary.headers;
+    var store = weekStore();
+    el('wkHead').innerHTML = heads.map(function (h, i) {
+      return '<th' + (i >= 1 && i <= 5 ? '' : (i >= 6 && i <= 12 ? ' class="n"' : '')) +
+        '>' + esc(h) + '</th>';
+    }).join('');
+
+    var rows = R.weeks.map(function (w) { return { label: 'W' + w.idx, w: w }; });
+    var wk = weekRangeOf(new Date());
+    rows.push({
+      label: '本周',
+      live: true,
+      from: H.isoOf(wk.from), to: H.isoOf(wk.to)
+    });
+
+    el('wkBody').innerHTML = rows.map(function (row, ri) {
+      var key = row.label;
+      var st = store[key] || {};
+      var sumT = WS_FIELDS.reduce(function (s, f) { return s + H.num(st[f]); }, 0);
+      var workdays = 5;
+      var dayCount = 7;
+      var score, premium, close, fam;
+      if (row.live) {
+        var log = A.localLog(); score = 0; premium = 0; close = 0; fam = 0;
+        for (var i = 0; i < 7; i++) {
+          var dd = new Date(wk.from); dd.setDate(wk.from.getDate() + i);
+          var iso = H.isoOf(dd);
+          if (iso === todayISO()) {
+            RULES.forEach(function (r) { score += todayCounts[r.key] * r.pts; });
+            close += H.num(todayCounts.close); fam += H.num(todayCounts.family);
+            premium += H.num(todayCounts.premium);
+          } else if (log[iso]) {
+            var tmp = {}; RULES.forEach(function (r) { tmp[r.key] = H.num(log[iso][r.key]); });
+            score += A.dayScore(tmp);
+            close += H.num(log[iso].close); fam += H.num(log[iso].family);
+            premium += H.num(log[iso].premium);
+          }
+        }
+      } else {
+        score = row.w.score; premium = row.w.premium;
+        close = row.w.closeCount; fam = row.w.familyCount;
+        dayCount = row.w.dayCount;
+      }
+      return '<tr>' +
+        '<td><span class="wk-chip">' + key + '</span></td>' +
+        WS_FIELDS.map(function (f) {
+          return '<td class="ed"><input class="inp" type="number" min="0" step="0.5" ' +
+            'data-wk="' + key + '" data-f="' + f + '" value="' +
+            (st[f] === 0 || st[f] ? st[f] : '') + '" placeholder="—" aria-label="' +
+            key + ' ' + WS_LABELS[f] + '"></td>';
+        }).join('') +
+        '<td class="n">' + (sumT || '—') + '</td>' +
+        '<td class="n">' + (sumT ? (sumT / workdays).toFixed(1) : '—') + '</td>' +
+        '<td class="n">' + (sumT ? (sumT / dayCount).toFixed(1) : '—') + '</td>' +
+        '<td class="n"><b>' + score + '</b></td>' +
+        '<td class="n">' + close + '</td>' +
+        '<td class="n">' + moneyWan(premium) + '</td>' +
+        '<td>' + (st.note ? esc(st.note) : '<span style="color:var(--dim)">—</span>') + '</td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  function bindWeekInputs() {
+    el('wkBody').addEventListener('input', function (e) {
+      var t = e.target;
+      if (!t.classList || !t.classList.contains('inp')) { return; }
+      var key = t.getAttribute('data-wk'), f = t.getAttribute('data-f');
+      var store = weekStore();
+      store[key] = store[key] || {};
+      store[key][f] = t.value === '' ? '' : H.num(t.value);
+      saveWeekStore(store);
+      clearTimeout(bindWeekInputs._tm);
+      bindWeekInputs._tm = setTimeout(renderWeekSummary, 320);
+    });
+  }
+
+  /* ========================================================================
+     ⑧ 渲染 · 趋势热力
+     ======================================================================== */
+  function heatLevel(s) {
+    if (s <= 0) { return 0; }
+    if (s < 10) { return 1; }
+    if (s < 20) { return 2; }
+    if (s < 35) { return 3; }
+    return 4;
+  }
+
+  function renderHeat() {
+    var max = 0;
+    R.hist.forEach(function (d) { max = Math.max(max, A.dayScore(d)); });
+    el('heatGrid').innerHTML = R.hist.map(function (d) {
+      var s = A.dayScore(d);
+      return '<div class="heat-cell lv' + heatLevel(s) + '" title="' + d.date + ' ' + d.dow +
+        ' · ' + s + ' 分 · ' + money(d.premium) + '">' +
+        '<span class="hc-d">' + mdShort(d.date) + '</span>' +
+        '<span class="hc-v">' + s + '</span></div>';
+    }).join('');
+    el('trendSub').textContent = '30 天逐日得分强度 · 最高 ' + max + ' 分 · 均值 ' +
+      R.histAgg.avgScore + ' 分';
+  }
+
+  /* ========================================================================
+     ⑨ 渲染 · 活动量构成
+     ======================================================================== */
+  function renderMix() {
+    var a = R.histAgg;
+    var rows = RULES.map(function (r) {
+      var cnt = a.counts[r.key] || 0;
+      return { r: r, cnt: cnt, score: cnt * r.pts,
+               share: a.score ? cnt * r.pts / a.score * 100 : 0 };
+    }).sort(function (x, y) { return y.score - x.score; });
+    var top = rows[0] ? rows[0].score : 1;
+
+    el('mixBars').innerHTML = rows.map(function (o) {
+      return '<div class="mix-row"><div class="mix-nm">' + esc(o.r.name) +
+        '<em>' + o.r.pts + '分</em></div>' +
+        '<div class="mix-track"><div class="mix-fill" style="width:' +
+        (top ? o.score / top * 100 : 0) + '%"></div></div>' +
+        '<div class="mix-val"><b>' + o.score + '</b> 分<em>' +
+        o.share.toFixed(1) + '%</em></div></div>';
+    }).join('');
+
+    el('mixTbody').innerHTML = rows.map(function (o) {
+      return '<tr><td><b>' + esc(o.r.name) + '</b></td>' +
+        '<td><span class="bd mute">' + esc(o.r.group) + '</span></td>' +
+        '<td class="n">' + o.cnt + '</td>' +
+        '<td class="n">' + o.r.pts + '</td>' +
+        '<td class="n"><b>' + o.score + '</b></td>' +
+        '<td class="n">' + o.share.toFixed(1) + '%</td>' +
+        '<td class="n">' + (a.days ? (o.cnt / a.days).toFixed(2) : '0') + '</td></tr>';
+    }).join('') + UNSCORED.map(function (u) {
+      var cnt = a.counts[u.key] || 0;
+      return '<tr><td>' + esc(u.name) + '</td><td><span class="bd mute">' + esc(u.group) +
+        '</span></td><td class="n">' + cnt + '</td><td class="n">—</td>' +
+        '<td class="n z">不计分</td><td class="n z">—</td><td class="n">' +
+        (a.days ? (cnt / a.days).toFixed(2) : '0') + '</td></tr>';
+    }).join('');
+
+    el('mixSub').textContent = '加权得分合计 ' + a.score + ' 分 · 共 ' +
+      RULES.length + ' 个计分项';
+  }
+
+  /* ========================================================================
+     ⑩ 渲染 · 成功方程式
+     ======================================================================== */
+  function renderFunnel() {
+    var c = R.histAgg.counts;
+    var stages = [
+      { k: 'visit', n: '约访', i: 'fa-handshake' },
+      { k: 'need', n: '需求分析', i: 'fa-magnifying-glass-chart' },
+      { k: 'plan', n: '方案呈现', i: 'fa-file-lines' },
+      { k: 'family', n: '成交家庭', i: 'fa-house-circle-check' }
+    ];
+    var max = Math.max.apply(null, stages.map(function (s) { return c[s.k] || 0; })) || 1;
+    el('funnelBox').innerHTML = stages.map(function (s) {
+      var v = c[s.k] || 0;
+      return '<div class="fn-row"><span class="fn-stage"><i class="fa-solid ' + s.i +
+        '"></i>' + s.n + '</span>' +
+        '<div class="fn-track"><div class="fn-fill" style="width:' +
+        Math.max(4, v / max * 100) + '%">' + v + ' 次</div></div>' +
+        '<span class="fn-rate">' + (v / max * 100).toFixed(0) + '%</span></div>';
+    }).join('');
+    el('funnelNote').innerHTML =
+      '漏斗自「约访」向下**逐级放大**（约访 ' + (c.visit || 0) + ' 次 → 需求分析 ' +
+      (c.need || 0) + ' 次 → 方案呈现 ' + (c.plan || 0) + ' 次 → 成交家庭 ' +
+      (c.family || 0) + ' 个），说明上游「约访」记录相对下游动作严重偏低，' +
+      '而非转化异常。建议先补齐约访登记，再据此判断真实转化。'.replace(/\*\*/g, '');
+
+    el('fnCards').innerHTML = R.funnel.map(function (f) {
+      return '<div class="fn-card"><div class="fn-lab">' + esc(f.label) + '</div>' +
+        '<div class="fn-big">' + f.pct + '<small>%</small></div>' +
+        '<div class="fn-meta">' + f.numerator + ' / ' + f.denominator +
+        ' · 参考 <b style="color:var(--sub)">' + esc(f.ref) + '</b>' +
+        '<span class="bd ' + (f.ok ? 'ok' : 'bad') + '">' + (f.ok ? '达标' : '未达') +
+        '</span></div>' +
+        '<div class="fn-meta" style="margin-top:5px;color:var(--dim)">源表 ' + f.srcCell +
+        '（存比值 ' + f.ratio.toFixed(3) + '）</div></div>';
+    }).join('');
+
+    var tr = A.targetRatio();
+    var actual = { visit: c.visit || 0, need: c.need || 0, plan: c.plan || 0, family: c.family || 0 };
+    var base = actual.visit || 1;
+    var norm = { visit: 15, need: Math.round(actual.need / base * 15),
+                 plan: Math.round(actual.plan / base * 15),
+                 family: Math.round(actual.family / base * 15) };
+    var labels = { visit: '约访', need: '需求分析', plan: '方案呈现', family: '成交' };
+    el('ratioGrid').innerHTML = ['visit', 'need', 'plan', 'family'].map(function (k) {
+      return '<div class="ratio-cell"><div class="rc-l">' + labels[k] +
+        '</div><div class="rc-t">' + tr[k] + '</div>' +
+        '<div class="rc-a">实际（归一到约访=15）<br><b style="color:var(--text)">' +
+        norm[k] + '</b></div></div>';
+    }).join('');
+    el('ratioSrc').textContent = A.SEED.funnelRatioText;
+    el('funnelSub').textContent = '三段转化 · 口径严格镜像源模板 F35 / F36 / F37';
+  }
+
+  /* ========================================================================
+     ⑪ 渲染 · 打卡明细
+     ======================================================================== */
+  var COLS = null;
+
+  function ledgerRows() {
+    if (!COLS) {
+      COLS = [{ k: 'name', t: '日期' }, { k: 'dow', t: '星期' }, { k: 'week', t: '周次' }]
+        .concat(RULES.map(function (r) { return { k: r.key, t: r.name, n: true }; }))
+        .concat(UNSCORED.map(function (u) { return { k: u.key, t: u.name, n: true }; }))
+        .concat([{ k: 'score', t: '总分', n: true }, { k: 'premium', t: '成交保费', n: true }]);
+    }
+    return COLS;
+  }
+
+  function weekOfDate(iso) {
+    for (var i = 0; i < R.weeks.length; i++) {
+      if (R.weeks[i].days.indexOf(iso) >= 0) { return R.weeks[i]; }
+    }
+    return null;
+  }
+
+  function filterBand(s, band) {
+    if (band === 'all') { return true; }
+    if (band === 'zero') { return s <= 0; }
+    if (band === 'low') { return s >= 1 && s < 10; }
+    if (band === 'mid') { return s >= 10 && s < 20; }
+    if (band === 'high') { return s >= 20 && s < 35; }
+    if (band === 'top') { return s >= 35; }
+    return true;
+  }
+
+  function renderLedger() {
+    var cols = ledgerRows();
+    el('ledgerHead').innerHTML = cols.map(function (c) {
+      return '<th' + (c.n ? ' class="n"' : '') + '>' + esc(c.t) + '</th>';
+    }).join('');
+
+    var list = R.hist.filter(function (d) {
+      var s = A.dayScore(d);
+      if (!filterBand(s, state.band)) { return false; }
+      var w = weekOfDate(d.date);
+      if (state.week !== 'all' && (!w || String(w.idx) !== String(state.week))) { return false; }
+      if (state.kw) {
+        var hay = d.date + ' ' + d.dow + ' 第' + (w ? w.idx : '?') + '周';
+        if (hay.toLowerCase().indexOf(state.kw.toLowerCase()) < 0) { return false; }
+      }
+      return true;
+    });
+
+    var tot = { score: 0, premium: 0 };
+    RULES.forEach(function (r) { tot[r.key] = 0; });
+    UNSCORED.forEach(function (u) { tot[u.key] = 0; });
+
+    var body = list.map(function (d) {
+      var s = A.dayScore(d);
+      var w = weekOfDate(d.date);
+      tot.score += s; tot.premium += H.num(d.premium);
+      var cells = '<td><b>' + d.date.replace(/-/g, '/') + '</b></td>' +
+        '<td><span class="dow-tag">' + d.dow + '</span></td>' +
+        '<td>' + (w ? '<span class="wk-chip">W' + w.idx + '</span>' : '—') + '</td>';
+      RULES.forEach(function (r) {
+        var v = H.num(d[r.key]);
+        tot[r.key] += v;
+        cells += '<td class="n' + (v ? '' : ' z') + '">' + (v || '·') + '</td>';
+      });
+      UNSCORED.forEach(function (u) {
+        var v = H.num(d[u.key]);
+        tot[u.key] += v;
+        cells += '<td class="n' + (v ? '' : ' z') + '">' + (v || '·') + '</td>';
+      });
+      cells += '<td class="n"><b>' + s + '</b></td>' +
+        '<td class="n">' + (d.premium ? money(d.premium) : '·') + '</td>';
+      return '<tr>' + cells + '</tr>';
+    }).join('');
+
+    var totCells = '<td><b>合计 ' + list.length + ' 天</b></td><td>—</td><td>—</td>';
+    RULES.forEach(function (r) {
+      totCells += '<td class="n">' + tot[r.key] + '</td>';
+    });
+    UNSCORED.forEach(function (u) {
+      totCells += '<td class="n">' + tot[u.key] + '</td>';
+    });
+    totCells += '<td class="n">' + tot.score + '</td><td class="n">' +
+      money(tot.premium) + '</td>';
+
+    el('ledgerBody').innerHTML = body +
+      (list.length ? '<tr class="tot">' + totCells + '</tr>' : '');
+    if (!list.length) {
+      el('ledgerBody').innerHTML = '<tr><td colspan="' + cols.length +
+        '"><div class="empty"><i class="fa-solid fa-filter-circle-xmark"></i>' +
+        '当前筛选没有匹配的日期 · 再点一次已选中的标签即可取消</div></td></tr>';
+    }
+    el('ledgerSummary').textContent = '显示 ' + list.length + ' / ' + R.hist.length +
+      ' 天 · 得分合计 ' + tot.score + ' 分 · 保费 ' + money(tot.premium);
+    el('ledgerSub').textContent = '共 ' + R.hist.length + ' 天 · ' +
+      cols.length + ' 列 · 空单元格以「·」表示';
+  }
+
+  function renderWeekChips() {
+    var box = el('weekChips');
+    var html = '<span class="chip' + (state.week === 'all' ? ' sel' : '') +
+      '" data-week="all">全部</span>';
+    html += R.weeks.map(function (w) {
+      return '<span class="chip' + (String(state.week) === String(w.idx) ? ' sel' : '') +
+        '" data-week="' + w.idx + '" title="' + w.from + ' – ' + w.to + ' · ' +
+        w.dayCount + ' 天">W' + w.idx + '<em style="font-style:normal;color:var(--dim);margin-left:4px">' +
+        mdShort(w.from) + '</em></span>';
+    }).join('');
+    box.innerHTML = '<span class="f-lab">周次</span>' + html;
+  }
+
+  /* ========================================================================
+     ⑫ 渲染 · 计分说明
+     ======================================================================== */
+  function renderRules() {
+    el('rulesTbody').innerHTML = RULES.map(function (r) {
+      return '<tr><td class="rp">' + r.pts + '</td><td><b>' + esc(r.name) + '</b></td>' +
+        '<td><span class="bd mute">' + esc(r.group) + '</span></td>' +
+        '<td>' + esc(r.note) + '</td></tr>';
+    }).join('') + UNSCORED.map(function (u) {
+      return '<tr><td class="rp" style="color:var(--dim)">0</td><td>' + esc(u.name) +
+        '</td><td><span class="bd mute">' + esc(u.group) + '</span></td>' +
+        '<td>' + esc(u.note) + '</td></tr>';
+    }).join('');
+
+    var L = A.SEED.templates.weeklyLog;
+    var S = A.SEED.templates.weekSummary;
+    el('tplBox').innerHTML =
+      '<div class="tpl-box"><div class="tpl-title"><i class="fa-solid fa-clock"></i>' +
+      esc(L.title) + '<span>' + esc(A.SEED.meta.sources[0].file) + '</span></div>' +
+      '<div class="tpl-list">' +
+      '<div class="tpl-line"><b>日期行</b><span>' + esc(L.dateLine.trim() || '（填空位）') + '</span></div>' +
+      '<div class="tpl-line"><b>周列</b><span>' + L.weekdays.join(' · ') + '</span></div>' +
+      '<div class="tpl-line"><b>时间轴</b><span class="slots">' +
+      L.timeSlots.map(function (t) { return '<i>' + esc(t) + '</i>'; }).join('') +
+      '</span></div>' +
+      L.recordCats.map(function (c) {
+        return '<div class="tpl-line"><b>' + esc(c.cat) + '</b><span>' +
+          c.items.filter(Boolean).map(esc).join(' / ') + '</span></div>';
+      }).join('') +
+      '</div></div>' +
+      '<div class="tpl-box"><div class="tpl-title"><i class="fa-solid fa-table-cells"></i>' +
+      '周汇总（Sheet1）<span>' + esc(A.SEED.meta.sources[0].file) + '</span></div>' +
+      '<div class="tpl-list"><div class="tpl-line"><b>字段</b><span>' +
+      S.headers.map(function (h) { return '<i class="slots-i"></i>'; }).join('') +
+      esc(S.headers.join(' · ')) + '</span></div>' +
+      '<div class="tpl-line"><b>周次</b><span class="slots">' +
+      S.weekKeys.map(function (w) { return '<i>' + esc(w) + '</i>'; }).join('') +
+      '</span></div>' +
+      '<div class="tpl-line"><b>说明</b><span>该表原为空白骨架，本面板接管其 13 个字段：' +
+      '时间类字段可录入，活动量总分 / 成交件数 / 成交保费（万）由打卡数据自动计算。' +
+      '</span></div></div></div>';
+
+    el('rulesText').textContent = A.SEED.rulesText;
+  }
+
+  /* ========================================================================
+     ⑬ 图表（Chart.js）
+     ======================================================================== */
+  function chartFont() {
+    return { family: '-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif', size: 11 };
+  }
+
+  function gridColor() {
+    return curTheme() === 'light' ? 'rgba(90,74,42,.14)' : 'rgba(255,255,255,.07)';
+  }
+
+  function buildCharts() {
+    if (typeof Chart === 'undefined') { return; }
+    Object.keys(charts).forEach(function (k) {
+      if (charts[k]) { charts[k].destroy(); }
+    });
+    charts = {};
+
+    var text = tok('--text') || '#eee5db';
+    var sub = tok('--sub') || '#aea198';
+    var dim = tok('--dim') || '#887e76';
+    var gold = tok('--gold1') || '#edbd87';
+    var gold2 = tok('--gold2') || '#d28b57';
+    var okc = tok('--ok-fg') || '#7fc79a';
+    var badc = tok('--bad-fg') || '#ff6b60';
+    var grid = gridColor();
+    Chart.defaults.font.family = chartFont().family;
+    Chart.defaults.font.size = 11;
+    Chart.defaults.color = sub;
+
+    var labels = R.hist.map(function (d) { return mdShort(d.date); });
+    var scores = R.hist.map(A.dayScore);
+
+    /* ① 逐日得分 + 7 日移动均线 */
+    var ma = scores.map(function (_, i) {
+      var s = 0, n = 0;
+      for (var j = Math.max(0, i - 6); j <= i; j++) { s += scores[j]; n++; }
+      return +(s / n).toFixed(1);
+    });
+    var cv1 = el('chDaily');
+    if (cv1) {
+      charts.daily = new Chart(cv1.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            { label: '当日得分', data: scores, backgroundColor: gold2,
+              borderColor: gold2, borderWidth: 0, borderRadius: 2, maxBarThickness: 22,
+              order: 2 },
+            { type: 'line', label: '7 日均线', data: ma, borderColor: gold,
+              backgroundColor: gold, borderWidth: 2, pointRadius: 0,
+              tension: .35, order: 1 }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { labels: { color: sub, boxWidth: 10, boxHeight: 10, usePointStyle: true } },
+            tooltip: { callbacks: { afterBody: function (items) {
+              var i = items[0].dataIndex;
+              return '保费 ' + money(R.hist[i].premium) + ' · ' + R.hist[i].dow;
+            } } }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: dim, maxRotation: 0, autoSkipPadding: 12 } },
+            y: { beginAtZero: true, grid: { color: grid },
+                 ticks: { color: dim, precision: 0 }, border: { display: false } }
+          }
+        }
+      });
+    }
+
+    /* ② 周保费 vs 周目标 */
+    var cv2 = el('chWeekGoal');
+    if (cv2) {
+      charts.weekGoal = new Chart(cv2.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: R.weeks.map(function (w) { return 'W' + w.idx; }),
+          datasets: [
+            { label: '周保费', data: R.weeks.map(function (w) { return w.premium; }),
+              backgroundColor: R.weeks.map(function (w) {
+                return w.premium >= w.target ? okc : gold2; }),
+              borderRadius: 2, maxBarThickness: 44, order: 2 },
+            { type: 'line', label: '周目标', data: R.weeks.map(function (w) { return w.target; }),
+              borderColor: badc, borderWidth: 1.5, borderDash: [5, 4],
+              pointRadius: 0, tension: 0, order: 1 }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: sub, boxWidth: 10, boxHeight: 10, usePointStyle: true } },
+            tooltip: { callbacks: {
+              label: function (c) {
+                var w = R.weeks[c.dataIndex];
+                return c.dataset.label + '：' + money(c.parsed.y) +
+                  (c.datasetIndex === 0 ? '（达标率 ' + w.rate + '%）' : '');
+              } } }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: dim } },
+            y: { beginAtZero: true, grid: { color: grid }, border: { display: false },
+                 ticks: { color: dim, callback: function (v) { return (v / 1000) + 'k'; } } }
+          }
+        }
+      });
+    }
+
+    /* ③ 按星期平均得分 */
+    var ds = dowStats();
+    var cv3 = el('chDow');
+    if (cv3) {
+      charts.dow = new Chart(cv3.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: ds.map(function (d) { return d.dow.slice(1); }),
+          datasets: [{ label: '平均得分', data: ds.map(function (d) { return d.avg; }),
+            backgroundColor: ds.map(function (d) {
+              return d.avg >= R.histAgg.avgScore ? gold : gold2; }),
+            borderRadius: 2, maxBarThickness: 36 }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { afterBody: function (items) {
+              var d = ds[items[0].dataIndex];
+              return d.sum + ' 分 / ' + d.n + ' 天'; } } }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: dim } },
+            y: { beginAtZero: true, grid: { color: grid }, border: { display: false },
+                 ticks: { color: dim } }
+          }
+        }
+      });
+    }
+
+    /* ④ 累计得分曲线 */
+    var cum = [], acc = 0;
+    scores.forEach(function (s) { acc += s; cum.push(acc); });
+    var cv4 = el('chCum');
+    if (cv4) {
+      charts.cum = new Chart(cv4.getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: '累计得分', data: cum, borderColor: gold, borderWidth: 2,
+            backgroundColor: 'transparent', pointRadius: 0, tension: .18, fill: false
+          }, {
+            label: '理想匀速（日均 ' + R.histAgg.avgScore + '）',
+            data: scores.map(function (_, i) { return +((i + 1) * R.histAgg.avgScore).toFixed(1); }),
+            borderColor: dim, borderWidth: 1, borderDash: [4, 4], pointRadius: 0
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { labels: { color: sub, boxWidth: 10, boxHeight: 10, usePointStyle: true } } },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: dim, maxRotation: 0, autoSkipPadding: 12 } },
+            y: { beginAtZero: true, grid: { color: grid }, border: { display: false },
+                 ticks: { color: dim } }
+          }
+        }
+      });
+    }
+  }
+
+  /* 主动重算：约束只让容器能缩，Chart.js 仍需外部踢一脚才重画（铁律 5） */
+  function fitCharts() {
+    Object.keys(charts).forEach(function (k) { if (charts[k]) { charts[k].resize(); } });
+  }
+  function debounce(fn, ms) {
+    var t;
+    return function () {
+      clearTimeout(t);
+      t = setTimeout(fn, ms);
+    };
+  }
+
+  /* ========================================================================
+     ⑭ 进场动画 —— 先 show 首屏、后挂 anim-ready；threshold:0 + 存活兜底（铁律 1/2）
+     ======================================================================== */
+  function initReveal() {
+    var fits = [].slice.call(document.querySelectorAll('.fi'));
+    if (!fits.length) { return; }
+    function show(x) { x.classList.add('on'); }
+
+    if (typeof IntersectionObserver !== 'function') { fits.forEach(show); return; }
+
+    var vh = window.innerHeight || 800;
+    fits.forEach(function (x) {
+      var r = x.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) { show(x); }
+    });
+
+    document.documentElement.classList.add('anim-ready');
+
+    var ioFired = false;
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        ioFired = true;
+        if (e.isIntersecting) { show(e.target); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+    fits.forEach(function (x) { obs.observe(x); });
+
+    setTimeout(function () { if (!ioFired) { fits.forEach(show); } }, 1500);
+  }
+
+  /* ========================================================================
+     ⑮ 锚点滚动 —— 用 offsetTop 算布局位置，偏移按吸顶实测底部（铁律 11）
+     ======================================================================== */
+  function docTop(node) {
+    var y = 0, n = node;
+    while (n) { y += n.offsetTop; n = n.offsetParent; }
+    return y;
+  }
+
+  function stickyBottom() {
+    var maxB = 0;
+    var bar = document.querySelector('.sidebar');
+    if (bar && getComputedStyle(bar).position === 'fixed') {
+      maxB = Math.max(maxB, Math.round(bar.getBoundingClientRect().bottom));
+    }
+    var tb = document.querySelector('.topbar');
+    if (tb) { maxB = Math.max(maxB, Math.round(tb.getBoundingClientRect().bottom)); }
+    return maxB;
+  }
+
+  function calibrateSticky() {
+    var h = stickyBottom();
+    if (h > 0) {
+      document.documentElement.style.setProperty('--sticky-h', (h + 18) + 'px');
+    }
+    var pop = document.querySelector('.search-pop');
+    if (pop) {
+      pop.style.top = 'calc(' + (h + 4) + 'px + 100%)';
+    }
+  }
+
+  function go(hash, instant) {
+    var sec = document.querySelector(hash);
+    if (!sec) { return false; }
+    sec.classList.add('on');
+    var top = Math.max(0, docTop(sec) - stickyBottom() - 16);
+    window.scrollTo({ top: top, behavior: instant ? 'auto' : 'smooth' });
+    return true;
+  }
+
+  function initNav() {
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('a.nav-item') : null;
+      if (!a) { return; }
+      var href = a.getAttribute('href');
+      if (!href || href.charAt(0) !== '#') { return; }
+      if (go(href, false)) {
+        e.preventDefault();
+        var navs = document.querySelectorAll('.sidebar .nav-item');
+        for (var i = 0; i < navs.length; i++) { navs[i].classList.toggle('active', navs[i] === a); }
+        try { history.replaceState(null, '', href); } catch (err) {}
+      }
+    });
+
+    /* 深链：原生 hash 只认 CSS scroll-margin-top，且发生在 JS 之前。
+       这里 JS 启动后再精确校正一次（补显现 + instant 定位）。 */
+    if (location.hash && location.hash.length > 1) {
+      var target = document.querySelector(location.hash);
+      if (target && target.classList.contains('section')) {
+        target.classList.add('on');
+        setTimeout(function () { go(location.hash, true); }, 90);
+      }
+    }
+
+    /* 滚动高亮当前区块 */
+    var secs = [].slice.call(document.querySelectorAll('section.section'));
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) { return; }
+        var id = '#' + en.target.id;
+        var navs = document.querySelectorAll('.sidebar .nav-item');
+        for (var i = 0; i < navs.length; i++) {
+          navs[i].classList.toggle('active', navs[i].getAttribute('href') === id);
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+    secs.forEach(function (s) { io.observe(s); });
+  }
+
+  /* ========================================================================
+     ⑯ 搜索
+     ======================================================================== */
+  function initSearch() {
+    var input = el('searchInput');
+    var pop = el('searchPop');
+    var clear = el('searchClear');
+    if (!input || !pop) { return; }
+
+    function close() { pop.classList.remove('open'); input.setAttribute('aria-expanded', 'false'); }
+    function open() { pop.classList.add('open'); input.setAttribute('aria-expanded', 'true'); }
+
+    function run() {
+      var q = input.value.trim().toLowerCase();
+      if (!q) { close(); pop.innerHTML = ''; return; }
+      var hits = R.hist.filter(function (d) {
+        var w = weekOfDate(d.date);
+        var hay = (d.date + ' ' + d.date.replace(/-/g, '/') + ' ' + d.dow +
+          ' w' + (w ? w.idx : '') + ' 第' + (w ? w.idx : '') + '周 ' +
+          Math.round(H.parseDay(d.date).getMonth() + 1) + '月').toLowerCase();
+        return hay.indexOf(q) >= 0;
+      }).slice(0, 12);
+      pop.innerHTML = hits.length ? hits.map(function (d) {
+        var w = weekOfDate(d.date);
+        return '<button type="button" class="sp-item" data-go="' + d.date + '">' +
+          '<span class="sp-ico acc"><i class="fa-solid fa-calendar-day"></i></span>' +
+          '<span class="sp-txt"><b>' + d.date.replace(/-/g, '/') + ' · ' + d.dow + '</b>' +
+          '<em>第 ' + (w ? w.idx : '?') + ' 周 · ' + A.dayScore(d) + ' 分 · ' +
+          money(d.premium) + '</em></span>' +
+          '<span class="sp-tag acc">' + (w ? 'W' + w.idx : '—') + '</span></button>';
+      }).join('') : '<div class="sp-empty"><i class="fa-solid fa-magnifying-glass"></i>没有匹配的日期</div>';
+      open();
+    }
+
+    input.addEventListener('input', run);
+    input.addEventListener('focus', run);
+    clear.addEventListener('click', function () {
+      input.value = ''; state.kw = ''; close(); renderLedger(); input.focus();
+    });
+    pop.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('.sp-item');
+      if (!b) { return; }
+      state.kw = '';
+      input.value = '';
+      close();
+      var date = b.getAttribute('data-go');
+      var tr = el('ledgerBody').querySelector('tr');
+      go('#ledger', false);
+      toast('已定位到 ' + date.replace(/-/g, '/'));
+    });
+    document.addEventListener('click', function (e) {
+      if (!el('tbSearch').contains(e.target)) { close(); }
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { close(); } });
+  }
+
+  /* ========================================================================
+     ⑰ 导出 CSV
+     ======================================================================== */
+  window.exportCSV = function () {
+    var cols = ledgerRows();
+    var head = cols.map(function (c) { return c.t; });
+    var lines = [head.join(',')];
+    R.hist.forEach(function (d) {
+      var w = weekOfDate(d.date);
+      var row = [d.date, d.dow, w ? 'W' + w.idx : ''];
+      RULES.forEach(function (r) { row.push(H.num(d[r.key])); });
+      UNSCORED.forEach(function (u) { row.push(H.num(d[u.key])); });
+      row.push(A.dayScore(d));
+      row.push(H.num(d.premium));
+      lines.push(row.join(','));
+    });
+    var csv = '\ufeff' + lines.join('\n');
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '公子的活动量明细_' + todayISO() + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500);
+    toast('已导出 ' + R.hist.length + ' 天明细');
+  };
+
+  /* ========================================================================
+     ⑱ 绑定与启动
+     ======================================================================== */
+  function bindChips() {
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest ? e.target.closest('.chip') : null;
+      if (!t) { return; }
+      var wk = t.getAttribute('data-week');
+      var bd = t.getAttribute('data-band');
+      if (wk !== null) {
+        /* 再点一次已选中的标签 = 取消筛选（撤销动作自带可见反馈，无需「重置」按钮） */
+        state.week = (state.week === wk || (state.week !== 'all' && wk === 'all')) ? 'all' : wk;
+        renderWeekChips(); renderLedger(); return;
+      }
+      if (bd !== null) {
+        state.band = (state.band === bd) ? 'all' : bd;
+        var sib = t.parentNode.querySelectorAll('.chip');
+        for (var i = 0; i < sib.length; i++) {
+          sib[i].classList.toggle('sel',
+            sib[i].getAttribute('data-band') === state.band ||
+            (state.band === 'all' && sib[i].getAttribute('data-band') === 'all'));
+        }
+        renderLedger();
+      }
+    });
+  }
+
+  function bindToday() {
+    el('checkGrid').addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('.ck-btn') : null;
+      if (!b || b.disabled) { return; }
+      var card = b.closest('.ck');
+      var key = card.getAttribute('data-key');
+      var d = parseInt(b.getAttribute('data-d'), 10);
+      todayCounts[key] = Math.max(0, H.num(todayCounts[key]) + d);
+      var v = todayCounts[key];
+      card.classList.toggle('on', v > 0);
+      card.classList.toggle('zero', v <= 0);
+      card.querySelector('.ck-cnt').textContent = v;
+      card.querySelector('.ck-bar i').style.width = Math.min(100, v * 12) + '%';
+      var unit = card.querySelectorAll('.ck-unit');
+      var pts = 0;
+      for (var i = 0; i < RULES.length; i++) { if (RULES[i].key === key) { pts = RULES[i].pts; } }
+      if (unit.length > 1) {
+        unit[unit.length - 1].innerHTML = v + ' × ' + pts +
+          ' = <b style="color:var(--gold1)">' + (v * pts) + '</b> 分';
+      }
+      var minus = card.querySelector('.ck-btn[data-d="-1"]');
+      if (minus) { minus.disabled = v <= 0; }
+      paintTodayScore();
+      renderWeekStrip();
+      renderWeekKPI();
+    });
+
+    el('todayNote').addEventListener('input', function () { paintTodayScore(); });
+  }
+
+  function refreshAll() {
+    R = A.computeAll();
+    renderKPI();
+    renderInsights();
+    renderAudit();
+    renderToday();
+    renderWeekSummary();
+    renderHeat();
+    renderMix();
+    renderFunnel();
+    renderLedger();
+    renderRules();
+    el('nbToday').textContent = (R.histAgg.days + R.local.length) + '天';
+    buildCharts();
+  }
+
+  function boot() {
+    /* 主题：单一写入口 */
+    var saved = null;
+    try { saved = localStorage.getItem(A.LS_THEME); } catch (e) {}
+    var t = applyThemeAttr(saved === 'light' ? 'light' : 'dark');
+    var btns = document.querySelectorAll('.theme-sw .ts-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].classList.toggle('on', btns[i].getAttribute('data-theme-set') === t);
+    }
+
+    var d = new Date();
+    var dows = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    el('todayStr').textContent = d.getFullYear() + ' 年 ' + (d.getMonth() + 1) + ' 月 ' +
+      d.getDate() + ' 日 · ' + dows[d.getDay()];
+
+    refreshAll();
+    renderWeekChips();
+    bindChips();
+    bindToday();
+    bindWeekInputs();
+    initSearch();
+    initNav();
+    initReveal();
+    calibrateSticky();
+
+    window.addEventListener('resize', debounce(function () { fitCharts(); calibrateSticky(); }, 120));
+    window.addEventListener('orientationchange', debounce(function () {
+      fitCharts(); calibrateSticky();
+    }, 120));
+
+    /* 供运行期数据门禁取证（铁律 12） */
+    window.__ACT_SNAPSHOT__ = function () {
+      var r = A.computeAll();
+      return {
+        days: r.histAgg.days,
+        score: r.histAgg.score,
+        premium: r.histAgg.premium,
+        mdrt: r.mdrt,
+        monthRate: r.monthRate,
+        closeCount: r.histAgg.closeCount,
+        familyCount: r.histAgg.familyCount,
+        perDeal: r.histAgg.perDeal,
+        avgScore: r.histAgg.avgScore,
+        rowMax: Math.max.apply(null, r.hist.map(A.dayScore)),
+        rowMin: Math.min.apply(null, r.hist.map(A.dayScore)),
+        streakEnd: r.streakEnd,
+        streakLongest: r.streakLongest,
+        dayScores: r.hist.map(function (d) { return { date: d.date, s: A.dayScore(d) }; }),
+        weeks: r.weeks.map(function (w) {
+          return { idx: w.idx, score: w.score, premium: w.premium, rate: w.rate };
+        }),
+        funnel: r.funnel.map(function (f) {
+          return { srcCell: f.srcCell, ratio: f.ratio, pct: f.pct };
+        }),
+        cmp: A.sourceComparison()
+      };
+    };
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
