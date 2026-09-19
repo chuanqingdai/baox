@@ -16,7 +16,8 @@ const entries = [
   "masterclass",
   "poster",
   "tool",
-  "about"
+  "about",
+  "activity"
 ];
 
 rmSync(output, { recursive: true, force: true });
