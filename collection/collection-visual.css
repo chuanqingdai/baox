@@ -2,15 +2,13 @@
 .collection-stage{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .amber-composition{position:absolute;left:50%;top:50%;width:100%;aspect-ratio:2.2;transform:translate(-50%,-50%);isolation:isolate}
 .amber{position:absolute;width:27%;aspect-ratio:1;animation:amber-float var(--duration,8s) ease-in-out var(--delay,0s) infinite;will-change:transform}
-.amber img{display:block;width:100%;height:100%;object-fit:contain}
+.amber img{display:block;width:100%;height:100%;object-fit:contain;animation:amber-glow 10s ease-in-out var(--delay,0s) infinite;will-change:filter}
 .amber-shield{left:27%;top:0%;width:46%;z-index:3;--lift:-10%;--sway:1%;--tilt:2deg;--duration:8.5s;--delay:-2s}
 .amber-calendar{left:0%;top:15%;width:38%;--lift:-12%;--sway:-2%;--tilt:-3deg;--duration:9.2s;--delay:-5s}
 .amber-growth{left:62%;top:22%;width:38%;--lift:-15%;--sway:2%;--tilt:3deg;--duration:9.6s;--delay:-1s}
 .amber-shard-left{left:0%;top:69%;width:13%;z-index:4;--lift:-23%;--sway:6%;--tilt:8deg;--duration:7.8s;--delay:-3s}
 .amber-shard-right{left:90%;top:76%;width:11%;z-index:4;--lift:-30%;--sway:-5%;--tilt:-9deg;--duration:8.8s;--delay:-6s}
-/* Alpha mask confines moving highlights to the crystal, never its rectangular canvas. */
-.amber-light{position:absolute;inset:0;mask-image:var(--crystal);-webkit-mask-image:var(--crystal);mask-size:contain;-webkit-mask-size:contain;mask-position:center;-webkit-mask-position:center;mask-repeat:no-repeat;-webkit-mask-repeat:no-repeat;background:linear-gradient(115deg,transparent 36%,#ffe7ba55 47%,#fff7df88 50%,#ffe7ba33 54%,transparent 64%);background-size:320% 100%;mix-blend-mode:screen;opacity:.35;animation:amber-light-flow 10s ease-in-out var(--delay,0s) infinite}
 @keyframes amber-float{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(var(--sway),var(--lift)) rotate(var(--tilt))}}
-@keyframes amber-light-flow{0%,15%{background-position:150% 0;opacity:0}40%,60%{opacity:.42}85%,100%{background-position:-50% 0;opacity:0}}
-.paused .amber,.paused .amber-light{animation-play-state:paused}
-@media(prefers-reduced-motion:reduce){.amber,.amber-light{animation:none}.amber{will-change:auto}.amber-light{display:none}}
+@keyframes amber-glow{0%,100%{filter:drop-shadow(0 8px 15px #b9781824) brightness(.96)}50%{filter:drop-shadow(0 10px 24px #e5a44252) brightness(1.1)}}
+.paused .amber,.paused .amber img{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.amber,.amber img{animation:none;will-change:auto}}
