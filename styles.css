@@ -1,9 +1,9 @@
 /* Local, licensed fallback: only the Chinese display glyphs used on this page. */
-@font-face{font-family:"BAOX Song";src:url("assets/fonts/noto-serif-sc-400.ttf") format("truetype");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"BAOX Song";src:url("assets/fonts/noto-serif-sc-site-v2-400.ttf") format("truetype");font-style:normal;font-weight:400;font-display:swap}
 @font-face{font-family:"BAOX Song";src:url("assets/fonts/noto-serif-sc-500.ttf") format("truetype");font-style:normal;font-weight:500;font-display:swap}
 @font-face{font-family:"BAOX Song";src:url("assets/fonts/noto-serif-sc-700.ttf") format("truetype");font-style:normal;font-weight:700;font-display:swap}
-@font-face{font-family:"BAOX Song Heavy";src:url("assets/fonts/noto-serif-sc-900.ttf") format("truetype");font-style:normal;font-weight:900;font-display:swap}
-:root{color-scheme:dark;--ink:#000;--brand:#f0e4cc;--slogan:#d8c7a9;--english:#bcac91;--gold:#d6b365;--quiet:#737373;--song:"Songti SC","STSong","BAOX Song","Noto Serif CJK SC",SimSun,serif;--roman:Baskerville,"Times New Roman",serif;--sans:Arial,"PingFang SC","Microsoft YaHei",sans-serif;--round:ui-rounded,"SF Pro Rounded","PingFang SC","Microsoft YaHei",sans-serif}
+@font-face{font-family:"BAOX Song Heavy";src:url("assets/fonts/noto-serif-sc-site-v2-900.ttf") format("truetype");font-style:normal;font-weight:900;font-display:swap}
+:root{color-scheme:dark;--ink:#000;--brand:#f0e4cc;--slogan:#d8c7a9;--english:#bcac91;--gold:#d6b365;--quiet:#737373;--song:"BAOX Song","Songti SC","STSong","Noto Serif CJK SC",SimSun,serif;--roman:Baskerville,"Times New Roman",serif;--sans:Arial,"PingFang SC","Microsoft YaHei",sans-serif;--round:ui-rounded,"SF Pro Rounded","PingFang SC","Microsoft YaHei",sans-serif}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--ink);color:var(--brand)}
 body{-webkit-font-smoothing:antialiased;font-family:var(--sans)}

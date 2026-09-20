@@ -1,4 +1,4 @@
-@font-face{font-family:Course Song;src:url('assets/fonts/course-song.woff') format('woff');font-weight:400 900;font-display:swap}
+@font-face{font-family:Course Song;src:url('assets/fonts/course-song-site-v2-400.ttf') format('truetype');font-weight:400;font-display:swap}@font-face{font-family:Course Song;src:url('assets/fonts/course-song-site-v2-900.ttf') format('truetype');font-weight:900;font-display:swap}
 .closing-manifesto .closing-translation{font:italic 400 clamp(15px,1.55vw,23px)/1.8 Baskerville,'Times New Roman',serif;letter-spacing:.08em;color:#a9987b;margin:24px auto 0;max-width:90%;text-wrap:balance}
 @media(max-width:700px){.closing-manifesto .closing-translation{margin-top:20px;letter-spacing:.045em}}
 :root{color-scheme:dark;--gold:#d6b365;--gold-soft:#bc995c;--ivory:#f0e4cc;--quiet:#aaa59c;--line:#30291d;--song:'Course Song','Songti SC',SimSun,serif;--roman:Baskerville,'Times New Roman',serif;--body:'PingFang SC','Microsoft YaHei',sans-serif}

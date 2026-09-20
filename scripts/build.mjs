@@ -15,6 +15,7 @@ const entries = [
   "assets",
   "masterclass",
   "poster",
+  "collection",
   "tool",
   "about",
   "activity"

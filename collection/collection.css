@@ -1,0 +1,35 @@
+.collection-hero{position:relative;height:clamp(820px,70vw,1080px);overflow:hidden;background:radial-gradient(ellipse at 50% 70%,#2b1f0f80,transparent 58%)}
+.collection-hero .hero-heading{position:relative;z-index:3;text-align:center;padding-top:clamp(130px,11vw,175px);pointer-events:none}
+.collection-hero .hero-heading .eyebrow{font-size:13px;letter-spacing:.5em;margin-bottom:22px}
+.collection-hero h1{font:900 clamp(90px,13.5vw,210px)/1.08 var(--song);letter-spacing:.08em;background:linear-gradient(170deg,#efe3c7 12%,#d0b47e 70%,#ac8545);background-clip:text;-webkit-background-clip:text;color:transparent}
+.silk-orbit{position:absolute;z-index:0;left:-12%;width:124%;border:1px solid #b48f4930;border-radius:50%;pointer-events:none}
+.silk-orbit-a{top:43%;height:58%;transform:rotate(-7deg);animation:silk-a 11s ease-in-out infinite}
+.silk-orbit-b{top:49%;height:52%;transform:rotate(8deg);animation:silk-b 14s ease-in-out infinite reverse}
+@keyframes silk-a{50%{transform:rotate(3deg) translateY(16px)}}
+@keyframes silk-b{50%{transform:rotate(-2deg) translateY(-12px)}}
+.hero-cta{position:absolute;z-index:5;left:0;right:0;bottom:24px;text-align:center}
+.hero-cta .experience{display:inline-flex;justify-content:center;align-items:center;min-width:220px;min-height:58px;padding:15px 34px;border:1px solid #ad915e;border-radius:999px;color:#e4cfaa;background:linear-gradient(120deg,#30251688,#100e0bcc 55%,#30251688);box-shadow:inset 0 0 0 4px #0007,0 8px 35px #0005;font:500 16px/1.6 var(--body);transition:.35s}
+.hero-cta .experience:hover{transform:translateY(-2px);border-color:#e0c394;background:linear-gradient(120deg,#574329,#231c12 55%,#574329)}
+.cta-label{display:inline-flex;gap:.24em}
+.app-section{padding:70px 0 90px;scroll-margin-top:30px}
+.app-section-head{display:flex;align-items:end;justify-content:space-between;padding:30px 0 40px;border-top:1px solid #56472d}
+.app-section-head h2{font-size:clamp(36px,4vw,62px)}
+.app-section-head .eyebrow{font-size:11px;letter-spacing:.22em;margin-bottom:12px}
+.app-total{font:12px var(--roman);letter-spacing:.16em;color:#9c8965}
+.app-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.app-card{display:flex;flex-direction:column;min-height:445px;background:linear-gradient(135deg,#1b1a17,#111110);border:1px solid #ffffff13;border-radius:5px;overflow:hidden;transition:transform .35s,border-color .35s,background .35s}
+.app-card:hover{transform:translateY(-5px);border-color:#b5985d88;background:linear-gradient(135deg,#29241a,#151410)}
+.app-art{aspect-ratio:2/1;overflow:hidden;background:#0b0b0b}
+.app-art img{width:100%;height:100%;object-fit:cover;object-position:center 18%;transition:transform .6s ease,filter .6s ease;filter:saturate(.82) contrast(1.05)}
+.app-card:hover .app-art img{transform:scale(1.035);filter:saturate(1) contrast(1.06)}
+.card-top,.app-card h3,.app-card p,.card-link{margin-left:30px;margin-right:30px}
+.card-top{display:flex;justify-content:space-between;padding-top:26px;color:#a78e60}
+.app-index{font:italic 15px var(--roman)}
+.app-card h3{font:600 clamp(23px,2vw,30px)/1.4 var(--body);color:#eee4cf;margin-top:15px;margin-bottom:12px}
+.app-card p{font-size:13px;color:#9e9b94;line-height:1.85}
+.card-link{margin-top:auto;padding:22px 0 26px;color:#bda477;font-size:11px;letter-spacing:.1em}
+.paused .silk-orbit,.paused .collection-stage *{animation-play-state:paused!important}
+@media(max-width:1000px){.app-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.collection-hero{height:680px;min-height:85svh;max-height:850px}.collection-hero .hero-heading{padding-top:140px}.collection-hero h1{font-size:17vw}.collection-hero .hero-heading .eyebrow{font-size:10px}.hero-cta{bottom:28px}.hero-cta .experience{min-width:190px;min-height:52px;font-size:14px}.app-section{padding:35px 0 50px}.app-section-head{padding-bottom:25px}.app-grid{gap:12px}.app-card{min-height:400px}.card-top,.app-card h3,.app-card p,.card-link{margin-left:16px;margin-right:16px}.app-card h3{font-size:21px}.app-card p{font-size:12px}.app-total{font-size:10px}}
+@media(max-width:360px){.app-grid{grid-template-columns:1fr}.app-card{min-height:390px}}
+@media(prefers-reduced-motion:reduce){.silk-orbit,.collection-stage *{animation:none!important}.app-card{transition:none}}
