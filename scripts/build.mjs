@@ -18,7 +18,8 @@ const entries = [
   "collection",
   "tool",
   "about",
-  "activity"
+  "activity",
+  "zhibo"
 ];
 
 rmSync(output, { recursive: true, force: true });

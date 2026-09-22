@@ -1,0 +1,10 @@
+# 公子的直播助手 · 收录策略
+#
+# 生效条件：必须部署在「域名根目录」，即 https://你的域名/robots.txt
+#           若部署在子目录（如 https://你的域名/zhibo/），本文件不生效 ——
+#           那种情况改用页面内的 <meta name="robots" content="noindex">。
+#
+# 当前策略：允许收录。工具页被搜到无妨，也算品牌曝光。
+# 若要禁止收录，把下面的 Allow 改成 Disallow。
+User-agent: *
+Allow: /
