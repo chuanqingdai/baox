@@ -9,11 +9,26 @@
 
    口径约定
      · 单日得分 = Σ(次数 × 分值)，12 项计分项，单轮满分 23 分
-     · 统计窗口自 2026-09-18 起 30 天；周区间按**自然周**（周一–周日）切分
-       （首周 3 天、末周 6 天 —— 自然周的定义使然，不是缺陷）
-     · 各周保费目标逐周给出（默认 17500），可在「设置数据」里逐周改
+     · 统计窗口**由用户选定**（默认自种子声明的那 30 天，可在「设置数据」抽屉里
+       改起止日期，最长 90 天）；周区间按**自然周**（周一–周日）切分
+       （首周/末周可能不满 7 天 —— 自然周的定义使然，不是缺陷）
+     · 各周保费目标逐周给出（默认 17500），**按该周的起始日期**绑定存储
      · 业务指标六项手动维护；唯一派生值「季度目标完成率」
        = 本季度业绩 / 季度目标业绩 × 100%
+
+   v1.4 结构性改动 · 窗口从「种子属性」升级为「一等参数」（三处必须一起理解）
+     ① **窗口是参数，不是数据**：v1.3 及之前，窗口等于种子覆盖的那 30 天 ——
+        「换个窗口」在物理上等于「换份数据」。现在窗口是独立的 {start, end}，
+        日集合由它**推导**出来：种子覆盖到的日期取种子基线，覆盖不到的
+        是「空白天」（全 0，可正常录入）。面板因此能在种子范围之外工作。
+     ② **周目标改按起始日期存**：v1.3 存的是 {周序号: 目标}。序号是**顺序**，
+        换个窗口同一序号就是另一周 —— 用户改过的 W2 目标会在切窗口后
+        原封不动地套到别的周上（数据张冠李戴，且没有任何一处报错）。
+        日期是周的身份，序号只是它的位置。
+     ③ **窗口外的数据必须活下来**：窗口只是「看哪一段」，不是「留哪一段」。
+        覆盖层里窗口外的日期一律原样保留（diffOverlay 从既有覆盖层出发改写，
+        而不是从空对象重建），切回去即完整重现。这一条直接决定
+        「切窗口」这个动作可不可逆 —— 可逆才敢让用户随手改。
 
    两条贯穿全文件的结构约束（v1.2 立）
      ① **面板就是窗口**：种子恰好覆盖 30 天，窗口外的日期不属于本面板。
@@ -67,6 +82,41 @@
     var n = parseFloat(v);
     return isFinite(n) ? n : 0;
   }
+
+  /* --------------------------------------------------------- 日期算术工具 */
+
+  /* 星期中文名，索引 0 = 周一 —— 与 Python 的 date.weekday() 同序。
+     刻意不跟 Date.getDay()（周日=0）对齐：日期算术里「周一是一周之首」
+     出现得远比「周日是一周之首」多，两个顺序混用的代价是每处都要 -1/+1，
+     早晚会有一处漏掉，而症状只是「某天的星期显示错了一天」。 */
+  var DOW_CN = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+
+  /** 严格 ISO 日期（YYYY-MM-DD，且日期真实存在）。
+      只测格式是不够的：`2026-02-31` 格式完全正确，而 new Date(2026,1,31)
+      会静默溢出成 3/3 —— 回写比对才能挡住。窗口起止来自用户输入与
+      可被手工编辑的本机存储，这道关必须严。 */
+  function isIsoDate(s) {
+    if (typeof s !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(s)) { return false; }
+    return isoOf(parseDay(s)) === s;
+  }
+
+  /** 星期序号：0 = 周一 … 6 = 周日。 */
+  function dowIdx(iso) { return (parseDay(iso).getDay() + 6) % 7; }
+
+  function addDays(iso, n) {
+    var d = parseDay(iso);
+    d.setDate(d.getDate() + n);
+    return isoOf(d);
+  }
+
+  /** 闭区间天数（含首尾），方向无关。用整日毫秒差再 round，
+      吸收夏令时造成的 ±1 小时偏移（否则会算出 29.96 天这种值）。 */
+  function diffDays(a, b) {
+    return Math.round(Math.abs(parseDay(b) - parseDay(a)) / 86400000);
+  }
+
+  /** 该日期所在自然周的周一。 */
+  function mondayOf(iso) { return addDays(iso, -dowIdx(iso)); }
 
   /* ------------------------------------------------------- 单日 / 集合聚合 */
 
@@ -342,22 +392,174 @@
     return b;
   })();
 
-  /** 该日期是否属于本面板的统计窗口。窗口外的打卡要**说出来**，不能静默丢弃。 */
-  function inWindow(iso) { return !!BASE.byDate[iso]; }
+  /* ============================================================ 观测窗口 */
+
+  /* 窗口默认值取自**种子声明的 period**，不写死日期：
+     种子重建时（reset_seed.py）会声明一段窗口，那是「初始状态」的一部分。
+     写死日期的话，将来重建种子换了窗口，默认值会指向一段种子覆盖不到的区间，
+     而表现是「重置之后窗口还在老地方」—— 看着像没重置成功。 */
+  var WIN_DEFAULT = (function () {
+    var p = (SEED.meta && SEED.meta.period) || {};
+    var s = isIsoDate(p.start) ? p.start : '2026-09-18';
+    var e = isIsoDate(p.end) ? p.end : addDays(s, 29);
+    return { start: s, end: e };
+  })();
+
+  /* 窗口长度上限。逐日表格是「行数 = 天数」的实体表：365 行的表格在抽屉里
+     既没法读也没法填，实时合计也会显著变慢。90 天覆盖「近一季」这一最
+     常见的观察跨度。下限 1 天 —— 单日观察是合法输入，不是错误。 */
+  var WIN_MAX_DAYS = 90;
+  var WIN_MIN_DAYS = 1;
+
+  /* 当前窗口形状。**每次 applyOverlay 重算**，结构：
+       { start, end, days: [iso…], daySet: {iso:1},
+         weeks: [{idx,from,to,days,dayCount,baseTarget}] }
+     days 保序（渲染与逐日映射按它），daySet 只为 O(1) 判在窗内。 */
+  var WIN = null;
+
+  /** 按自然周（周一–周日）切分 [start, end]。
+
+      ⚠️ 本函数与 src/reset_seed.py 的 natural_weeks() 是**刻意重复**的两份实现：
+      不 import、不共享代码，只共享语义。重复在这里是**目的** —— 两份若不重复
+      就无法互相印证（expected.py 开头有同一段论证）。构建期有门禁在多个区间上
+      逐值比对它们，任何一侧改了而另一侧没跟上会立刻报错，
+      而不是等用户切窗口时才发现周次错位。
+
+      首周与末周可能不满 7 天（9/18 是周五 → 首周 3 天）。刻意**不**为残缺周
+      折算目标：折算规则是产品决策，不该由这个纯函数偷偷替用户定；
+      界面上已标出每周天数。 */
+  function naturalWeeks(start, end) {
+    var n = diffDays(start, end) + 1;
+    var buckets = [], cur = null;
+    for (var i = 0; i < n; i++) {
+      var d = addDays(start, i);
+      var mon = mondayOf(d);
+      if (!cur || cur.monday !== mon) { cur = { monday: mon, days: [] }; buckets.push(cur); }
+      cur.days.push(d);
+    }
+    return buckets.map(function (b, i) {
+      return {
+        idx: i + 1,
+        from: b.days[0],
+        to: b.days[b.days.length - 1],
+        days: b.days,
+        dayCount: b.days.length
+      };
+    });
+  }
+
+  /** 把任意输入规整成合法窗口。**只兜底、不抛错** ——
+      输入可能来自手工编辑过的本机存储（readOverlay 读的是 localStorage），
+      对脏值抛错等于把整个页面打不开；退回默认值则是可用的降级。
+      三件事：非法值回默认、起止颠倒互换、超长截断。
+      截断**有损**（窗口外的日子不参与统计），但那些日子的数据仍留在覆盖层里，
+      所以可逆 —— 正因可逆，这里才敢静默截断而不报错。 */
+  function normalizeWindow(w) {
+    var s = (w && isIsoDate(w.start)) ? w.start : WIN_DEFAULT.start;
+    var e = (w && isIsoDate(w.end)) ? w.end : WIN_DEFAULT.end;
+    if (s > e) { var t = s; s = e; e = t; }          /* ISO 串的字典序 = 时间序 */
+    if (diffDays(s, e) + 1 > WIN_MAX_DAYS) { e = addDays(s, WIN_MAX_DAYS - 1); }
+    return { start: s, end: e };
+  }
+
+  /** 构造窗口形状。纯函数：只依赖入参与 TARGETS，不读不写 SEED/存储。 */
+  function shapeWindow(w) {
+    var days = [], i;
+    var n = diffDays(w.start, w.end) + 1;
+    for (i = 0; i < n; i++) { days.push(addDays(w.start, i)); }
+    var daySet = {};
+    days.forEach(function (d) { daySet[d] = 1; });
+    var weeks = naturalWeeks(w.start, w.end);
+    weeks.forEach(function (wk) { wk.baseTarget = num(TARGETS.week); });
+    return { start: w.start, end: w.end, days: days, daySet: daySet, weeks: weeks };
+  }
+
+  /** 一条「空白天」：种子覆盖不到的日期。字段必须与种子日记录**逐键同构** ——
+      少一个键，下游的 num(rec[k]) 读到 undefined，症状是「某几天录不进去」
+      或「总分总是差一点」，而没有任何一处会报错。 */
+  function blankDay(iso) {
+    var rec = { date: iso, dow: DOW_CN[dowIdx(iso)] }, i;
+    for (i = 0; i < RULES.length; i++) { rec[RULES[i].key] = 0; }
+    for (i = 0; i < UNSCORED.length; i++) { rec[UNSCORED[i].key] = 0; }
+    rec.premium = 0;
+    rec.note = '';
+    return rec;
+  }
+
+  /** 某日期在**基线**里的值；种子覆盖不到 → 空白天（全 0）。
+      这是「窗口可以超出种子范围」这条能力的落点：基线不必存在，
+      不存在的基线就是 0，而不是 undefined。 */
+  function baseDayOf(iso) { return BASE.byDate[iso] || blankDay(iso); }
+
+  /** 该日期是否属于当前统计窗口。窗口外的打卡要**说出来**，不能静默丢弃。
+      v1.4 起窗口是动态的，所以查 WIN 而不是 BASE ——
+      查 BASE 会把「种子里的日期」一律判成在窗内，而用户可能早已把窗口挪走，
+      表现是「窗口外的日期照样能打卡成功」，且存进去的数据不参与任何统计。 */
+  function inWindow(iso) { return !!(WIN && WIN.daySet[iso]); }
+
+  /** 当前窗口（对外只读）。**不暴露 WIN 本身**：调用方就地改它会让
+      「窗口形状」与「存储里的窗口」静默脱钩，刷新后又变回去。 */
+  function currentWindow() { return WIN || shapeWindow(normalizeWindow(null)); }
+
+  /** 当前生效的窗口设置（含默认兜底），供应用层填表单。 */
+  function windowSetting() { return { start: currentWindow().start, end: currentWindow().end }; }
+
+  /** 基线覆盖的日期范围（种子的原始区间）。抽屉里要用它解释
+      「为什么有些日子是空白的」。 */
+  function baseRange() {
+    var ds = BASE.days;
+    return ds.length ? { start: ds[0].date, end: ds[ds.length - 1].date } : { start: '', end: '' };
+  }
 
   /* ------------------------------------------------------------ 覆盖层读写 */
+
+  /* 周目标覆盖层的键格式迁移（v1.3 → v1.4）：
+     v1.3 存 {周序号: 目标}，v1.4 存 {周起始日: 目标}。
+     两者的对应关系是**唯一确定**的 —— v1.3 只可能有一个窗口（种子声明的那个），
+     所以 idx → from 的映射固定，迁移不会猜错。
+
+     为什么必须迁而不是放着不管：旧键是纯数字，在 v1.4 的读取路径里
+     永远匹配不上任何一周（新代码按日期查），表面上「旧设置失效」；
+     而一旦有人为了兼容又把数字键读进来，换个窗口它就会套到**另一周**上 ——
+     静默错位。两条路都不好，所以在这里一次性搬干净并落盘。 */
+  function migrateWeekKeys(ov) {
+    var legacy = [], k;
+    for (k in ov.weeks) { if (/^\d+$/.test(k)) { legacy.push(k); } }
+    if (!legacy.length) { return false; }
+    var defWeeks = naturalWeeks(WIN_DEFAULT.start, WIN_DEFAULT.end);
+    for (var i = 0; i < legacy.length; i++) {
+      var w = defWeeks[parseInt(legacy[i], 10) - 1];
+      if (w && ov.weeks[w.from] === undefined) { ov.weeks[w.from] = ov.weeks[legacy[i]]; }
+      delete ov.weeks[legacy[i]];
+    }
+    return true;
+  }
 
   function readOverlay() {
     var o = readJSON(LS_DATA, null);
     if (!o || typeof o !== 'object') { o = {}; }
-    return { days: o.days || {}, weeks: o.weeks || {}, biz: o.biz || {} };
+    var ov = {
+      days: o.days || {},
+      weeks: o.weeks || {},
+      biz: o.biz || {},
+      /* 窗口只在**与默认不同**时才落盘（见 diffOverlay），
+         所以「ov.window 存在」恒等于「用户改过窗口」，与 overlay 的
+         整体设计（空值不落盘 → 键存在即有自定义）一致。 */
+      window: (o.window && typeof o.window === 'object') ? o.window : null
+    };
+    /* 迁移是一次性动作，写完就不再走这条分支。写在「读」里是因为
+       这是唯一能保证在任何读取路径之前发生的时机。 */
+    if (migrateWeekKeys(ov)) { writeOverlay(ov); }
+    return ov;
   }
 
-  /** 覆盖层条目总数。用来决定「恢复初始数据」按钮该不该露面。 */
+  /** 覆盖层条目总数。用来决定「恢复初始数据」按钮该不该露面。
+      窗口计入 —— 改了窗口同样属于「有改动待恢复」，
+      不计的话按钮不亮，用户就失去了把窗口改回默认的入口（铁律 15）。 */
   function overlaySize(ov) {
     ov = ov || readOverlay();
     return Object.keys(ov.days).length + Object.keys(ov.weeks).length +
-           Object.keys(ov.biz).length;
+           Object.keys(ov.biz).length + (ov.window ? 1 : 0);
   }
 
   /* 空覆盖层**不落盘**（删键）。否则会写出一个 {} —— 于是「恢复初始数据」
@@ -371,38 +573,68 @@
   }
 
   /** 覆盖层并回种子。幂等：每次都从 BASE 重放，而不是在已改值上再改。
-      全程**就地改写**（不重新赋值 SEED.days / SEED.biz 等）——
-      computeAll 与 bizMetrics 都按引用持有这些容器，换掉引用等于两边看不同的数据。 */
+      全程**就地改写**（不重新赋值 SEED.days / SEED.weeks / SEED.biz 等）——
+      computeAll / bizMetrics 以及应用层都按引用持有这些容器，
+      换掉引用等于让不同地方看到不同的数据（这是本项目反复踩过的坑）。
+
+      v1.4：日集合不再固定 30 天，而是**按当前窗口推导**。因此多了
+      「先定窗口、再按窗口重建日集合与周分块」这两步。 */
   function applyOverlay() {
     var ov = readOverlay();
     var i, k;
 
-    /* ① 逐日：整表还原成基线 */
-    for (i = 0; i < BASE.days.length; i++) {
-      var bd = BASE.days[i], node = SEED.days[i];
-      if (!node) { continue; }
-      for (k in bd) { if (k !== 'date') { node[k] = bd[k]; } }
+    /* ① 定窗口。窗口是覆盖层的一部分 ——「恢复初始数据」因此能一并恢复它；
+       导出备份也会带上它。窗口是**数据的坐标系**：同一批日数据在不同窗口下
+       总分、周数、达标率全都不同，备份不带窗口就没有意义。 */
+    WIN = shapeWindow(normalizeWindow(ov.window));
+
+    /* ② 重建日集合：窗口内每天一条。种子里有的取基线，没有的是空白天。
+       就地改写（length = 0 再 push），不换引用。 */
+    var fresh = WIN.days.map(function (iso) {
+      var b = BASE.byDate[iso];
+      return b ? JSON.parse(JSON.stringify(b)) : blankDay(iso);
+    });
+    SEED.days.length = 0;
+    for (i = 0; i < fresh.length; i++) { SEED.days.push(fresh[i]); }
+
+    /* ③ 重建周分块：周数与每周天数都随窗口变。目标默认取 TARGETS.week，
+       覆盖层按**该周的起始日**覆盖（理由见文件头 ②）。 */
+    SEED.weeks.length = 0;
+    for (i = 0; i < WIN.weeks.length; i++) {
+      var wk = WIN.weeks[i];
+      SEED.weeks.push({
+        idx: wk.idx, from: wk.from, to: wk.to, days: wk.days,
+        dayCount: wk.dayCount, baseTarget: wk.baseTarget,
+        target: (ov.weeks[wk.from] === undefined) ? wk.baseTarget : num(ov.weeks[wk.from]),
+        targetNote: '周目标 ' + ((ov.weeks[wk.from] === undefined) ? wk.baseTarget
+                                                                  : num(ov.weeks[wk.from]))
+                    + '（可逐周调整）'
+      });
     }
-    /* ② 逐日：叠加覆盖层。不认识的日期与键一律丢弃 ——
-       本机 JSON 是可以被手工编辑的，不能让它往种子里塞字段。 */
-    for (var dt in ov.days) {
-      var j = BASE.index[dt], rec = ov.days[dt];
-      if (j === undefined || !rec) { continue; }
+
+    /* ④ 叠加覆盖层的逐日值。只认**当前窗口内**的记录 —— 窗口外的历史
+       留在覆盖层里原样不动（用户切回去即完整重现），但不参与本次统计。
+       不认识的键一律丢弃：本机 JSON 是可以被手工编辑的。 */
+    for (i = 0; i < SEED.days.length; i++) {
+      var rec = ov.days[SEED.days[i].date];
+      if (!rec) { continue; }
       for (k in rec) {
         if (!DAY_KEY_SET[k]) { continue; }
-        SEED.days[j][k] = (k === 'note') ? String(rec[k] || '') : num(rec[k]);
+        SEED.days[i][k] = (k === 'note') ? String(rec[k] || '') : num(rec[k]);
       }
     }
-    /* ③ 各周保费目标 */
-    for (i = 0; i < BASE.weeks.length; i++) {
-      var bw = BASE.weeks[i], wn = SEED.weeks[i];
-      if (!wn) { continue; }
-      wn.target = (ov.weeks[bw.idx] === undefined) ? bw.target : num(ov.weeks[bw.idx]);
-    }
-    /* ④ 业务指标六项。派生值「季度目标完成率」不落盘、不在此处 ——
+
+    /* ⑤ 业务指标六项。派生值「季度目标完成率」不落盘、不在此处 ——
        它由 bizMetrics() 现算，存下来就会出现「存的率与算的率不一致」。 */
     for (k in BASE.biz) {
       BIZ[k] = (ov.biz[k] === undefined) ? BASE.biz[k] : num(ov.biz[k]);
+    }
+
+    /* ⑥ 同步 meta.period。应用层（页首副标题、侧栏、空态提示、打卡禁用文案）
+       读它来显示窗口。不同步就会出现「顶部写着 9/18–10/17、下面表格却是
+       另一个区间」这种自相矛盾的画面，而且**不报错**。 */
+    if (SEED.meta) {
+      SEED.meta.period = { start: WIN.start, end: WIN.end, days: WIN.days.length };
     }
     return ov;
   }
@@ -422,7 +654,11 @@
   function saveDay(date, rec) {
     if (!inWindow(date)) { return { ok: false, reason: 'out-of-window' }; }
     var ov = readOverlay();
-    var bd = BASE.byDate[date];
+    /* 基线用 baseDayOf 而不是 BASE.byDate：窗口可以超出种子范围，
+       那些日期的基线是「空白天」（全 0）。查 BASE.byDate 会拿到 undefined，
+       于是 num(bd[k]) 读到 NaN，判 diff 时恒为「不同」→
+       每个格子都被写进覆盖层（明明值是 0），覆盖层迅速膨胀。 */
+    var bd = baseDayOf(date);
     var diff = {}, k;
     for (k in rec) {
       if (!DAY_KEY_SET[k]) { continue; }
@@ -438,24 +674,45 @@
     return { ok: true, changed: Object.keys(diff).length };
   }
 
-  /** 把「一组完整值」diff 成覆盖层。保存与导入共用同一份判定：
-      两处各写一遍必然分叉 —— 导入的备份会多出「等于基线却仍记为改动」的幽灵键。 */
-  function diffOverlay(daysMap, bizMap, weeksMap) {
-    var ov = { days: {}, weeks: {}, biz: {} };
+  /** 把「一组完整值」diff 成覆盖层。保存、导入、改窗口共用同一份判定：
+      三处各写一遍必然分叉 —— 导入的备份会多出「等于基线却仍记为改动」的幽灵键。
 
-    BASE.days.forEach(function (bd) {
-      var src = daysMap && daysMap[bd.date];
+      winArg：窗口草稿值（应用层在抽屉里改窗口时传），不给则沿用当前落盘值。
+
+      ⚠️ 必须**从既有覆盖层出发**，不能从空对象重建（v1.4 的关键保护）：
+      窗口外的日期不在本次遍历范围内，若从空对象重建，它们会被整体抹掉 ——
+      于是「换个窗口看看」这个**纯查看动作**，会静默删掉窗口外的全部记录，
+      不可逆、无提示。用户裁定的「窗口外数据保留不删」正是落在这一行上。 */
+  function diffOverlay(daysMap, bizMap, weeksMap, winArg) {
+    var prev = readOverlay();
+    var ov = {
+      days: JSON.parse(JSON.stringify(prev.days)),
+      weeks: JSON.parse(JSON.stringify(prev.weeks)),
+      biz: {},
+      window: prev.window
+    };
+
+    var w = normalizeWindow(winArg === undefined ? prev.window : winArg);
+    var shape = shapeWindow(w);
+
+    /* 逐日：只重写**当前窗口内**的日期，其余原样留在 ov.days 里 */
+    shape.days.forEach(function (iso) {
+      var src = daysMap && daysMap[iso];
       if (!src) { return; }
+      var bd = baseDayOf(iso);
       var rec = null;
       DAY_KEYS.forEach(function (k) {
         if (!(k in src)) { return; }
         if (k === 'note') {
-          if (String(src[k] || '') !== String(bd[k] || '')) { rec = rec || {}; rec[k] = String(src[k] || ''); }
+          if (String(src[k] || '') !== String(bd[k] || '')) {
+            rec = rec || {}; rec[k] = String(src[k] || '');
+          }
           return;
         }
         if (num(src[k]) !== num(bd[k])) { rec = rec || {}; rec[k] = num(src[k]); }
       });
-      if (rec) { ov.days[bd.date] = rec; }
+      if (rec) { ov.days[iso] = rec; }
+      else { delete ov.days[iso]; }   /* 改回基线 → 移出覆盖层，不留空记录 */
     });
 
     if (bizMap) {
@@ -465,12 +722,19 @@
       }
     }
     if (weeksMap) {
-      BASE.weeks.forEach(function (bw) {
-        var v = weeksMap[bw.idx];
+      shape.weeks.forEach(function (wk) {
+        var v = weeksMap[wk.from];
         if (v === undefined) { return; }
-        if (num(v) !== num(bw.target)) { ov.weeks[bw.idx] = num(v); }
+        if (num(v) !== num(wk.baseTarget)) { ov.weeks[wk.from] = num(v); }
+        else { delete ov.weeks[wk.from]; }
       });
     }
+
+    /* 窗口：与默认一致就**不落盘**（维持「键存在 = 有自定义」这条语义，
+       否则重跑一次默认窗口也会让「恢复初始数据」按钮亮起来）。 */
+    if (w.start === WIN_DEFAULT.start && w.end === WIN_DEFAULT.end) { ov.window = null; }
+    else { ov.window = w; }
+
     return ov;
   }
 
@@ -545,6 +809,22 @@
     bizMetrics: bizMetrics,
     /* 存储层：单一存储 + 单一路径，两个写入口（saveDay / commit）都在这层 */
     inWindow: inWindow,
+    /* 窗口层（v1.4）。应用层只该「读当前窗口」或「把窗口作为草稿传给
+       diffOverlay」，不该自己算日期或拼周次 —— 那正是「两份口径」的开端。
+       naturalWeeks 暴露出来是给构建期门禁用的：Python 侧有一份刻意重复的
+       实现（reset_seed.py / expected.py），两边要在多个区间上逐值比对。 */
+    WIN_DEFAULT: WIN_DEFAULT,
+    WIN_MAX_DAYS: WIN_MAX_DAYS,
+    WIN_MIN_DAYS: WIN_MIN_DAYS,
+    naturalWeeks: naturalWeeks,
+    normalizeWindow: normalizeWindow,
+    shapeWindow: shapeWindow,
+    currentWindow: currentWindow,
+    windowSetting: windowSetting,
+    baseDayOf: baseDayOf,
+    baseRange: baseRange,
+    blankDay: blankDay,
+    DOW_CN: DOW_CN,
     readOverlay: readOverlay,
     writeOverlay: writeOverlay,
     overlaySize: overlaySize,

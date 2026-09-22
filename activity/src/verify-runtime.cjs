@@ -15,6 +15,16 @@
      与 Python 侧期望值**逐值**比对：总量、单日、单周、漏斗三段、业务指标、
      KPI 文本 —— 不是「条数相等」这种弱判定。
 
+   ⚠️ v1.4 增补：本关还守着**观测窗口口径**（第 ⑨ 节）
+     v1.4 起窗口是用户可改的一等参数，「窗口 → 日集合 → 周分块」这条链上
+     多了一份跨语言必须一致的算法：Python（expected.py / reset_seed.py）与
+     JS（core.js）各一份，刻意重复、不共享代码。周序号 idx 只是顺序不是身份，
+     所以两侧在边界上分叉不会报错、只会让周目标套到别的周上、达标率整体偏移。
+     第 ⑨ 节在 15 组区间上逐值比对归一化结果、周边界、周内逐日序列、
+     shapeWindow 自洽性与逐日不变量，把它前移到构建期。
+     **期望值缺 windows 字段时本关直接退出，不做降级跳过** ——
+     「少比几组而全绿」比不查更坏。
+
    ⚠️ 删掉「源表口径校验」之后，本关的基准降级了（必须说清楚）
      v1.1 有一节「⑦ 逐列对照」：拿源表「总」行的数值当**外部**权威，
      验证「源表在哪几列被截断」。v1.2 按指令移除该模块，那一节连同它的字段
@@ -54,6 +64,34 @@ if (!PAGE || !EXPF) {
 const pageUrl = require('url').pathToFileURL(path.resolve(PAGE)).href;
 const EXP = JSON.parse(fs.readFileSync(path.resolve(EXPF), 'utf8'));
 
+/* 窗口口径样本必须先于一切存在性检查 —— 缺了就直接退出，**不允许降级跳过**。
+   理由（本项目实测过这类反例）：把「取不到样本」写成「跳过这一节」，
+   结果是「少比了 15 组而整关全绿」，比根本不查更坏 —— 它给了你一份
+   「窗口口径已被验证」的假安全感。缺字段只可能是 expected.py 被回退了。 */
+if (!EXP.windows || !Array.isArray(EXP.windows.cases) || !EXP.windows.cases.length) {
+  console.error('!! 期望值缺少 windows 字段（窗口口径样本）。\n' +
+                '   请确认 src/expected.py 为 v1.4 及以后版本；本关不做降级跳过。');
+  process.exit(1);
+}
+
+/* 按**显示宽度**补齐后左对齐。Node 的 console.log 连 %-34s 都不支持
+   （只认 %s / %d，照抄 printf 会把格式串原样打出来），中文又占 2 列，
+   所以必须自己算：否则 15 组区间的标签会参差不齐，日志读起来费劲。 */
+const W2 = /[\u1100-\u115f\u2e80-\ua4cf\uac00-\ud7a3\uf900-\ufaff\ufe30-\ufe6f\uff00-\uff60\uffe0-\uffe6\u2013\u2014\u2190-\u2199\u2500-\u257f]/;
+const pad = (s, n) => {
+  const w = Array.from(String(s)).reduce((a, ch) => a + (W2.test(ch) ? 2 : 1), 0);
+  return String(s) + ' '.repeat(Math.max(0, n - w));
+};
+
+/* ISO 日期 → 整数天序号（UTC，避开本机时区与夏令时）。 */
+const dnum = s => Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)) / 86400000;
+
+/* 周切分的可比字符串：idx + 起止 + 天数 + 逐日序列。
+   逐日序列必须进比对 —— 只比起止的话，「周界对、内部分配错」会被放行。 */
+const wkey = ws => (ws || []).map(w =>
+  w.idx + ':' + w.from + '~' + w.to + ':' + w.dayCount).join(' | ');
+const wdays = ws => (ws || []).reduce((a, w) => a.concat(w.days), []).join(',');
+
 /* 浮点比较：ratio 这类是两套语言各自的除法结果，必须给容差；
    而 2 位小数的金额是**已四舍五入**的确定值，容差要小到能抓住 0.01 的偏差。 */
 const EPS = 1e-9;
@@ -79,8 +117,8 @@ const ok = (c, m) => { console.log((c ? '  ✅ ' : '  ❌ ') + m); if (!c) fail+
 
   /* DOM 取样**由期望值的键驱动**，不在这里再硬编码一遍 id 清单 ——
      两处各写一份，改了一处就会「少比了几张卡」而门禁照样全绿。 */
-  const got = await page.evaluate((domKeys) => {
-    const out = { snap: null, dom: {}, charted: {} };
+  const got = await page.evaluate((domKeys, winCases) => {
+    const out = { snap: null, dom: {}, charted: {}, win: null };
     if (typeof window.__ACT_SNAPSHOT__ === 'function') { out.snap = window.__ACT_SNAPSHOT__(); }
     const txt = id => {
       const e = document.getElementById(id);
@@ -91,8 +129,41 @@ const ok = (c, m) => { console.log((c ? '  ✅ ' : '  ❌ ') + m); if (!c) fail+
       const c = document.getElementById(id);
       out.charted[id] = !!(c && c.width > 0 && c.height > 0);
     });
+
+    /* 窗口口径取证（门禁 ⑨）。区间清单**由 Python 侧传进来**，不在这里重写 ——
+       理由与上面的 DOM 取样相同：两处各写一份清单，改了一处就会「少比了几组」
+       而门禁照样全绿。 */
+    if (window.ACT && typeof window.ACT.naturalWeeks === 'function') {
+      const A = window.ACT;
+      out.win = {
+        def: A.WIN_DEFAULT,
+        maxDays: A.WIN_MAX_DAYS,
+        minDays: A.WIN_MIN_DAYS,
+        seedWeeks: (A.SEED.weeks || []).map(w => ({
+          idx: w.idx, from: w.from, to: w.to, dayCount: w.dayCount, days: w.days
+        })),
+        cases: winCases.map(c => {
+          const norm = A.normalizeWindow(c.input);
+          let weeks = null, err = null;
+          try { weeks = A.naturalWeeks(norm.start, norm.end); }
+          catch (e) { err = String(e && e.message || e); }
+          /* shapeWindow 是应用层真正消费的形状（days 保序、daySet 判在窗内、
+             weeks 供周表），它必须与 naturalWeeks 自洽 —— 两者若脱钩，
+             表现是「周表说这周有 7 天，逐日表只画了 3 行」，没有任何报错。 */
+          const shape = A.shapeWindow(norm);
+          return {
+            norm: { start: norm.start, end: norm.end }, weeks: weeks, err: err,
+            sDays: shape.days.length,
+            sDaySet: Object.keys(shape.daySet).length,
+            sFirst: shape.days[0], sLast: shape.days[shape.days.length - 1],
+            sWeekSum: shape.weeks.reduce((a, w) => a + w.dayCount, 0),
+            sWeeks: shape.weeks.map(w => ({ idx: w.idx, from: w.from, to: w.to, dayCount: w.dayCount }))
+          };
+        })
+      };
+    }
     return out;
-  }, Object.keys(EXP.dom));
+  }, Object.keys(EXP.dom), EXP.windows.cases);
   await browser.close();
   try { fs.rmSync(prof, { recursive: true, force: true }); } catch (e) {}
 
@@ -204,6 +275,99 @@ const ok = (c, m) => { console.log((c ? '  ✅ ' : '  ❌ ') + m); if (!c) fail+
 
   console.log('\n⑧ 图表实例已绘制');
   Object.keys(got.charted).forEach(k => ok(got.charted[k], k + ' 画布尺寸非零'));
+
+  /* ⑨ 观测窗口口径（v1.4 增。铁律 12 对新算法的应用）
+     ------------------------------------------------------------------
+     v1.4 起窗口是用户可改的一等参数，于是「窗口 → 日集合 → 周分块」这条链上
+     多了一份**跨语言**必须一致的算法：Python 侧（expected.py / reset_seed.py）
+     与 JS 侧（core.js）各一份，刻意重复、不共享代码。
+
+     为什么必须逐值比对而不能只靠「两边写法一样」：
+       **周序号 idx 只是顺序，不是身份。** 换了窗口，同一个 idx 指向的是另一周。
+       两侧在某个边界上分叉（比如末周不满时算错一天）不会报错，只会让周目标
+       套到别的周上、达标率整体偏移，而页面一切正常 —— 与本文开头说的
+       「两份实现分叉」是同一类缺陷，只是落点在周次而不是计分。
+
+     15 组区间覆盖：默认 / 整周 / 单日下限 / 90 天上限 / 跨月 / 跨年 /
+     起点早于种子 / 完全在种子之外 / 起止颠倒 / 超上限截断（含 91 天临界）/
+     非法日期 / 一端为空 / 两端为空。清单在 expected.py 的 WINDOW_CASES，
+     **不在这里重写**（见 DOM 取样段头同一段论证）。 */
+  console.log('\n⑨ 观测窗口口径（Python 同源实现 ≡ JS，' + EXP.windows.cases.length + ' 组区间逐值比对）');
+  const PW = EXP.windows, GW = got.win;
+  if (!GW) {
+    ok(false, '页面未暴露窗口 API（ACT.naturalWeeks / ACT.normalizeWindow）—— 无法取证，按失败处理');
+  } else {
+    ok(GW.def.start === PW.default.start && GW.def.end === PW.default.end,
+       '窗口默认值（取自种子 period） ' + GW.def.start + '~' + GW.def.end +
+       ' / ' + PW.default.start + '~' + PW.default.end);
+    ok(GW.maxDays === PW.maxDays && GW.minDays === PW.minDays,
+       '窗口长度上下限 ' + GW.minDays + '~' + GW.maxDays + ' / ' + PW.minDays + '~' + PW.maxDays);
+
+    /* 默认窗口的切分必须与**种子自带的 weeks**逐值一致。
+       种子 weeks 由第三份实现（reset_seed.py）生成；Python 侧已在 build() 里
+       断言过它自己那份与种子一致，这里再把 JS 侧那份也钉到种子上 ——
+       于是三份实现被同一组期望值串起来，任何一份改动而另两份没跟上都会报错。
+       守的是「窗口默认值与种子脱钩」：它不会让任何一处报错，只会让默认窗口
+       落在种子之外，首屏全是 0，看着像「数据丢了」。 */
+    const defCase = PW.cases[0];
+    ok(defCase.label.indexOf('默认') === 0 && defCase.norm.start === PW.default.start
+       && defCase.norm.end === PW.default.end,
+       '样本首位即默认窗口（门禁自身的前提，先钉住再比）');
+    ok(wkey(GW.seedWeeks) === wkey(defCase.weeks),
+       '种子 weeks（第三份实现）≡ 默认窗口切分');
+    ok(wdays(GW.seedWeeks) === wdays(defCase.weeks),
+       '种子 weeks 逐日序列 ≡ 默认窗口逐日序列');
+
+    let cBad = 0, invBad = 0;
+    PW.cases.forEach((pc, i) => {
+      const gc = GW.cases[i], probs = [];
+      if (!gc) { probs.push('JS 侧无此项'); }
+      else {
+        if (gc.err) probs.push('抛错: ' + gc.err);
+        if (gc.norm.start !== pc.norm.start || gc.norm.end !== pc.norm.end) {
+          probs.push('归一化 ' + gc.norm.start + '~' + gc.norm.end +
+                     ' / Python ' + pc.norm.start + '~' + pc.norm.end);
+        }
+        if (wkey(gc.weeks) !== wkey(pc.weeks)) probs.push('周边界/天数不符');
+        else if (wdays(gc.weeks) !== wdays(pc.weeks)) probs.push('周内逐日序列不符');
+
+        /* shapeWindow 是应用层真正消费的形状（days 保序、daySet 判在窗内、
+           weeks 供周表）。它与 naturalWeeks 若脱钩，表现是
+           「周表说这周 7 天、逐日表只画了 3 行」，没有任何报错。 */
+        if (gc.sDays !== gc.sDaySet || gc.sDays !== gc.sWeekSum) {
+          probs.push('shapeWindow 不自洽 days=' + gc.sDays + ' daySet=' + gc.sDaySet +
+                     ' 周和=' + gc.sWeekSum);
+        }
+        if (gc.sFirst !== pc.norm.start || gc.sLast !== pc.norm.end) {
+          probs.push('shapeWindow 端点 ' + gc.sFirst + '~' + gc.sLast);
+        }
+        if (wkey(gc.sWeeks) !== wkey(pc.weeks)) probs.push('shapeWindow 周表与 naturalWeeks 脱钩');
+
+        /* 逐日不变量：覆盖完整、无重复、严格连续。长度相等但「少一天多一天」
+           可以互相抵消，所以重复与连续性要单独查，不能只比总长。 */
+        const all = (gc.weeks || []).reduce((a, w) => a.concat(w.days), []),
+              iv = [];
+        if (new Set(all).size !== all.length) iv.push('日期重复');
+        if (all.length !== gc.sDays) iv.push('覆盖 ' + all.length + ' 天 ≠ 窗口 ' + gc.sDays + ' 天');
+        if (all[0] !== gc.norm.start || all[all.length - 1] !== gc.norm.end) iv.push('未覆盖端点');
+        for (let k = 1; k < all.length; k++) {
+          if (dnum(all[k]) - dnum(all[k - 1]) !== 1) {
+            iv.push('第 ' + k + ' 处不连续 ' + all[k - 1] + '→' + all[k]); break;
+          }
+        }
+        if (iv.length) { probs.push('逐日不变量: ' + iv.join('；')); invBad++; }
+      }
+      if (probs.length) cBad++;
+      console.log('     ' + (probs.length ? '❌' : '✅') + ' ' + pad(pc.label, 46) +
+        (gc ? gc.norm.start + '~' + gc.norm.end : '—') + ' · ' +
+        (gc && gc.weeks ? gc.weeks.map(w => w.dayCount).join('+') : '—') +
+        (probs.length ? '\n        ↳ ' + probs.join('；') : ''));
+    });
+    ok(cBad === 0, PW.cases.length + ' 组区间：归一化 + 周切分 + shapeWindow 全部逐值一致' +
+       (cBad ? '（' + cBad + ' 组不符）' : ''));
+    ok(invBad === 0, '逐日不变量（覆盖完整 / 无重复 / 严格连续）全部成立' +
+       (invBad ? '（' + invBad + ' 组违反）' : ''));
+  }
 
   console.log('\nJS 错误: ' + (errs.length ? '❌ ' + errs.join(' | ') : '0 ✅'));
   if (errs.length) fail++;

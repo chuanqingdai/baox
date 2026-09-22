@@ -63,8 +63,18 @@ AVATAR   = 'assets/avatar.png'
 CSS_PATH = 'libs/fontawesome/css/all.min.css'
 JS_PATH  = 'libs/chart.js/chart.umd.min.js'
 
+# 文件名里的版本号**从 build.py 读**，不再写第二份字面量。
+# 门禁 A-5 钉的是「归档名 / 侧栏 / 页首」三处；桌面导出件是**第四处** ——
+# 写死的话，升版时它会安静地留在旧版本名上，而内容已经是新版：
+# 拿到文件的公子按文件名判断版本，看到的与页面里写的不是一个数。
+_BUILD_SRC = open(os.path.join(ROOT, 'src', 'build.py'), encoding='utf-8').read()
+_mv = re.search(r"^VERSION\s*=\s*'([^']+)'", _BUILD_SRC, re.M)
+if not _mv:
+    sys.exit('!! 无法从 src/build.py 读到 VERSION —— 导出件名会失去版本依据')
+APP_VERSION = _mv.group(1)
+
 DESKTOP  = os.path.expanduser('~/Desktop')
-OUT      = os.path.join(DESKTOP, 'activity-panel-v1.3.html')
+OUT      = os.path.join(DESKTOP, 'activity-panel-%s.html' % APP_VERSION)
 
 LINK_CSS = '<link rel="stylesheet" href="libs/fontawesome/css/all.min.css">'
 TAG_JS   = '<script src="libs/chart.js/chart.umd.min.js"></script>'

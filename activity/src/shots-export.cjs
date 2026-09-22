@@ -24,10 +24,22 @@ const ROOT = path.resolve(__dirname, '..');
 os_mkdir(path.join(ROOT, '_shots'));
 function os_mkdir(d) { if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true }); }
 
+/* 导出件的文件名里的版本号**从 build.py 读**，不写第二份字面量：
+   写死的话，升版后截图脚本会去找一个已经不存在的旧文件名，
+   报出来的是「找不到文件」—— 一个与真实原因（版本升了）无关的错。 */
+const APP_VERSION = (() => {
+  const src = fs.readFileSync(path.join(ROOT, 'src', 'build.py'), 'utf8');
+  const m = src.match(/^VERSION\s*=\s*'([^']+)'/m);
+  if (!m) { console.error('!! 无法从 src/build.py 读到 VERSION'); process.exit(1); }
+  return m[1];
+})();
+const EXPORT_HTML = path.join(process.env.HOME, 'Desktop',
+                              'activity-panel-' + APP_VERSION + '.html');
+
 const CLIP = { x: 0, y: 0, width: 1440, height: 640 };
 const TARGETS = [
   ['exp-a-dist',       path.join(ROOT, 'index.html')],
-  ['exp-b-standalone', path.join(process.env.HOME, 'Desktop', 'activity-panel-v1.3.html')]
+  ['exp-b-standalone', EXPORT_HTML]
 ];
 
 (async () => {

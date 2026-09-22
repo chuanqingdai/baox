@@ -54,6 +54,12 @@ run "第4关 真机首屏"   "$NODE" "$SKILL/check-mobile-first.cjs" "$PAGE"
 run "加验 换肤四阶段"  "$NODE" "$SKILL/check-theme.cjs" "$PAGE" "--key=$THEME_KEY"
 # 加验 · 文字可读性
 run "加验 文字对比度"  "$NODE" "$SKILL/check-contrast.cjs" "$PAGE"
+# 加验 · 原生控件可见性（伪元素的对比度 —— 对比度关扫不到它）
+#   为什么必须单列：对比度关只扫「直接含文字」的元素，而日历图标、数字框的
+#   微调箭头是浏览器画在控件**内部**的伪元素，不在 DOM 里、也没有文本节点。
+#   实测（v1.4）：米金主题下日历图标只有 1.33:1，视觉上等于没有，
+#   而当时全部十关都是绿的。
+run "加验 原生控件可见" "$PY" "$ROOT/src/check-native-controls.py" "$PAGE"
 # 加验 · 锚点遮挡（双端）
 run "加验 锚点遮挡"    "$NODE" "$SKILL/check-anchor.cjs" "$PAGE"
 # 加验 · 零外链离线渲染

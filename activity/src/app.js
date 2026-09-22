@@ -1120,14 +1120,156 @@
     { key: 'quarterPremium', label: '季度成交保费', hint: '本季度累计保费',        step: 1000 }
   ];
 
-  /** 按 idx 取基线周目标。
-      **刻意不写 A.BASE.weeks[idx - 1].target** —— 那是「数组下标恰好等于
-      idx 减一」的隐式假设。一旦周次编号方式变了（从 W0 起、或补一个汇总周），
-      它不会报错，只会静默地拿错一周的目标去比对，于是「改动」计数凭空多一项。 */
-  function bwTarget(idx) {
-    var w = null;
-    A.BASE.weeks.forEach(function (x) { if (String(x.idx) === String(idx)) { w = x; } });
-    return w ? H.num(w.target) : 0;
+  /* -------------------------------------------- 观测窗口草稿（v1.4 新增）
+     窗口是**数据的坐标系**：同一批日数据在不同窗口下，总分、周数、达标率
+     全都不同。所以抽屉里改窗口不能只改两个 input —— 逐日表格、周次切分、
+     合计行都必须按新窗口重建。
+
+     下面这一组函数只做「把窗口与草稿对应起来」，规则本身（怎么切周、
+     怎么兜底非法输入）**一律走 core.js**，应用层不自己算日期。 */
+
+  /** 一条日记录 → 草稿行（只含可编辑的键 + 备注）。 */
+  function draftRow(rec) {
+    var keys = cellNames(), o = {}, x = 0;
+    for (x = 0; x < keys.length; x++) { o[keys[x]] = H.num(rec[keys[x]]); }
+    /* 备注不在网格里显示，但**必须原样带走**：
+       保存走的是「整份覆盖层重写」，草稿里没有 note 就等于把这一天的备注
+       抹掉 —— 用户在今日打卡里写的备注，会因为他后来去设置里改了一个格子
+       而消失，而且没有任何提示。这是统一存储之后新出现的风险点，
+       旧版之所以没暴露，是因为打卡与设置本来写在两个不同的键里。 */
+    o.note = (rec.note === undefined || rec.note === null) ? '' : String(rec.note);
+    return o;
+  }
+
+  /** 某一天「当前已保存值」的样子 = 基线 + 覆盖层。
+
+      ⚠️ 重建草稿时**必须**用它，不能用基线（这是 v1.4 最容易写错的一处）：
+      某天可能此刻在窗口外（因此不在草稿里），但覆盖层里存着用户先前的记录
+      —— 用户裁定的「窗口外数据保留不删」正是这个意思。窗口一切回来，
+      若草稿从**基线**取，那些格子会显示 0；而保存时 diffOverlay 判
+      「与基线相同」→ 把覆盖层里那天的记录**删掉**。
+      症状是「换个窗口再换回来，数据没了」：不可逆、无提示，
+      而且当次操作看起来完全成功。 */
+  function savedDayOf(iso, ovDays) {
+    var row = draftRow(A.baseDayOf(iso));
+    var rec = ovDays && ovDays[iso];
+    if (rec) {
+      for (var k in rec) {
+        if (k === 'note') { row[k] = String(rec[k] || ''); }
+        else if (k in row) { row[k] = H.num(rec[k]); }
+      }
+    }
+    return row;
+  }
+
+  /** 按一个窗口形状铺满草稿。prev 为现有草稿（可为 null）。
+
+      保留 prev 的重叠部分是**正确性**要求，不是便利：用户在旧窗口里改了 20 个
+      格子，然后只想把终点往后挪一天 —— 若重建时一律从已保存值取，那 20 处
+      改动会静默归零，而画面看起来只是表格多了一行。 */
+  function fillDraft(shape, prev) {
+    var ov = A.readOverlay();
+    var days = {}, wks = {}, bizv = {}, i, k, copy;
+    for (i = 0; i < shape.days.length; i++) {
+      var iso = shape.days[i];
+      var row = (prev && prev.days[iso]) ? prev.days[iso] : savedDayOf(iso, ov.days);
+      /* 逐行**另存一份**：草稿必须与来源脱钩。共用对象的话，用户在草稿里
+         改一个格子会连带改掉 A.SEED 里那条记录 —— 于是「取消（Esc）后
+         改动仍然生效」，「预演正确、结果不对」。 */
+      copy = {};
+      for (k in row) { copy[k] = row[k]; }
+      days[iso] = copy;
+    }
+    for (i = 0; i < shape.weeks.length; i++) {
+      var wk = shape.weeks[i];
+      if (prev && prev.weeks[wk.from] !== undefined) { wks[wk.from] = prev.weeks[wk.from]; }
+      else if (ov.weeks[wk.from] !== undefined) { wks[wk.from] = H.num(ov.weeks[wk.from]); }
+      else { wks[wk.from] = H.num(wk.baseTarget); }
+    }
+    BIZ_ROWS.forEach(function (r) {
+      bizv[r.key] = prev ? H.num(prev.biz[r.key]) : H.num(A.SEED.biz[r.key]);
+    });
+    return { win: { start: shape.start, end: shape.end }, shape: shape,
+             days: days, weeks: wks, biz: bizv };
+  }
+
+  /** 当前值 → 可编辑草稿。窗口取**当前已保存**的窗口。 */
+  function buildDraft() { return fillDraft(A.currentWindow(), null); }
+
+  /** 窗口外还留着多少天记录。用来在抽屉里把「数据没被删」这件事说出来 ——
+      不说的话，用户切换窗口看到表格变短，会合理怀疑窗口外的数据已经丢了。 */
+  function outWindowDays(shape) {
+    var ov = A.readOverlay(), n = 0, k;
+    for (k in ov.days) { if (!shape.daySet[k]) { n++; } }
+    return n;
+  }
+
+  /* 快捷预设的日期算术。用 H.parseDay / H.isoOf 走本机时区，
+     不自己拼字符串 —— 月末、季度末、跨年都由 Date 兜底。 */
+  function shiftDay(iso, n) {
+    var d = H.parseDay(iso);
+    d.setDate(d.getDate() + n);
+    return H.isoOf(d);
+  }
+  function monthBounds(iso) {
+    var d = H.parseDay(iso);
+    return [H.isoOf(new Date(d.getFullYear(), d.getMonth(), 1)),
+            H.isoOf(new Date(d.getFullYear(), d.getMonth() + 1, 0))];
+  }
+  function quarterBounds(iso) {
+    var d = H.parseDay(iso), q = Math.floor(d.getMonth() / 3);
+    return [H.isoOf(new Date(d.getFullYear(), q * 3, 1)),
+            H.isoOf(new Date(d.getFullYear(), q * 3 + 3, 0))];
+  }
+  function presets() {
+    var t = todayISO();
+    var lastM = monthBounds(shiftDay(monthBounds(t)[0], -1));
+    return [
+      { key: 'd7',  label: '近 7 天',  range: [shiftDay(t, -6), t] },
+      { key: 'd30', label: '近 30 天', range: [shiftDay(t, -29), t] },
+      { key: 'tm',  label: '本月',     range: monthBounds(t) },
+      { key: 'lm',  label: '上月',     range: lastM },
+      { key: 'tq',  label: '本季度',   range: quarterBounds(t) }
+    ];
+  }
+
+  /** 日期框 / 预设按钮 → 重建草稿。窗口规则全在 core.js（唯一口径），
+      这里只负责「把用户意图转成一次 normalize + 重建」，以及**把兜底说出来**：
+      起止颠倒被对调、超 90 天被截断，都必须让用户看见 ——
+      静默改写输入，下次打开抽屉日期与自己填的不一样，会以为界面记错了。 */
+  function setWindowDraft(raw) {
+    if (!DRAFT) { return; }
+    var notices = [];
+    if (raw.start && raw.end && raw.start > raw.end) { notices.push('起止颠倒，已自动对调'); }
+    if (raw.start && raw.end && raw.end >= raw.start) {
+      var span = Math.round((H.parseDay(raw.end) - H.parseDay(raw.start)) / 86400000) + 1;
+      if (span > A.WIN_MAX_DAYS) {
+        notices.push(span + ' 天超过 ' + A.WIN_MAX_DAYS + ' 天上限，已截到 ' + A.WIN_MAX_DAYS + ' 天');
+      }
+    }
+    var norm = A.normalizeWindow(raw);
+    /* 落在默认窗口上就不必重建 DOM（日期框连点两下、或点了「本月」又点回来
+       都会走到这里）—— 重建会丢焦点，而这些点击本来什么都不该发生。 */
+    if (norm.start === DRAFT.win.start && norm.end === DRAFT.win.end) {
+      if (notices.length) { toast(notices.join(' · ')); }
+      return;
+    }
+    DRAFT = fillDraft(A.shapeWindow(norm), DRAFT);
+    buildSettings();
+    if (notices.length) { toast(notices.join(' · ')); }
+  }
+
+  function onWindowChange(e) {
+    var t = e.target;
+    if (!t || !t.getAttribute) { return; }
+    var f = t.getAttribute('data-win');
+    if (!f) { return; }
+    var raw = { start: DRAFT.win.start, end: DRAFT.win.end };
+    raw[f] = t.value;
+    /* 清空日期框（value 为空）交给 normalizeWindow 兜底成默认值 ——
+       与「用户手工清空」的直觉一致：空 = 用默认。 */
+    if (!raw.start || !raw.end) { raw = { start: raw.start, end: raw.end }; }
+    setWindowDraft(raw);
   }
 
   function cellKeys() { return RULES.concat(UNSCORED); }
@@ -1145,36 +1287,46 @@
      保留这段墓碑说明，是因为「这一层为什么没有存储实现」会被反复问到，
      而一个只有结论没有原因的注释，下一个人会当成疏漏直接补回去。 */
 
-  /** 当前值 → 可编辑草稿（只含允许编辑的键）。
-      取值来源是 **A.SEED 当前值**（覆盖层已并回），而不是「基线 + 覆盖层」——
-      两者对网格里的键等价，但对**备注**不等价，见下。 */
-  function buildDraft() {
-    var keys = cellNames();
-    var days = {};
-    A.SEED.days.forEach(function (d) {
-      var o = {}, x = 0;
-      for (x = 0; x < keys.length; x++) { o[keys[x]] = H.num(d[keys[x]]); }
-      /* 备注不在网格里显示，但**必须原样带走**：
-         保存走的是「整份覆盖层重写」，草稿里没有 note 就等于把这一天的备注
-         抹掉 —— 用户在今日打卡里写的备注，会因为他后来去设置里改了一个格子
-         而消失，而且没有任何提示。这是统一存储之后新出现的风险点，
-         旧版之所以没暴露，是因为打卡与设置本来写在两个不同的键里。 */
-      o.note = (d.note === undefined || d.note === null) ? '' : String(d.note);
-      days[d.date] = o;
-    });
-    var wks = {};
-    A.SEED.weeks.forEach(function (w) { wks[w.idx] = H.num(w.target); });
-    var bizv = {};
-    BIZ_ROWS.forEach(function (r) { bizv[r.key] = H.num(A.SEED.biz[r.key]); });
-    return { days: days, weeks: wks, biz: bizv };
-  }
-
   /* ------------------------------------------------------------ 渲染抽屉 */
 
   function buildSettings() {
-    var b = A.BASE;
+    var win = DRAFT.shape;
     var keys = cellKeys();
     var html = '';
+
+    /* ⓪ 观测窗口 —— 放在最前：窗口是**数据的坐标系**，它决定下面每一组的
+       日集合与周次切分。排在业务指标之后的话，用户改完日期往下滚，
+       会发现自己刚填的表格已经换成另一段区间了，而滚动条不告诉他这件事。 */
+    var outN = outWindowDays(win);
+    html += '<div class="set-group"><div class="set-group-title">观测窗口' +
+      '<span>决定逐日表格与周次切分 · 1–' + A.WIN_MAX_DAYS + ' 天</span></div>' +
+      '<div class="win-presets">' +
+      presets().map(function (p) {
+        var on = (p.range[0] === win.start && p.range[1] === win.end);
+        return '<button type="button" class="win-p' + (on ? ' sel' : '') + '" data-preset="' +
+          p.key + '" title="' + p.range[0] + ' – ' + p.range[1] + '">' + p.label + '</button>';
+      }).join('') +
+      '</div>' +
+      '<div class="set-row"><label class="set-label" for="winStart">起始日期' +
+      '<em>窗口第一天所在的那一周算首周</em></label>' +
+      '<input class="set-input set-date" id="winStart" type="date" value="' + win.start +
+      '" data-win="start" aria-label="观测窗口起始日期"></div>' +
+      '<div class="set-row"><label class="set-label" for="winEnd">结束日期' +
+      '<em>末日不足一周时为末周</em></label>' +
+      '<input class="set-input set-date" id="winEnd" type="date" value="' + win.end +
+      '" data-win="end" aria-label="观测窗口结束日期"></div>' +
+      '<div class="set-row"><label class="set-label">当前窗口' +
+      '<em>改日期后逐日表格会立刻按新窗口重建，重叠部分的已填值保留</em></label>' +
+      '<output class="set-ro" id="winInfo">' + win.days.length + ' 天 · ' +
+      win.weeks.length + ' 周</output></div>' +
+      '<div class="dg-note" id="winNote">周次按自然周（周一–周日）切分：' +
+      win.weeks.map(function (w, i) {
+        return 'W' + w.idx + ' ' + w.from.slice(5).replace('-', '/') + '–' +
+          w.to.slice(5).replace('-', '/') + '（' + w.dayCount + '天）';
+      }).join(' · ') +
+      (outN ? '<br>窗口外另有 <b>' + outN + ' 天</b>记录：它们<b>不会被删除</b>，' +
+        '把窗口调回去即完整重现。' : '') +
+      '</div></div>';
 
     /* ① 业务指标：六项手动 + 两项只读派生。
        只读的两项刻意用 <output> 而不是 disabled 的 <input>：
@@ -1199,21 +1351,25 @@
       '</div>';
 
     /* ② 各周保费目标 —— 源模板是**逐周**给的（W1 首周 4 天 8750，W5 末周 5 天也 8750），
-       不能归纳成「首周 / 常规周」两个值：那样一改就会把 W5 改错。 */
+       不能归纳成「首周 / 常规周」两个值：那样一改就会把 W5 改错。
+
+       ⚠️ v1.4：周目标按**该周起始日**存取（键 = wk.from），不再用周序号。
+       周序号只是**顺序**、不是身份 —— 换了窗口，同一个 W2 指向的是另一周，
+       按序号存会让目标套到别的周上，达标率整体偏移，而且不报错。 */
     html += '<div class="set-group"><div class="set-group-title">各周保费目标' +
-      '<span>对应「周保费 vs 周目标」图</span></div>' +
-      b.weeks.map(function (w) {
-        return '<div class="set-row"><label class="set-label" for="sw-' + w.idx + '">W' + w.idx +
+      '<span>对应「周保费 vs 周目标」图 · 随窗口重切</span></div>' +
+      win.weeks.map(function (w) {
+        return '<div class="set-row"><label class="set-label" for="sw-' + w.from + '">W' + w.idx +
           '<em>' + w.from.replace(/-/g, '/') + ' – ' + w.to.replace(/-/g, '/') + ' · ' +
           w.dayCount + ' 天</em></label>' +
-          '<input class="set-input" id="sw-' + w.idx + '" type="number" min="0" step="500" value="' +
-          DRAFT.weeks[w.idx] + '" data-wkt="' + w.idx + '" aria-label="W' + w.idx +
+          '<input class="set-input" id="sw-' + w.from + '" type="number" min="0" step="500" value="' +
+          DRAFT.weeks[w.from] + '" data-wkt="' + w.from + '" aria-label="W' + w.idx +
           ' 周保费目标"></div>';
       }).join('') + '</div>';
 
     /* ③ 逐日数据网格（吸顶表头 + 吸顶日期列 + 吸顶合计行） */
     html += '<div class="set-group"><div class="set-group-title">逐日数据' +
-      '<span>' + period().days + ' 天 × ' + keys.length +
+      '<span>' + win.days.length + ' 天 × ' + keys.length +
       ' 项 + 当日保费 · 改动过的格子亮金色描边</span></div>' +
       '<div class="dg-wrap"><table class="dg-tb"><thead><tr><th class="dg-d">日期</th>' +
       keys.map(function (r) {
@@ -1222,18 +1378,19 @@
       }).join('') +
       '<th class="n" title="当日成交保费（元）">保费</th><th class="n">得分</th>' +
       '</tr></thead><tbody>' +
-      b.days.map(function (d) {
-        return '<tr><td class="dg-d">' + d.date.slice(5).replace('-', '/') +
+      win.days.map(function (iso) {
+        var d = A.baseDayOf(iso);
+        return '<tr><td class="dg-d">' + iso.slice(5).replace('-', '/') +
           '<em>' + esc(d.dow || '') + '</em></td>' +
           keys.map(function (r) {
             return '<td class="n"><input class="dg-in" type="number" min="0" step="1" value="' +
-              DRAFT.days[d.date][r.key] + '" data-d="' + d.date + '" data-k="' + r.key +
-              '" aria-label="' + d.date + ' ' + esc(r.name) + '"></td>';
+              DRAFT.days[iso][r.key] + '" data-d="' + iso + '" data-k="' + r.key +
+              '" aria-label="' + iso + ' ' + esc(r.name) + '"></td>';
           }).join('') +
           '<td class="n"><input class="dg-in wide" type="number" min="0" step="1000" value="' +
-          DRAFT.days[d.date].premium + '" data-d="' + d.date + '" data-k="premium" aria-label="' +
-          d.date + ' 当日保费"></td>' +
-          '<td class="n dg-sc" data-sc="' + d.date + '">—</td></tr>';
+          DRAFT.days[iso].premium + '" data-d="' + iso + '" data-k="premium" aria-label="' +
+          iso + ' 当日保费"></td>' +
+          '<td class="n dg-sc" data-sc="' + iso + '">—</td></tr>';
       }).join('') + '</tbody><tfoot><tr><td class="dg-d">合计</td>' +
       keys.map(function (r) { return '<td class="n" data-ft="' + r.key + '">—</td>'; }).join('') +
       '<td class="n" data-ft="premium">—</td><td class="n" data-ft="score">—</td>' +
@@ -1251,7 +1408,7 @@
     keys.forEach(function (r) { DG.foot[r.key] = body.querySelector('[data-ft="' + r.key + '"]'); });
     DG.foot.premium = body.querySelector('[data-ft="premium"]');
     DG.foot.score = body.querySelector('[data-ft="score"]');
-    b.days.forEach(function (d) { DG.sc[d.date] = body.querySelector('[data-sc="' + d.date + '"]'); });
+    win.days.forEach(function (iso) { DG.sc[iso] = body.querySelector('[data-sc="' + iso + '"]'); });
 
     refreshSettings();
   }
@@ -1277,11 +1434,14 @@
       (chg ? ' style="color:var(--gold1)"' : '') + '>' + f(b) + '</b></span>';
   }
 
+  /** 草稿相对**基线**的改动量。基线用 A.baseDayOf —— 窗口可以超出种子范围，
+      那些日期的基线是「全 0 空白天」；查 A.BASE.byDate 会拿到 undefined，
+      然后 H.num(undefined)=0 恰好也算对，但一旦哪天基线改成非零就会静默错位。 */
   function countDirty() {
     var cells = 0, days = 0, tgt = 0;
     var keys = cellNames();
-    A.BASE.days.forEach(function (bd) {
-      var dr = DRAFT.days[bd.date], n = 0;
+    DRAFT.shape.days.forEach(function (iso) {
+      var dr = DRAFT.days[iso], bd = A.baseDayOf(iso), n = 0;
       keys.forEach(function (k) { if (H.num(dr[k]) !== H.num(bd[k])) { n++; } });
       if (n) { days++; cells += n; }
     });
@@ -1290,23 +1450,33 @@
     BIZ_ROWS.forEach(function (r) {
       if (H.num(DRAFT.biz[r.key]) !== H.num(A.BASE.biz[r.key])) { tgt++; }
     });
-    A.BASE.weeks.forEach(function (bw) {
-      if (H.num(DRAFT.weeks[bw.idx]) !== H.num(bw.target)) { tgt++; }
+    /* 周目标按**周起始日**比对：基线的周次是种子声明的那一段，草稿的周次
+       随窗口重切，两边只有按日期才对齐得上（按序号比会把「换窗口后
+       W2 其实是另一周」算成改动，凭空多计数）。 */
+    DRAFT.shape.weeks.forEach(function (wk) {
+      if (H.num(DRAFT.weeks[wk.from]) !== H.num(wk.baseTarget)) { tgt++; }
     });
     return { cells: cells, days: days, tgt: tgt };
   }
 
-  /** 实时合计 + 重算预演。30 天 × 12 项的重算是纯算术，无需防抖到「感觉迟钝」的程度；
-      130ms 只是为了让连续输入时不在每个 keydown 都重排一次 DOM。 */
+  /** 实时合计 + 重算预演。90 天 × 12 项的重算是纯算术，无需防抖到「感觉迟钝」的程度；
+      130ms 只是为了让连续输入时不在每个 keydown 都重排一次 DOM。
+
+      ⚠️ 「原值」必须按**草稿窗口**重算基线聚合并与草稿比 —— 不能用
+      A.BASE.agg（那是固定种子的 30 天聚合）。窗口一动，两边就不同区间了，
+      但差值照样显示出来，看上去像个正常结果。 */
   function refreshSettings() {
     if (!DRAFT || !DG) { return; }
     var keys = cellKeys();
-    var list = A.BASE.days.map(function (d) { return DRAFT.days[d.date]; });
+    var win = DRAFT.shape;
+    var baseList = win.days.map(function (iso) { return A.baseDayOf(iso); });
+    var list = win.days.map(function (iso) { return DRAFT.days[iso]; });
+    var baseAgg = A.aggregate(baseList);
     var agg = A.aggregate(list);
 
-    A.BASE.days.forEach(function (d) {
-      var cell = DG.sc[d.date];
-      if (cell) { cell.textContent = A.dayScore(DRAFT.days[d.date]); }
+    win.days.forEach(function (iso) {
+      var cell = DG.sc[iso];
+      if (cell) { cell.textContent = A.dayScore(DRAFT.days[iso]); }
     });
     keys.forEach(function (r) {
       var td = DG.foot[r.key];
@@ -1319,17 +1489,22 @@
     var roScore = el('st-roScore'), roRate = el('st-roRate');
     if (roScore) { roScore.textContent = agg.score; }
     if (roRate) { roRate.textContent = rateText(); }
+    var wi = el('winInfo');
+    if (wi) { wi.textContent = win.days.length + ' 天 · ' + win.weeks.length + ' 周'; }
 
     if (DG.preview) {
-      var bA = A.BASE.agg, bB = A.BASE.biz;
-      var bRate = bB.quarterGoal ? bB.quarterPerf / bB.quarterGoal * 100 : 0;
+      /* 「原值」的季完成率取自 A.BASE.biz（业务指标不随窗口变，它是四项
+         手动值 + 一项派生），所以这里不需要像上面那样按窗口重算。 */
+      var bB = A.BASE.biz;
+      var bRate = H.num(bB.quarterGoal)
+        ? H.num(bB.quarterPerf) / H.num(bB.quarterGoal) * 100 : 0;
       var nRate = H.num(DRAFT.biz.quarterGoal)
         ? H.num(DRAFT.biz.quarterPerf) / H.num(DRAFT.biz.quarterGoal) * 100 : 0;
       var n = countDirty();
       DG.preview.innerHTML =
-        pv('总分', bA.score, agg.score) +
-        pv('保费', bA.premium, agg.premium, 'currency') +
-        pv('件均', bA.perDeal, agg.perDeal, 'currency') +
+        pv('总分', baseAgg.score, agg.score) +
+        pv('保费', baseAgg.premium, agg.premium, 'currency') +
+        pv('件均', baseAgg.perDeal, agg.perDeal, 'currency') +
         pv('季完成率', bRate, nRate, 'percent') +
         '<span style="margin-left:auto">改动 <b>' + n.cells + '</b> 处 / <b>' + n.days +
         '</b> 天' + (n.tgt ? ' · 业务指标 <b>' + n.tgt + '</b> 项' : '') + '</span>';
@@ -1337,10 +1512,10 @@
   }
 
   function markDirty(inp, dt) {
-    var bd = A.BASE.byDate[dt];
+    var bd = A.baseDayOf(dt);
     var k = inp.getAttribute('data-k');
     var v = inp.value === '' ? 0 : H.num(inp.value);
-    inp.setAttribute('data-dirty', (bd && v !== H.num(bd[k])) ? '1' : '0');
+    inp.setAttribute('data-dirty', (v !== H.num(bd[k])) ? '1' : '0');
   }
 
   function onSettingInput(e) {
@@ -1358,8 +1533,12 @@
       DRAFT.biz[bz] = v;
       t.setAttribute('data-dirty', H.num(v) !== H.num(A.BASE.biz[bz]) ? '1' : '0');
     } else if (wk) {
+      /* wk 是**周起始日**（data-wkt 由 buildSettings 写成 wk.from）。 */
       DRAFT.weeks[wk] = v;
-      t.setAttribute('data-dirty', H.num(v) !== bwTarget(wk) ? '1' : '0');
+      var bw = null;
+      DRAFT.shape.weeks.forEach(function (x) { if (x.from === wk) { bw = x; } });
+      t.setAttribute('data-dirty',
+        H.num(v) !== H.num(bw ? bw.baseTarget : 0) ? '1' : '0');
     } else { return; }
     clearTimeout(onSettingInput._tm);
     onSettingInput._tm = setTimeout(refreshSettings, 130);
@@ -1371,6 +1550,11 @@
       body.setAttribute('data-bound', '1');
       body.addEventListener('input', onSettingInput);
       body.addEventListener('change', onSettingInput);
+      /* 窗口改动用**单独的 change 监听**，不走 onSettingInput：
+         date 输入每次改动都要重建整张逐日表格（行数变了），
+         挂在 input 上会在用户还没选完时就重排 DOM、把焦点打断。 */
+      body.addEventListener('change', onWindowChange);
+      body.addEventListener('click', onPresetClick);
     }
     if (!bindSettings._esc) {
       bindSettings._esc = true;
@@ -1379,6 +1563,17 @@
         if (e.key === 'Escape' && d && d.classList.contains('open')) { closeSettings(); }
       });
     }
+  }
+
+  /** 预设按钮：取区间 → 交给 setWindowDraft（规则仍在 core.js）。 */
+  function onPresetClick(e) {
+    if (!DRAFT) { return; }
+    var t = e.target;
+    var btn = (t && t.closest) ? t.closest('[data-preset]') : null;
+    if (!btn) { return; }
+    var key = btn.getAttribute('data-preset');
+    var hit = presets().filter(function (p) { return p.key === key; })[0];
+    if (hit) { setWindowDraft({ start: hit.range[0], end: hit.range[1] }); }
   }
 
   /* ---------------------------------------------------------------- 开合 */
@@ -1405,10 +1600,15 @@
 
   function saveSettings() {
     if (!DRAFT) { return; }
-    var ov = A.diffOverlay(DRAFT.days, DRAFT.biz, DRAFT.weeks);
+    /* 第四个参数是**草稿窗口**：窗口与数据必须一起提交。
+       只提交数据、窗口留给「关抽屉时顺手写一下」是行不通的 ——
+       diffOverlay 要按窗口判断「哪些日期在范围内」，
+       拿旧窗口去 diff 新窗口的数据，窗口外的改动会整片丢失。 */
+    var ov = A.diffOverlay(DRAFT.days, DRAFT.biz, DRAFT.weeks, DRAFT.win);
     var nDay = Object.keys(ov.days).length, nCell = 0, k;
     for (var dt in ov.days) { for (k in ov.days[dt]) { nCell++; } }
     var nBiz = Object.keys(ov.biz).length + Object.keys(ov.weeks).length;
+    var winChanged = ov.window !== null;   /* readOverlay 的约定：键存在 = 有自定义 */
 
     /* A.commit = 写覆盖层 + 并回种子，两步**不可拆**。只写盘不并回的话，
        页面上还是旧值、刷新后却是新值 —— 「保存了却不生效」的经典错位。
@@ -1417,9 +1617,27 @@
     closeSettings();
     refreshAll();
     fitCharts();
-    toast(nDay || nBiz
-      ? '已应用 ' + nDay + ' 天 / ' + nCell + ' 处改动' + (nBiz ? ' · 业务指标 ' + nBiz + ' 项' : '')
-      : '数据与初始值一致，无需改动');
+    /* 提示语按「有哪几部分就报哪几部分」拼装，**连接符由拼装决定**。
+       v1.4 之前这里是三段手写拼接，于是「只改窗口」这一支漏了分隔符，
+       toast 读作「已应用窗口 09/14–09/20其余数据无改动」——
+       信息都在，但一句读不通的提示会被当成乱码扫过去，等于没提示。 */
+    var w = A.currentWindow();
+    var parts = [];
+    if (winChanged) {
+      parts.push('窗口 ' + w.start.slice(5).replace('-', '/') + '–' +
+                 w.end.slice(5).replace('-', '/'));
+    }
+    if (nDay || nBiz) {
+      parts.push(nDay + ' 天 / ' + nCell + ' 处改动' +
+                 (nBiz ? ' · 业务指标 ' + nBiz + ' 项' : ''));
+    } else if (winChanged) {
+      /* 只改窗口时也要把「数据没动」说出来：否则用户改完窗口关掉抽屉，
+         不知道那次保存到底（只）动了什么。 */
+      parts.push('其余数据无改动');
+    }
+    /* '已应用' 后统一留一个空格 —— 三段各自的形态不同（「窗口 10/01–10/17」
+       以汉字起、「30 天 / 3 处改动」以数字起），粘着写总有一段读不顺。 */
+    toast(parts.length ? '已应用 ' + parts.join(' · ') : '数据与初始值一致，无需改动');
   }
 
   /* 恢复初始数据：**两次点击确认**，不做单点即执行。
@@ -1465,15 +1683,24 @@
   function collectExport() {
     return {
       app: 'baox-activity',
-      version: 2,
+      version: 3,
       exportedAt: new Date().toISOString(),
       period: (A.SEED.meta && A.SEED.meta.period) || null,
+      /* 窗口是数据的坐标系：不带窗口的备份，换一个窗口还原后总分、
+         周数、达标率全都对不上 —— 那样「完整复原」这句话就不成立。 */
+      window: A.windowSetting(),
       biz: (function () {
         var o = {};
         BIZ_ROWS.forEach(function (r) { o[r.key] = H.num(A.SEED.biz[r.key]); });
         return o;
       })(),
-      weeks: A.SEED.weeks.map(function (w) { return { idx: w.idx, target: H.num(w.target) }; }),
+      /* idx 留着只为**人读**（备份文件打开时能看出是第几周）；
+         机器读的一律是 from。v1.3 及更早的备份只有 idx，导入端按默认窗口
+         的周次把它还原成起始日（见 importData）—— 两处若各推一套映射，
+         同一个备份在两台机器上会还原成不同的周目标。 */
+      weeks: A.SEED.weeks.map(function (w) {
+        return { idx: w.idx, from: w.from, to: w.to, dayCount: w.dayCount, target: H.num(w.target) };
+      }),
       days: A.SEED.days.map(function (d) {
         var o = { date: d.date, premium: H.num(d.premium) };
         cellKeys().forEach(function (r) { o[r.key] = H.num(d[r.key]); });
@@ -1496,7 +1723,7 @@
     a.click();
     document.body.removeChild(a);
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500);
-    toast('已导出完整数据（JSON 备份 · ' + period().days + ' 天）');
+    toast('已导出完整数据（JSON 备份 · ' + period().days + ' 天 · 含窗口设置）');
   }
 
   function triggerImport() {
@@ -1520,9 +1747,23 @@
       var weeksMap = null;
       if (obj.weeks && obj.weeks.length) {
         weeksMap = {};
-        obj.weeks.forEach(function (w) { if (w && w.idx !== undefined) { weeksMap[w.idx] = w.target; } });
+        var defWeeks = A.naturalWeeks(A.WIN_DEFAULT.start, A.WIN_DEFAULT.end);
+        obj.weeks.forEach(function (w) {
+          if (!w) { return; }
+          if (w.from) { weeksMap[w.from] = w.target; return; }
+          /* v1.3 及更早的备份只有周序号。按**默认窗口**的周次还原成起始日 ——
+             这份映射是唯一确定的（旧版只可能有一个窗口：种子声明的那个），
+             与 core.js 的 migrateWeekKeys 依据同一套规则。
+             不还原的话，旧备份的周目标会被整片丢弃，而导入提示照样说「已导入」。 */
+          if (w.idx === undefined) { return; }
+          var dw = defWeeks[H.num(w.idx) - 1];
+          if (dw) { weeksMap[dw.from] = w.target; }
+        });
       }
-      var ov = A.diffOverlay(daysMap, obj.biz || null, weeksMap);
+      /* 备份里的窗口一并还原（旧备份没有这个字段 → null → 落回默认窗口）。
+         第 4 个参数必须传：不传就沿用**当前**窗口，
+         于是「导入一份 10 月窗口的备份」会变成「把 10 月的数据塞进 9 月的窗口」。 */
+      var ov = A.diffOverlay(daysMap, obj.biz || null, weeksMap, obj.window || null);
       /* 即便备份与当前值完全一致也要走 commit：它会把旧覆盖层清成空键 ——
          「导入一份干净的备份」的语义就是「回到那份备份」，不是「在现状上再叠一层」。
          v1 备份里的 targets（month/weekShort/mdrtCarry）在本版已无对应字段，

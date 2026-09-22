@@ -446,6 +446,59 @@
 .dg-preview b{color:var(--text);font-variant-numeric:tabular-nums;}
 .dg-preview .dg-ar{color:var(--dim);}
 
+/* ---------------------------------------------------------------------------
+   ⑩b 观测窗口组（v1.4）
+   ---------------------------------------------------------------------------
+   窗口是**数据的坐标系**，所以这一组的视觉权重比其它组高一级：
+   快捷预设是一排可点的小胶囊，与筛选条的 .chip 同一套反馈语言
+   （悬停变金、选中填金）—— 抽屉里出现第二套「点得动」的语法，
+   用户就得先猜哪个能点。
+   --------------------------------------------------------------------------- */
+.win-presets{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px;}
+.win-p{
+  cursor:pointer;user-select:none;font-family:inherit;
+  font-size:11.5px;padding:5px 11px;border-radius:999px;
+  background:var(--edit-bg);border:1px solid var(--edit-bd);color:var(--sub);
+  transition:border-color .16s ease,color .16s ease,background-color .16s ease;
+}
+.win-p:hover{border-color:var(--gold1);color:var(--gold1);}
+.win-p.sel{
+  border-color:var(--gold1);background:var(--gold-rgba);
+  color:var(--gold1);font-weight:700;
+}
+/* date 输入：.set-input 是右对齐的（给数字用），日期必须左对齐，
+   否则「2026-09-18」贴着右边、日历图标挤在左侧，读起来别扭。 */
+.set-date{text-align:left;width:158px;font-variant-numeric:tabular-nums;}
+/* 日历图标由浏览器绘制在**控件内部**，不跟着 color 走，也不吃 currentColor。
+   ⚠️ 根因（v1.4 实测，踩过）：产物带 <meta name="color-scheme" content="dark light">，
+      于是浏览器按**深色模式**绘制原生控件 —— 那个日历字形本身是**浅色**的。
+      深色主题下它落在深底上、本来就能看见；米金主题下它落在 **#fff 白底**上，
+      对比度只有 1.33:1（实测），视觉上等于消失。
+      两条规则都必须**先 invert 把字形翻成深色**，再 sepia+hue-rotate 拉到金色系：
+        · 只写 sepia/saturate（初版就是这样）对浅色字形等于继续洗淡 → 1.33:1；
+        · invert(1) 会把近白字形直接压成 #373737 纯灰（sepia 对黑不起作用），
+          看得见但丢了品牌色 —— 所以取 invert(.68~.95)，让「翻深」与「上色」同时成立。
+
+   ⚠️⚠️ 这一段踩过第二个坑，比配色本身值钱，务必读完：
+      上面这段说明最初**没有写结束标记**，于是它一路把下面两条规则也吞了进去，
+      直到几十行后另一句注释的收尾符才意外闭合。后果极其隐蔽：
+        · 规则文本确实在产物里 → 所有静态门禁全绿；
+        · CSSOM 里却查不到这两条规则 → 图标**从来没有上过色**；
+        · getComputedStyle(元素, 伪元素) 返回 none，当时被误判成
+          「这个伪元素的样式读不到」（错的，是规则根本不存在）；
+        · 手工把同样的值注入页面测试却显示「达标」——测的不是被测对象。
+      所以：本段注释必须以收尾符正常结束（就在本行下面一行），
+      并且 src/check-native-controls.py 现在会**先断言规则进了 CSSOM**
+      再去量像素。改这两条 filter 之前，先跑那关。 */
+[data-theme="dark"] .set-date::-webkit-calendar-picker-indicator{
+  filter:invert(.68) sepia(1) saturate(3.2) hue-rotate(338deg) brightness(1.22);
+  cursor:pointer;opacity:.9;
+}
+[data-theme="light"] .set-date::-webkit-calendar-picker-indicator{
+  filter:invert(.92) sepia(1) saturate(3.6) hue-rotate(344deg);
+  cursor:pointer;opacity:.9;
+}
+
 /* 遮罩开关（备用，抽屉本体开关由 base.css 的 .open 类承担） */
 .set-mask-off{display:none;}
 

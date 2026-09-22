@@ -38,6 +38,29 @@
       不是静默丢弃。故本节先判「今天在窗口内」——种子窗口是固定的 30 天，
       过期后打卡写路径根本不可达，此时必须**说清是种子过期**，
       而不是让后面几节连锁报红、看起来像页面坏了。
+
+   ── v1.4 增补：窗口不再是固定的 ──
+   观察窗口改为可在「设置数据」抽屉里选起止日期（1–90 天，含 5 个快捷预设）。
+   于是「窗口」从静态前提变成了**用户可写的状态**，多出三类静默失效：
+
+     · 预设/日期改完，说明刷新了但逐日表格没重排（半成品）；
+     · 窗口外的记录在保存时被整片抹掉 —— 切窗口是**纯查看动作**，
+       不该有破坏性副作用，而它错了既不报错也不可逆；
+     · 只改窗口不改数据时，「恢复初始数据」入口不亮 → 用户失去改回默认的路。
+
+   故新增 ⑦ 节逐条实测这三类，并把 JS 错误检查从 `if (win.ok)` 里移到最外层 ——
+   第四节起依赖「今天在窗口内」，而 ⑦ 用固定日期，种子过期也该照跑。
+
+   ⚠️ 一处**本探针刻意不测**的东西，写在这里免得后来者重复劳动：
+     日期框的日历图标是否可见。它归 **src/check-native-controls.py** 管
+     （CSSOM 在场性 + 逐像素对比度两道判据）。现场是米金主题下白底上那个
+     浅色日历字形（1.33:1，等于没有图标），而当时十关全绿。
+     为什么这里测不了、也别试图用样式读数代替：`getComputedStyle(elem,
+     '::-webkit-calendar-picker-indicator')` 对该伪元素返回的是**元素自身**
+     的值（filter:none、158×33 = input 的尺寸），**规则生效时照样返回 none**。
+     对照过：同一把 API 对显式设置过的 `::before` 能准确读出 filter/尺寸，
+     所以不是 API 失灵，而是这类浏览器内部绘制的伪元素不在它覆盖范围内。
+     读了只会把「规则在不在场」误判成「没生效」，不如不测。
    ============================================================================ */
 'use strict';
 const path = require('path');
@@ -288,7 +311,10 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
         rows: document.querySelectorAll('#setBody .dg-tb tbody tr').length,
         cols: document.querySelectorAll('#setBody .dg-tb thead th').length,
         cells: document.querySelectorAll('#setBody .dg-in').length,
-        tgt: document.querySelectorAll('#setBody .set-input').length,
+        /* 参数输入按**data 属性**归类，不靠 class 计数：v1.4 的窗口日期框
+           也带 .set-input，用 .set-input 数会把 2 个日期框算成业务参数
+           （断言要么跟着数字漂、要么被迫放宽成一个无意义的区间）。 */
+        tgt: document.querySelectorAll('#setBody .set-input:not(.set-date)').length,
         biz: document.querySelectorAll('#setBody [data-biz]').length,
         wkt: document.querySelectorAll('#setBody [data-wkt]').length,
         foot: document.querySelectorAll('#setBody .dg-tb tfoot td').length,
@@ -302,7 +328,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     ok(stDg.cols === 15, '表头 15 列（日期 + 12 项 + 当日保费 + 得分），实为 ' + stDg.cols);
     ok(stDg.cells === 390, '可编辑格子 30 × 13 = 390 个，实为 ' + stDg.cells);
     ok(stDg.biz === 6 && stDg.wkt === 5 && stDg.tgt === 11,
-       '参数输入 11 个（6 项业务指标 + 5 周目标；MDRT/月目标已删），实为 ' +
+       '参数输入 11 个（6 项业务指标 + 5 周目标；MDRT/月目标已删 · 不含 2 个窗口日期框），实为 ' +
        stDg.tgt + '（biz ' + stDg.biz + ' / wkt ' + stDg.wkt + '）');
     ok(stDg.foot === 15, '吸底合计行 15 格，实为 ' + stDg.foot);
     ok(stDg.thW > 0, '表头可见（未因 sticky + 零宽而塌陷）');
@@ -428,11 +454,21 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const o = window.__ACT_SETTINGS__.collect();
       return { app: o.app, ver: o.version, days: o.days.length, weeks: o.weeks.length,
                bizKeys: Object.keys(o.biz || {}).sort().join(','),
-               wk0: o.weeks[0].target, changed: o.changedDays,
-               keys: Object.keys(o.days[0]).sort().join(',') };
+               wk0: o.weeks[0].target, wk0from: o.weeks[0].from, changed: o.changedDays,
+               keys: Object.keys(o.days[0]).sort().join(','),
+               win: o.window, d0: o.days[0].date, dn: o.days[o.days.length - 1].date };
     });
-    ok(stExp.app === 'baox-activity' && stExp.ver === 2,
-       '导出载荷带 app 标识与版本号 2（v1.2 起口径变了，版本号必须跟着走）');
+    ok(stExp.app === 'baox-activity' && stExp.ver === 3,
+       '导出载荷带 app 标识与版本号 3（v1.4 窗口进了载荷，版本号必须跟着走）');
+    /* 备份必须**自洽**：窗口与它导出的日集合首末要对得上。
+       少了这条，「窗口字段在、但填的是另一个区间」会一路静默 ——
+       导入端先按 window 重建日集合、再按 days 覆盖，错位后表现为
+       「导入后数据少了一截」，而文件本身看起来完全正常。 */
+    ok(!!stExp.win && stExp.win.start === stExp.d0 && stExp.win.end === stExp.dn,
+       '导出 window ≡ 日集合首末（' + JSON.stringify(stExp.win) + ' / ' +
+       stExp.d0 + ' … ' + stExp.dn + '）');
+    ok(stExp.wk0from === stExp.d0,
+       '导出周目标带**周起始日**（首周 from=' + stExp.wk0from + '，非周序号）');
     ok(stExp.days === 30 && stExp.weeks === 5, '导出 30 天 / 5 周全量，实为 ' +
        stExp.days + ' / ' + stExp.weeks);
     ok(stExp.wk0 === 17500, '导出含周目标值 17500，实为 ' + stExp.wk0);
@@ -722,8 +758,282 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
          String((e && e.message) || e).slice(0, 200));
     }
 
-    ok(errs.length === 0, '全程无 JS 错误' + (errs.length ? '：' + errs.join(' | ') : ''));
   }
+
+  /* ---------- ⑦ 观测窗口（v1.4 新增 · 抽屉里改起止日期） ----------
+     本节四条判据都只有真机才拿得到，静态门禁与运行期门禁都测不了：
+
+       ① 预设按钮**真的**重建了逐日表格 —— 行数、周数、日集合三者要同时变。
+          只比 `#winInfo` 的文本会漏掉「说明刷新了但表格没重排」这一种半成品。
+       ② 只改窗口、不改数据时，「恢复初始数据」入口必须亮起 ——
+          窗口也是一处改动，用户得有一条把窗口改回去的路（铁律 15）。
+       ③ 起止颠倒 / 超 90 天由「输入即兜底」并 toast 说出来。这条的重点不是
+          兜底正确（core.js 的纯函数已被门禁逐值验过），而是**兜底被说出来了**：
+          静默改写输入，下次打开抽屉日期与自己填的不一样，用户会以为界面记错了。
+       ④ 把窗口挪开再挪回来，窗口外的记录完整重现 —— 既没被删、也没被当成基线。
+          这是 v1.4 最容易写错的一处（diffOverlay 必须从既有覆盖层出发、
+          重建草稿必须用「基线 + 覆盖层」），而它错了**不会报错**，只会静默丢数据。
+
+     ⚠️ 与 ④⑤⑥ 不同，本节用**固定日期**（种子窗口内的 2026-09-18 ~ 2026-10-17）
+        而不是「今天」，所以种子过期后本节照样能跑（预设按钮的断言也是自洽式的：
+        只比「点完之后的窗口与表格是否一致」，不硬编码今天 +6 是哪一天）。 */
+  console.log('\n⑦ 观测窗口 · 预设重建 / 起止兜底 / 90 天截断 / 越窗数据不丢');
+  const D1 = '2026-09-19';   /* 先填值、再被挪出窗口、最后调回来的那一天 */
+
+  const readOv = async () => {
+    const raw = await p.evaluate(k => localStorage.getItem(k), LS_KEY);
+    if (!raw) { return null; }
+    try { return JSON.parse(raw); } catch (e) { return null; }
+  };
+  const dTxt = () => p.evaluate(() => {
+    const t = document.getElementById('toast');
+    return t ? t.textContent.replace(/\s+/g, ' ').trim() : null;
+  });
+  const noteTxt = () => p.evaluate(() => {
+    const e = document.getElementById('winNote');
+    return e ? e.textContent.replace(/\s+/g, ' ').trim() : null;
+  });
+  /* 日集合按 DOM 顺序取（= 窗口顺序）。用 gzh 这一列代表整表：
+     它是第一个计分项，若整表没重建，这一列的行数不会变。 */
+  const drawerDays = () => p.$$eval('#setBody .dg-in[data-k="gzh"]',
+    els => els.map(e => e.getAttribute('data-d')));
+  const cellVal = (iso, k) => p.evaluate((d, kk) => {
+    const e = document.querySelector('#setBody .dg-in[data-d="' + d + '"][data-k="' + kk + '"]');
+    return e ? e.value : null;
+  }, iso, k);
+  const setCell = async (iso, k, v) => {
+    await p.evaluate((d, kk, x) => {
+      const e = document.querySelector('#setBody .dg-in[data-d="' + d + '"][data-k="' + kk + '"]');
+      if (!e) { throw new Error('抽屉里找不到 ' + d + ' 的 ' + kk + ' 格'); }
+      e.value = String(x);
+      e.dispatchEvent(new Event('input', { bubbles: true }));
+    }, iso, k, v);
+    await sleep(320);
+  };
+  /* 日期框走真实 change 事件（应用层就是这么监听的）；
+     不走 input —— 用户还没选完就被重排 DOM 是真实缺陷，探针不该替它掩盖。 */
+  const setWin = async (which, iso) => {
+    await p.evaluate((w, v) => {
+      const e = document.getElementById(w === 'start' ? 'winStart' : 'winEnd');
+      if (!e) { throw new Error('抽屉里没有 ' + w + ' 日期框'); }
+      e.value = v;
+      e.dispatchEvent(new Event('change', { bubbles: true }));
+    }, which, iso);
+    await sleep(420);
+  };
+  const winNow = () => p.evaluate(() => {
+    const w = window.ACT.currentWindow(), s = window.__ACT_SNAPSHOT__();
+    const t = id => { const e = document.getElementById(id); return e ? e.textContent.replace(/\s+/g, ' ').trim() : null; };
+    return { s: w.start, e: w.end, n: w.days.length, nw: w.weeks.length,
+             sub: t('ovSub'), tb: t('tbSub'), snap: s.windowDays, score: s.score };
+  });
+  const spanOf = (a, b) => Math.round((Date.parse(b) - Date.parse(a)) / 86400000) + 1;
+
+  /* 先把存储清干净并重载。本节要断言的绝对数值（总分 3 / 0）只有在
+     已知起点上才成立，而 ④⑤⑥ 结束时留没留下残余取决于它们跑没跑。 */
+  await p.evaluate(k => { try { localStorage.removeItem(k); } catch (e) {} }, LS_KEY);
+  await p.reload({ waitUntil: 'load' });
+  await sleep(1500);
+
+  const w0 = await winNow();
+  ok(w0.s === '2026-09-18' && w0.e === '2026-10-17' && w0.n === 30 && w0.nw === 5,
+     '起始窗口 = 种子默认 ' + w0.s + ' ~ ' + w0.e + '（' + w0.n + ' 天 / ' + w0.nw + ' 周）');
+  ok(w0.snap === w0.n && /2026\/09\/18 – 2026\/10\/17/.test(w0.sub || ''),
+     '页首副标题与快照同源（meta.period 已随窗口同步）：' + w0.sub);
+  ok((await rowInfo()).data === 30, '明细表 30 数据行');
+
+  ok(await click('#btnSettings'), '打开设置抽屉（窗口组在最前，先定坐标系再填数）');
+  await sleep(420);
+  const wd = await p.evaluate(() => {
+    const bs = [].slice.call(document.querySelectorAll('#setBody .win-p'));
+    const v = id => (document.getElementById(id) || {}).value;
+    const t = id => { const e = document.getElementById(id); return e ? e.textContent.replace(/\s+/g, ' ').trim() : null; };
+    return { n: bs.length,
+             keys: bs.map(b => b.getAttribute('data-preset')).join(','),
+             labels: bs.map(b => b.textContent.trim()).join(' / '),
+             s: v('winStart'), e: v('winEnd'), info: t('winInfo'),
+             rows: document.querySelectorAll('#setBody .dg-tb tbody tr').length,
+             wkt: document.querySelectorAll('#setBody [data-wkt]').length,
+             wkDates: [].slice.call(document.querySelectorAll('#setBody [data-wkt]'))
+                        .map(i => i.getAttribute('data-wkt')).join(',') };
+  });
+  ok(wd.n === 5 && wd.keys === 'd7,d30,tm,lm,tq', '快捷预设 5 个：' + wd.labels);
+  ok(wd.s === '2026-09-18' && wd.e === '2026-10-17',
+     '起止日期框回填当前窗口 ' + wd.s + ' ~ ' + wd.e);
+  ok(wd.rows === 30 && wd.wkt === 5 && wd.info === '30 天 · 5 周',
+     '窗口组三处联动 = 逐日 ' + wd.rows + ' 行 / 周目标 ' + wd.wkt + ' 个 / 「' + wd.info + '」');
+  /* 周目标键必须落在**日期**上。若有人改回 v1.3 的周序号（'1','2'…），
+     换窗口后目标会套到另一周上，而界面上看不出任何异常。 */
+  ok(wd.wkDates === '2026-09-18,2026-09-21,2026-09-28,2026-10-05,2026-10-12',
+     '周目标按**周起始日**存取（data-wkt = ' + wd.wkDates + '，非周序号）');
+  const wdNote = await noteTxt();
+  ok(wdNote && /W1 09\/18–09\/20（3天）/.test(wdNote),
+     '周切分说明按自然周列出（首周只剩 3 天也标出来）：' + String(wdNote).slice(0, 56));
+
+  /* ⚠️ 关于「日期框的日历图标看不看得见」——本探针**测不了**，别在这里补断言。
+     它由 **src/check-native-controls.py** 守，两道判据：CSSOM 在场性 + 逐像素
+     对比度（截图标区 → 算墨色 vs 底色的 WCAG 比值，两套主题各 ≥3:1）。
+     已反向验证会失败：① 退回修前的 filter → 报出深色 2.87:1 / 米金 1.33:1；
+     ② 删掉配色注释的收尾符（规则掉进注释）→ 报「规则未在场」。
+     为什么不能用样式读数代替：
+       · getComputedStyle(elem, '::-webkit-calendar-picker-indicator') 返回的是
+         **元素自身**的值（filter:none、158×33 = input 尺寸），**规则生效时也返回
+         none**（对照过：同一把 API 对显式设置过的 ::before 能准确读出
+         filter/尺寸/content，所以不是 API 失灵，是这类伪元素不在它覆盖范围内）；
+       · CDP 的 CSS.getMatchedStylesForNode 只吐 scrollbar 系列，压根不列它。
+     初版曾在这里写过「两套主题都含 invert」的断言，跑出来 dark:none / light:none
+     —— 规则明明在场、断言却说不在。取不到观测对象的断言只会给出假红/假绿。
+     这条缺陷的现场：米金主题下白底上挂着一个浅色的日历字形，视觉上等于没有
+     图标，而当时十关全绿。 */
+
+  /* ---- ① 预设按钮真的重建表格 ---- */
+  const ledBefore = (await rowInfo()).data;
+  await p.evaluate(() => document.querySelector('#setBody .win-p[data-preset="d7"]').click());
+  await sleep(460);
+  const w7 = await p.evaluate(() => {
+    const v = id => (document.getElementById(id) || {}).value;
+    const t = id => { const e = document.getElementById(id); return e ? e.textContent.replace(/\s+/g, ' ').trim() : null; };
+    const sel = document.querySelector('#setBody .win-p.sel');
+    return { s: v('winStart'), e: v('winEnd'), info: t('winInfo'),
+             sel: sel ? sel.getAttribute('data-preset') : null,
+             rows: document.querySelectorAll('#setBody .dg-tb tbody tr').length,
+             wkt: document.querySelectorAll('#setBody [data-wkt]').length };
+  });
+  const d7 = await drawerDays();
+  ok(w7.sel === 'd7', '点「近 7 天」→ 该胶囊进入选中态（可看出当前窗口是不是某个预设）');
+  ok(spanOf(w7.s, w7.e) === 7 && w7.rows === 7 && d7.length === 7,
+     '窗口与逐日表格一起重建为 7 天（' + w7.s + ' ~ ' + w7.e + '）：' +
+     w7.rows + ' 行 / ' + d7.length + ' 天');
+  ok(d7[0] === w7.s && d7[d7.length - 1] === w7.e,
+     '日集合首末 = 窗口首末日（' + d7[0] + ' … ' + d7[d7.length - 1] + '）');
+  ok(w7.info === '7 天 · ' + w7.wkt + ' 周', '窗口说明随重建刷新：「' + w7.info + '」');
+  ok((await rowInfo()).data === ledBefore,
+     '未保存前**只改草稿**：面板明细仍是 ' + ledBefore + ' 行（改窗口不越权改数据）');
+
+  /* ---- ② 只改窗口也算一处改动，必须有回退入口 ---- */
+  await click('#btnSetSave');
+  await sleep(680);
+  const ovC = await readOv();
+  ok(!!(ovC && ovC.window && ovC.window.start === w7.s && ovC.window.end === w7.e),
+     '窗口单独变更也落盘（overlay.window = ' + JSON.stringify(ovC && ovC.window) + '）');
+  ok(Object.keys((ovC || {}).days || {}).length === 0,
+     '没动数据 → days 不落盘（窗口不会把整表写成快照）');
+  const wC = await winNow();
+  ok(wC.n === 7 && (await rowInfo()).data === 7, '面板按新窗口重算：7 天 / 明细 7 行');
+  const cToast = await dTxt();
+  /* ⚠️ 断言里**必须带上分隔符**。首跑这里只比了两个关键词，于是
+     「已应用窗口 09/14–09/20其余数据无改动」（漏了 ' · '）照样通过 ——
+     关键词一个不缺，却是句读不通的话，用户会当乱码扫过去。
+     关键词式断言测「信息在不在」，测不出「信息能不能读」。 */
+  ok(/^已应用 窗口 \d\d\/\d\d–\d\d\/\d\d · 其余数据无改动$/.test(cToast || ''),
+     '保存提示说清「只改了窗口」，且连接符正确：' + cToast);
+  await click('#btnSettings');
+  await sleep(420);
+  ok((await p.evaluate(() => {
+    const b = document.getElementById('btnRestore'); return b ? b.hidden : null;
+  })) === false, '只改窗口也点亮「恢复初始数据」入口（窗口算改动，用户有路可回）');
+
+  /* ---- ③ 起止颠倒 / 超上限：兜底 + 把兜底说出来 ---- */
+  await setWin('end', '2026-10-31');     /* 先把终点推远，避免下一步被误判成颠倒 */
+  await setWin('start', '2026-10-01');
+  const wD = await p.evaluate(() => ({
+    s: document.getElementById('winStart').value,
+    e: document.getElementById('winEnd').value,
+    info: document.getElementById('winInfo').textContent.trim(),
+    wkt: document.querySelectorAll('#setBody [data-wkt]').length }));
+  ok(wD.s === '2026-10-01' && wD.e === '2026-10-31' && spanOf(wD.s, wD.e) === 31,
+     '手工输入起止 → 窗口 ' + wD.s + ' ~ ' + wD.e + '（31 天）');
+  ok(wD.info === '31 天 · 5 周', '窗口说明 = 「' + wD.info + '」');
+
+  await setWin('end', '2026-09-05');
+  const wRev = await p.evaluate(() => ({ s: document.getElementById('winStart').value,
+                                         e: document.getElementById('winEnd').value }));
+  ok(wRev.s === '2026-09-05' && wRev.e === '2026-10-01',
+     '起止颠倒被自动对调（终点填 09/05 < 起点 10/01）：' + wRev.s + ' ~ ' + wRev.e);
+  const rToast = await dTxt();
+  ok(/起止颠倒/.test(rToast), '并把兜底说出来：' + rToast);
+
+  await setWin('end', '2027-03-31');
+  const wTr = await p.evaluate(() => ({ s: document.getElementById('winStart').value,
+                                        e: document.getElementById('winEnd').value,
+                                        info: document.getElementById('winInfo').textContent.trim() }));
+  ok(spanOf(wTr.s, wTr.e) === 90,
+     '超上限被截到 90 天：' + wTr.s + ' ~ ' + wTr.e + '（请求 09/05 ~ 2027/03/31 = 209 天）');
+  ok(wTr.info === '90 天 · 14 周', '窗口说明随截断刷新：「' + wTr.info + '」');
+  const tToast = await dTxt();
+  ok(/90 天上限，已截到 90 天/.test(tToast), '并把截断说出来：' + tToast);
+
+  /* 调回默认窗口，为下面「越窗数据」一节准备已知起点 */
+  await setWin('end', '2026-10-17');
+  await setWin('start', '2026-09-18');
+  const wD0 = await p.evaluate(() => ({ s: document.getElementById('winStart').value,
+                                        e: document.getElementById('winEnd').value }));
+  ok(wD0.s === '2026-09-18' && wD0.e === '2026-10-17',
+     '手工调回默认窗口 ' + wD0.s + ' ~ ' + wD0.e);
+
+  /* ---- ④ 越窗数据不丢：挪开 → 记录仍在；挪回 → 完整重现 ---- */
+  await setCell(D1, 'gzh', 3);
+  await click('#btnSetSave');
+  await sleep(680);
+  const ovE = await readOv();
+  ok(!!(ovE && ovE.days && ovE.days[D1] && ovE.days[D1].gzh === 3),
+     '在 ' + D1 + ' 填 gzh=3 并保存 → 覆盖层只记这一天这一个键');
+  ok(ovE.window === null || ovE.window === undefined,
+     '窗口 = 默认值 → 不落盘（键存在 = 有自定义）');
+  ok((await winNow()).score === 3, D1 + ' 在窗口内 → 面板总分 = 3');
+
+  await click('#btnSettings');
+  await sleep(420);
+  await setWin('start', '2026-10-01');
+  const fDays = await drawerDays();
+  const fNote = await noteTxt();
+  ok(fDays.length === 17 && fDays[0] === '2026-10-01' && fDays[16] === '2026-10-17',
+     '起点改为 10/01 → 逐日表格重建为 17 天（' + fDays[0] + ' ~ ' + fDays[16] + '）');
+  ok(fDays.indexOf(D1) === -1, '窗口外的 ' + D1.slice(5) + ' 已不在逐日表格里');
+  ok(/窗口外另有 1 天/.test(fNote) && /不会被删除/.test(fNote) && /完整重现/.test(fNote),
+     '★ 抽屉主动说明「窗口外记录不会被删」：' + fNote.slice(fNote.indexOf('窗口外')));
+
+  await click('#btnSetSave');
+  await sleep(680);
+  const ovF = await readOv();
+  ok(!!(ovF && ovF.days && ovF.days[D1] && ovF.days[D1].gzh === 3),
+     '★★ 越窗保存后 ' + D1 + ' 的记录**仍在覆盖层里**' +
+     '（diffOverlay 从既有覆盖层出发，不是从空对象重建 —— 错了会静默删数据）');
+  ok(!!(ovF.window && ovF.window.start === '2026-10-01' && ovF.window.end === '2026-10-17'),
+     '窗口与数据一起提交（overlay.window = ' + JSON.stringify(ovF.window) + '）');
+  const wF = await winNow();
+  ok(wF.score === 0, '面板按新窗口统计：总分 0（' + D1.slice(5) + ' 落在窗外，不参与统计）');
+  ok((await rowInfo()).data === 17, '明细表重建为 17 数据行');
+  const fToast = await dTxt();
+  ok(/^已应用 窗口 10\/01–10\/17 · 1 天 \/ 1 处改动$/.test(fToast || ''),
+     '保存提示把窗口与改动一起报出来（含连接符）：' + fToast);
+
+  await click('#btnSettings');
+  await sleep(420);
+  await setWin('start', '2026-09-18');
+  await click('#btnSetSave');
+  await sleep(680);
+  const wG = await winNow();
+  const ovG = await readOv();
+  ok(wG.score === 3 && wG.n === 30, '★ 窗口调回去 → 总分回到 3（越窗记录完整重现）');
+  ok(!!(ovG && ovG.days && ovG.days[D1] && ovG.days[D1].gzh === 3),
+     '记录仍在覆盖层，切来切去没有丢');
+  ok(ovG.window === null || ovG.window === undefined,
+     '窗口回到默认 → 键被清掉（不落盘）');
+  ok((await rowInfo()).data === 30, '明细表回到 30 数据行');
+  await click('#btnSettings');
+  await sleep(420);
+  ok((await cellVal(D1, 'gzh')) === '3',
+     '抽屉逐日表格里 ' + D1.slice(5) + ' 的 gzh 显示 3 —— UI 也完整重现');
+
+  /* 收尾：改回基线并保存，不把本节制造的覆盖层留给后续 */
+  await setCell(D1, 'gzh', 0);
+  await click('#btnSetSave');
+  await sleep(680);
+  ok((await readOv()) === null, '改回基线并保存 → 覆盖层键被清除（不留空记录）');
+  ok((await winNow()).score === 0, '总分回到 0（本节收尾，不污染后续）');
+
+  ok(errs.length === 0, '全程无 JS 错误' + (errs.length ? '：' + errs.join(' | ') : ''));
 
   await p.close();
   await browser.close();
@@ -732,5 +1042,6 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   if (fail) { console.log('\n❌ 交互实测未通过：' + fail + ' 项'); process.exit(1); }
   console.log('\n🎉 交互实测通过：冷启动锚点 / 撤销式筛选（含空集） / 无破坏性按钮 / ' +
               '打卡 12 模块写路径 / 设置数据可编辑且可撤销 / ' +
-              '自定义身份（头像居中裁剪 + 字样实时落盘 + 与业绩数据分家）');
+              '自定义身份（头像居中裁剪 + 字样实时落盘 + 与业绩数据分家） / ' +
+              '观测窗口（预设重建 · 起止兜底 · 90 天截断 · 越窗数据不丢）');
 })();
