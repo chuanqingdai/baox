@@ -19,7 +19,8 @@ const entries = [
   "tool",
   "about",
   "activity",
-  "zhibo"
+  "zhibo",
+  "zx202610"
 ];
 
 rmSync(output, { recursive: true, force: true });
