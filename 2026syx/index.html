@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026王牌税优产品全维度拆解</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #000;
+  --card: #1a1a1a;
+  --card2: #1e1e1e;
+  --text: #ffffff;
+  --sub: #c8c8cc;
+  --border: rgba(255,255,255,.08);
+  --gold1: #c9a84c;
+  --gold2: #f0d080;
+  --gold3: #e8c060;
+  --gold4: #d4a040;
+  --gold5: #b8892a;
+  --gold-grad: linear-gradient(135deg, #c9a84c 0%, #f0d080 30%, #e8c060 50%, #d4a040 70%, #b8892a 100%);
+  --gold-rgba: rgba(212,160,64,.25);
+  --green: #30d158;
+  --red: #ff453a;
+  --orange: #ff9f0a;
+  --purple: #bf5af2;
+  --radius: 20px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "PingFang SC", sans-serif;
+  -webkit-font-smoothing: antialiased; line-height: 1.6; overflow-x: hidden;
+}
+.gold-text {
+  background: var(--gold-grad);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+/* ============ NAV ============ */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:100;
+  backdrop-filter: saturate(180%) blur(40px); -webkit-backdrop-filter: saturate(180%) blur(40px);
+  background: rgba(0,0,0,.88); border-bottom: 1px solid rgba(212,160,64,.3);
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto; height: 58px;
+  display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
+}
+.nav-brand {
+  display: inline-flex; align-items: center; flex: 0 0 auto; text-decoration: none;
+}
+.nav-brand img {
+  height: 24px; width: auto; display: block;
+  opacity: .92; transition: opacity .25s;
+}
+.nav-brand:hover img { opacity: 1; }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  color: var(--sub); text-decoration: none; font-size: 13.5px; transition: color .25s;
+}
+.nav-links a:hover { color: var(--gold3); }
+/* ============ HERO ============ */
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 120px 24px 80px; position: relative;
+  background: radial-gradient(ellipse 70% 50% at 50% 40%, rgba(212,160,64,.08), transparent 70%);
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 7px 20px; border-radius: 980px;
+  border: 1px solid rgba(212,160,64,.32);
+  background: rgba(212,160,64,.07);
+  font-size: 12.5px; letter-spacing: .09em; color: var(--gold2);
+  margin-bottom: 30px; font-weight: 600;
+}
+.hero-tag i { font-size: 11px; }
+.hero h1 { font-size: clamp(40px, 7.5vw, 72px); font-weight: 800; line-height: 1.15; letter-spacing: -.02em; }
+.hero-sub {
+  margin-top: 22px; font-size: clamp(15px, 2vw, 18px); color: #b0b0b8; max-width: 720px;
+}
+.hero-products {
+  display: flex; gap: 14px; margin-top: 34px; flex-wrap: wrap; justify-content: center;
+}
+.hero-chip {
+  padding: 10px 22px; border-radius: 980px; font-size: 14px; font-weight: 600;
+  border: 1px solid var(--border); background: rgba(255,255,255,.04); color: var(--sub);
+}
+.hero-chip b { color: var(--gold2); font-weight: 700; }
+.hero-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  max-width: 1080px; width: 100%; margin-top: 56px;
+}
+.stat-card {
+  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 26px 18px; transition: border-color .3s;
+}
+.stat-card:hover { border-color: rgba(212,160,64,.3); }
+.stat-num { font-size: clamp(26px, 3.4vw, 38px); font-weight: 800; }
+.stat-num small { font-size: .5em; font-weight: 700; }
+.stat-label { margin-top: 6px; font-size: 13px; color: #a0a0a8; }
+/* ============ SECTION ============ */
+.section { padding: 100px 24px; }
+.wrap { max-width: 1200px; margin: 0 auto; }
+.sec-eyebrow {
+  font-size: 13px; letter-spacing: .08em; text-transform: uppercase;
+  background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; font-weight: 700; text-align: center;
+}
+.sec-title { font-size: clamp(28px, 4vw, 42px); font-weight: 700; text-align: center; margin-top: 10px; }
+.sec-desc { text-align: center; color: #a8a8b0; font-size: 16.5px; max-width: 760px; margin: 16px auto 0; }
+/* ============ GRIDS & CARDS ============ */
+.grid { display: grid; gap: 16px; margin-top: 48px; }
+.g2 { grid-template-columns: repeat(2, 1fr); }
+.g3 { grid-template-columns: repeat(3, 1fr); }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+.g5 { grid-template-columns: repeat(5, 1fr); }
+.card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 28px 24px; transition: border-color .3s, transform .3s; position: relative;
+}
+.card:hover { border-color: rgba(212,160,64,.3); transform: translateY(-2px); }
+.card-icon {
+  width: 46px; height: 46px; border-radius: 13px; display: flex; align-items: center; justify-content: center;
+  background: rgba(212,160,64,.1); color: var(--gold2); font-size: 18px; margin-bottom: 16px;
+}
+.card h3 { font-size: 18px; font-weight: 700; }
+.card p { margin-top: 8px; font-size: 14px; color: var(--sub); line-height: 1.7; }
+.card .num { font-size: 30px; font-weight: 800; margin-top: 4px; }
+/* 政策双制度卡片 */
+.policy-card { overflow: hidden; }
+.policy-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border); margin-bottom: 16px;
+}
+.policy-head h3 { font-size: 20px; }
+.policy-badge {
+  font-size: 12px; padding: 4px 12px; border-radius: 980px; font-weight: 600; white-space: nowrap;
+  border: 1px solid rgba(212,160,64,.32); color: var(--gold2); background: rgba(212,160,64,.07);
+}
+.policy-list { list-style: none; }
+.policy-list li {
+  display: flex; gap: 10px; font-size: 14.5px; color: var(--sub); padding: 7px 0; line-height: 1.65;
+}
+.policy-list li i { color: var(--gold3); font-size: 12px; margin-top: 5px; }
+.policy-list li b { color: var(--text); }
+/* 产品大区块 */
+.product-hero {
+  display: flex; align-items: center; gap: 18px; justify-content: center; margin-top: 44px; flex-wrap: wrap;
+}
+.product-logo {
+  font-size: clamp(24px, 3.4vw, 34px); font-weight: 800;
+}
+.product-tag {
+  font-size: 13px; padding: 6px 16px; border-radius: 980px; font-weight: 600;
+  border: 1px solid rgba(48,209,88,.35); color: var(--green); background: rgba(48,209,88,.08);
+}
+.featured::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: var(--gold-grad); border-radius: 20px 20px 0 0;
+}
+/* 案例时间线 */
+.case-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+.case-node {
+  background: var(--card2); border: 1px solid var(--border); border-radius: 16px; padding: 22px;
+  text-align: center;
+}
+.case-node .yr { font-size: 13px; color: var(--gold2); font-weight: 700; letter-spacing:.04em; }
+.case-node .amt { font-size: 26px; font-weight: 800; margin-top: 6px; }
+.case-node .desc { font-size: 13px; color: #a0a0a8; margin-top: 6px; }
+/* 公司实力条 */
+.company-bar {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px;
+}
+.company-item {
+  background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 16px;
+  padding: 20px; text-align: center;
+}
+.company-item .cv { font-size: 24px; font-weight: 800; }
+.company-item .cl { font-size: 12.5px; color: #a0a0a8; margin-top: 4px; }
+/* 表格 */
+.compare-wrap { overflow-x: auto; margin-top: 48px; border-radius: var(--radius); border: 1px solid var(--border); }
+table.compare { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 14px; }
+table.compare th, table.compare td { padding: 15px 18px; text-align: left; border-bottom: 1px solid var(--border); }
+table.compare thead th {
+  background: rgba(255,255,255,.04); font-weight: 700; font-size: 14.5px; white-space: nowrap;
+}
+table.compare thead th .th-sub { display:block; font-size: 12px; color:#a0a0a8; font-weight: 400; margin-top:2px; }
+table.compare tbody tr:hover { background: rgba(255,255,255,.02); }
+table.compare td { color: var(--sub); vertical-align: top; line-height: 1.6; }
+table.compare td:first-child { color: var(--text); font-weight: 600; white-space: nowrap; }
+.cp-highlight { color: var(--gold2); font-weight: 700; }
+.cp-good { color: var(--green); font-weight: 700; }
+.cp-warn { color: var(--orange); font-weight: 600; }
+/* 图表 */
+.chart-panel {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 26px 24px; margin-top: 48px;
+}
+.chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; align-items: start; }
+.chart-box {
+  background: var(--card2); border: 1px solid var(--border); border-radius: 16px; padding: 22px;
+  min-width: 0; /* 防 grid 子项被 canvas 固有宽度撑爆（min-content 循环依赖） */
+}
+.chart-grid > * { min-width: 0; }
+.chart-canvas canvas { max-width: 100%; }
+.chart-box h4 { font-size: 16px; font-weight: 700; }
+.chart-box .chart-note { font-size: 12px; color: #8e8e96; margin-top: 4px; }
+.chart-canvas { margin-top: 16px; height: 260px; position: relative; }
+/* 流程 */
+.flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 48px; }
+.flow-step {
+  background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 22px 16px; text-align: center;
+  position: relative;
+}
+.flow-step .step-num {
+  width: 34px; height: 34px; border-radius: 50%; margin: 0 auto 12px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--gold-grad); color: #000; font-weight: 800; font-size: 15px;
+}
+.flow-step h4 { font-size: 15.5px; font-weight: 700; }
+.flow-step p { font-size: 12.5px; color: #a0a0a8; margin-top: 6px; line-height: 1.6; }
+/* 责任比例条 */
+.duty-bars { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 24px; }
+.duty-bar {
+  background: var(--card2); border: 1px solid var(--border); border-radius: 16px; padding: 22px; text-align: center;
+}
+.duty-bar .db-num { font-size: 32px; font-weight: 800; }
+.duty-bar .db-label { font-size: 13px; color: #a0a0a8; margin-top: 4px; }
+/* CTA */
+.cta-wrap { text-align: center; max-width: 640px; margin: 0 auto; }
+.cta-wrap h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 800; }
+.cta-sub { color: #a8a8b0; font-size: 16px; margin-top: 14px; line-height: 1.8; }
+.cta-btn {
+  margin-top: 32px; display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 40px; border-radius: 980px; border: none; cursor: pointer;
+  background: var(--gold-grad); color: #000; font-size: 16.5px; font-weight: 700;
+  transition: transform .25s, box-shadow .25s; font-family: inherit;
+}
+.cta-btn:hover { transform: scale(1.03); box-shadow: 0 10px 40px rgba(212,160,64,.35); }
+.cta-note { margin-top: 16px; font-size: 12.5px; color: #8e8e96; }
+/* Footer */
+.footer-brand {
+  font-family: Georgia, "Times New Roman", Times, "Palatino Linotype", Palatino, serif;
+  font-size: clamp(14px, 2vw, 20px); letter-spacing: .4em; text-indent: .4em;
+  background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; user-select: none; display: inline-block;
+}
+.disclaimer {
+  max-width: 900px; margin: 40px auto 0; font-size: 12px; color: #8e8e96; line-height: 1.8;
+  text-align: center;
+}
+/* 滚动动画 */
+.fi { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s ease; }
+.fi.on { opacity: 1; transform: translateY(0); }
+/* toast */
+.toast {
+  position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+  background: var(--gold-grad); color: #000; font-weight: 700; font-size: 14px;
+  padding: 12px 28px; border-radius: 980px; z-index: 200; box-shadow: 0 8px 30px rgba(0,0,0,.5);
+}
+/* ============ 响应式 ============ */
+@media (max-width: 1024px) {
+  .g5 { grid-template-columns: repeat(3, 1fr); }
+  .g4 { grid-template-columns: repeat(2, 1fr); }
+  .flow { grid-template-columns: repeat(3, 1fr); }
+  .hero-stats { grid-template-columns: repeat(2, 1fr); }
+  .company-bar { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 900px) {
+  .chart-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .nav-links { display: none; }
+  .g2, .g3, .g5 { grid-template-columns: 1fr; }
+  .case-flow, .duty-bars { grid-template-columns: 1fr; }
+  .flow { grid-template-columns: 1fr 1fr; }
+  .section { padding: 70px 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="#" aria-label="BAOX.AI">
+      <img src="assets/baox-logo-w.png" alt="BAOX.AI">
+    </a>
+    <div class="nav-links">
+      <a href="#policy">税优政策</a>
+      <a href="#zhonghe">岁岁享3.0</a>
+      <a href="#fulinmen">福临门</a>
+      <a href="#charts">收益拆解</a>
+      <a href="#compare">全维对比</a>
+      <a href="#fit">适配人群</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="hero-tag"><i class="fas fa-star"></i> 万相臻选</div>
+  <h1>2026王牌税优产品<br><span class="gold-text">全维度拆解</span></h1>
+  <p class="hero-sub">一张图看懂两大国家税优制度下的王牌产品——中荷岁岁享3.0税优护理险 × 中英福临门两全保险（分红型）。节税、增值、保障，一份投入三重回报。</p>
+  <div class="hero-products">
+    <div class="hero-chip"><b>税优健康险</b> · 中荷岁岁享3.0</div>
+    <div class="hero-chip"><b>个人养老金</b> · 中英福临门（分红型）</div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-card fi">
+      <div class="stat-num gold-text">¥6,480<small>/年</small></div>
+      <div class="stat-label">双制度叠加最高年节税</div>
+    </div>
+    <div class="stat-card fi">
+      <div class="stat-num gold-text">6.06<small>%</small></div>
+      <div class="stat-label">税优后满期IRR峰值（45%税率档）</div>
+    </div>
+    <div class="stat-card fi">
+      <div class="stat-num gold-text">2.53<small>倍</small></div>
+      <div class="stat-label">福临门满期含分红收益/总保费</div>
+    </div>
+    <div class="stat-card fi">
+      <div class="stat-num gold-text">11.6<small>万+</small></div>
+      <div class="stat-label">双产品累计承保客户（9万+2.6万）</div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= 政策背景 ================= -->
+<section class="section" id="policy">
+  <div class="wrap">
+    <div class="sec-eyebrow">POLICY</div>
+    <h2 class="sec-title">国家给的「节税红包」，你领了吗？</h2>
+    <p class="sec-desc">个人所得税体系下，商业保险有两条官方节税通道：税优健康险（每年2,400元额度）与个人养老金（每年12,000元额度）。两者互不冲突，可叠加使用。</p>
+
+    <div class="grid g2">
+      <div class="card policy-card featured fi">
+        <div class="policy-head">
+          <h3>税优健康险</h3>
+          <span class="policy-badge">额度 2,400元/年</span>
+        </div>
+        <ul class="policy-list">
+          <li><i class="fas fa-circle-check"></i><span><b>2015年试点、2017年全国推广、2023年扩容</b>——产品范围覆盖医疗险、疾病保险、长期护理险</span></li>
+          <li><i class="fas fa-circle-check"></i><span>缴费期内每年 <b>2,400元税前扣除</b>，按边际税率节税 <b>72～1,080元/年</b></span></li>
+          <li><i class="fas fa-circle-check"></i><span>被保险人可为本人，也可为<b>配偶、子女、父母</b>（金规〔2023〕2号），全家都能投</span></li>
+          <li><i class="fas fa-circle-check"></i><span>2025年度个税汇算申报人数超 <b>2亿</b>，实际缴纳个税人群约6,000万——节税需求是刚需</span></li>
+        </ul>
+      </div>
+      <div class="card policy-card featured fi">
+        <div class="policy-head">
+          <h3>个人养老金</h3>
+          <span class="policy-badge">额度 12,000元/年</span>
+        </div>
+        <ul class="policy-list">
+          <li><i class="fas fa-circle-check"></i><span>每年最高缴存 <b>12,000元</b>，按边际税率节税 <b>360～5,400元/年</b>，交费期间年年享税优</span></li>
+          <li><i class="fas fa-circle-check"></i><span>领取时不并入综合所得，<b>单独按3%税率</b>计税——高税率人群「税率差」套利空间显著</span></li>
+          <li><i class="fas fa-circle-check"></i><span>截至2025年二季度开户 <b>7,032万人</b>，实际缴费仅2,109万（30%）——「开户热、缴费冷」正是机会窗口</span></li>
+          <li><i class="fas fa-circle-check"></i><span>2025年9月起<b>新增3种领取情形</b>（重大医疗、长期失业、贫困）+2类申请渠道，流动性焦虑大幅缓解</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="chart-panel fi">
+      <div class="chart-grid">
+        <div class="chart-box">
+          <h4>个人养老金 · 各税率档年节税金额</h4>
+          <div class="chart-note">按顶格缴存12,000元测算，税率越高、节税越多</div>
+          <div class="chart-canvas"><canvas id="taxChart"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <h4>个人养老金产品池构成（共1,135款）</h4>
+          <div class="chart-note">截至2025年8月，国家社会保险公共服务平台数据</div>
+          <div class="chart-canvas"><canvas id="poolChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 产品一：中荷岁岁享3.0 ================= -->
+<section class="section" id="zhonghe" style="background: rgba(255,255,255,.015);">
+  <div class="wrap">
+    <div class="sec-eyebrow">PRODUCT 01 · 税优健康险</div>
+    <div class="product-hero">
+      <div class="product-logo">中荷岁岁享3.0 <span class="gold-text">税优护理险</span></div>
+      <span class="product-tag">互联网产品 · 全国可售 · 无需双录</span>
+    </div>
+    <p class="sec-desc" style="margin-top:14px;">「省税有抓手、开口有话题、联系有理由」——给客户一份「省税＋增值＋守护」的长期确定感：一份钱，办三件事。</p>
+
+    <div class="grid g5">
+      <div class="card fi">
+        <div class="card-icon"><i class="fas fa-piggy-bank"></i></div>
+        <h3>能退税</h3>
+        <p>缴费期内每年2,400元税前扣除，最高年省 <b class="cp-highlight">1,080元</b>（45%税率档）</p>
+      </div>
+      <div class="card fi">
+        <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+        <h3>会增长</h3>
+        <p>类增额寿形态，<b class="cp-highlight">10年交10年现价回正</b>，现金价值持续增长、预期清晰</p>
+      </div>
+      <div class="card fi">
+        <div class="card-icon"><i class="fas fa-shield-heart"></i></div>
+        <h3>护终身</h3>
+        <p><b class="cp-highlight">10种特定疾病</b>＋意外1-3级伤残，一次性赔付护理金，终身护理兜底</p>
+      </div>
+      <div class="card fi">
+        <div class="card-icon"><i class="fas fa-stethoscope"></i></div>
+        <h3>送体检</h3>
+        <p>5年缴及以上即送体检（男13项/女15项），覆盖<b class="cp-highlight">232城</b>慈铭/美年/爱康国宾等机构，不限使用人</p>
+      </div>
+      <div class="card fi">
+        <div class="card-icon"><i class="fas fa-award"></i></div>
+        <h3>经验足</h3>
+        <p>1.0到3.0三代迭代，累计承保超 <b class="cp-highlight">9万件</b>，超5成客户来自超一线城市</p>
+      </div>
+    </div>
+
+    <div class="grid g2" style="margin-top:16px;">
+      <div class="card fi">
+        <h3 style="font-size:17px;"><i class="fas fa-user-tie" style="color:var(--gold2);margin-right:8px;"></i>案例 · 40岁荷先生（税率20%）</h3>
+        <p style="margin-top:12px;">年缴6,000元、10年交：每年抵减个税 <b class="cp-highlight">480元</b>。同一份钱，既抵了税、又锁住确定现金价值，还多一份终身护理保障。</p>
+        <p style="margin-top:10px; font-size:13px; color:#a0a0a8;">支持月缴 200元/月「无痛上车」，与按月抵扣的退税规则完美契合；早投早抵，无需等12月扎堆。</p>
+      </div>
+      <div class="card fi">
+        <h3 style="font-size:17px;"><i class="fas fa-baby" style="color:var(--gold2);margin-right:8px;"></i>案例 · 3岁男宝「专属小金库」</h3>
+        <p style="margin-top:12px;">中产夫妇（税率20%+25%）各缴2,400元/年、10年交，合计总保费48,000元，年抵税 <b class="cp-highlight">1,080元</b>，实际成本仅3,720元/年。</p>
+        <div class="case-flow">
+          <div class="case-node">
+            <div class="yr">第10年 · 小升初</div>
+            <div class="amt gold-text">¥49,147</div>
+            <div class="desc">现金价值＞已交保费</div>
+          </div>
+          <div class="case-node">
+            <div class="yr">第13年 · 初升高</div>
+            <div class="amt gold-text">¥52,152</div>
+            <div class="desc">毕业旅行基金</div>
+          </div>
+          <div class="case-node">
+            <div class="yr">第16年 · 成年礼</div>
+            <div class="amt gold-text">¥55,344</div>
+            <div class="desc">孩子的独立成人礼</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-panel fi" style="margin-top:16px;">
+      <h3 style="font-size:18px;"><i class="fas fa-building-columns" style="color:var(--gold2);margin-right:10px;"></i>保司实力 · 中荷人寿</h3>
+      <p style="font-size:13.5px; color:#a0a0a8; margin-top:6px;">北京银行 × 法国巴黎保险集团（BNP Paribas Cardif，管理资产3,020亿欧元）合资，全国10家分公司</p>
+      <div class="company-bar">
+        <div class="company-item">
+          <div class="cv gold-text">¥950亿</div>
+          <div class="cl">总资产（2026Q2）</div>
+        </div>
+        <div class="company-item">
+          <div class="cv gold-text">176.14%</div>
+          <div class="cl">综合偿付能力充足率</div>
+        </div>
+        <div class="company-item">
+          <div class="cv gold-text">AA</div>
+          <div class="cl">风险评级连续12个季度AA及以上</div>
+        </div>
+        <div class="company-item">
+          <div class="cv gold-text">7.42%</div>
+          <div class="cl">近三年平均综合投资收益率</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 产品二：中英福临门 ================= -->
+<section class="section" id="fulinmen">
+  <div class="wrap">
+    <div class="sec-eyebrow">PRODUCT 02 · 个人养老金</div>
+    <div class="product-hero">
+      <div class="product-logo">中英人寿福临门 <span class="gold-text">两全保险（分红型）</span></div>
+      <span class="product-tag">税优养老 · 幸福临门</span>
+    </div>
+    <p class="sec-desc" style="margin-top:14px;">中英人寿（AVIVA-COFCO）个养王牌：累计26,005位客户投保、APE 2.88亿元，人均APE 1.11万元；30-45岁客户占比82%，80后90后的节税养老首选。</p>
+
+    <div class="grid g3">
+      <div class="card featured fi">
+        <div class="card-icon"><i class="fas fa-hand-holding-dollar"></i></div>
+        <h3>保障确定 · 一次领取</h3>
+        <p>期满一次性领取 <b class="cp-highlight">100%基本保险金额</b>的满期保险金；保险期间内享身故与全残保障（三项责任仅给付一项）。</p>
+      </div>
+      <div class="card featured fi">
+        <div class="card-icon"><i class="fas fa-layer-group"></i></div>
+        <h3>增额分红 · 未来可期</h3>
+        <p>红利领取方式为<b class="cp-highlight">交清增额</b>：红利转为保额持续参与后期分红分配，复利滚存，增值潜力逐级放大。</p>
+      </div>
+      <div class="card featured fi">
+        <div class="card-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+        <h3>政策专属 · 年年税优</h3>
+        <p>个人养老金专属产品，年交最高12,000元，享 <b class="cp-highlight">360～5,400元/年</b>税收优惠；领取时单独按3%计税。</p>
+      </div>
+    </div>
+
+    <div class="grid g2" style="margin-top:16px;">
+      <div class="card fi">
+        <h3 style="font-size:17px;"><i class="fas fa-umbrella" style="color:var(--gold2);margin-right:8px;"></i>身故/全残保障 · 已交保费比例给付</h3>
+        <p style="margin-top:10px; font-size:13.5px;">按「现金价值」与「已交保费×对应比例」二者取高赔付——</p>
+        <div class="duty-bars">
+          <div class="duty-bar">
+            <div class="db-num gold-text">160%</div>
+            <div class="db-label">18-41周岁</div>
+          </div>
+          <div class="duty-bar">
+            <div class="db-num gold-text">140%</div>
+            <div class="db-label">42-61周岁</div>
+          </div>
+          <div class="duty-bar">
+            <div class="db-num gold-text">120%</div>
+            <div class="db-label">62周岁及以上</div>
+          </div>
+        </div>
+      </div>
+      <div class="card fi">
+        <h3 style="font-size:17px;"><i class="fas fa-list-check" style="color:var(--gold2);margin-right:8px;"></i>投保规则速览</h3>
+        <ul class="policy-list" style="margin-top:10px;">
+          <li><i class="fas fa-angle-right"></i><span>投保年龄 <b>18-55周岁</b>；保险期间：20年 / 至55·58岁（女）、至60·63岁（男）</span></li>
+          <li><i class="fas fa-angle-right"></i><span>交费期间：<b>趸交/3/5/10/15/20年交</b>，年交；保费递增单位1,000元</span></li>
+          <li><i class="fas fa-angle-right"></i><span>不计入体检/风险保额、<b>无财务核保</b>、1-6类职业可投、无职业加费</span></li>
+          <li><i class="fas fa-angle-right"></i><span>绿通就医、书面国际二诊、住院关爱等增值服务，<b>交费期内每年1次</b>；另有SOS全球救援</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card fi" style="margin-top:16px;">
+      <h3 style="font-size:17px;"><i class="fas fa-user" style="color:var(--gold2);margin-right:8px;"></i>投保示例 · 30岁英女士（年入50万，税率30%）</h3>
+      <p style="margin-top:10px; font-size:14px;">年交12,000元 × 20年，保至58周岁，基本保额 <b class="cp-highlight">306,216元</b>。累计保费24万元 ——</p>
+      <div class="case-flow">
+        <div class="case-node">
+          <div class="yr">税优合计</div>
+          <div class="amt gold-text">¥72,000</div>
+          <div class="desc">3,600元/年 × 20年，相当于保费打7折</div>
+        </div>
+        <div class="case-node">
+          <div class="yr">满期保险金（保证）</div>
+          <div class="amt" style="color:var(--green);">¥306,216</div>
+          <div class="desc">100%基本保额，合同载明</div>
+        </div>
+        <div class="case-node">
+          <div class="yr">满期保险金（红利演示）</div>
+          <div class="amt gold-text">¥398,850</div>
+          <div class="desc">红利为非保证利益，某些年度可能为零</div>
+        </div>
+      </div>
+      <p style="margin-top:14px; font-size:12.5px; color:#8e8e96;">另支持12家个养合作银行开户对接（光大/交通/招商/广发/农业/民生/中信/兴业/建设/邮储/浙商/中国银行）。</p>
+    </div>
+  </div>
+</section>
+<!-- ================= 收益拆解 ================= -->
+<section class="section" id="charts" style="background: rgba(255,255,255,.015);">
+  <div class="wrap">
+    <div class="sec-eyebrow">DATA</div>
+    <h2 class="sec-title">收益全维度拆解 · 福临门两全</h2>
+    <p class="sec-desc">以「男性、10年缴、保至60岁、年交12,000元（总保费12万）」为统一口径，实测分红型与C款（互联网固收）在20/30/40岁三个投保年龄下的真实表现。</p>
+
+    <div class="chart-panel fi">
+      <div class="chart-grid">
+        <div class="chart-box">
+          <h4>税优后满期IRR对比（分红型·含分红口径）</h4>
+          <div class="chart-note">同一笔满期收益，税率越高、现金流越少、IRR放大越明显</div>
+          <div class="chart-canvas"><canvas id="irrChart"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <h4>满期总收益对比：分红型 vs C款（固收2%）</h4>
+          <div class="chart-note">分红型按红利利益演示；C款为合同保证的固定收益</div>
+          <div class="chart-canvas"><canvas id="matureChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-panel fi">
+      <h4 style="font-size:16px;">含分红总收益增长曲线（分红型，按红利利益演示）</h4>
+      <div class="chart-note" style="font-size:12px; color:#8e8e96; margin-top:4px;">20岁投保持有40年满期303,520元（2.53倍总保费）；30岁投保30年满期224,703元；40岁投保20年满期166,607元</div>
+      <div class="chart-canvas" style="height:300px;"><canvas id="growthChart"></canvas></div>
+    </div>
+    <p style="text-align:center; font-size:12px; color:#8e8e96; margin-top:14px;">以上红利利益演示基于公司精算假设，红利为非保证利益，其分配是不确定的，在某些年度红利可能为零；税优后IRR为按对应税率测算的现金流内部收益率，仅供参考。</p>
+  </div>
+</section>
+
+<!-- ================= 全维对比 ================= -->
+<section class="section" id="compare">
+  <div class="wrap">
+    <div class="sec-eyebrow">COMPARE</div>
+    <h2 class="sec-title">双王牌 · 全维度对照</h2>
+    <p class="sec-desc">两款产品不是二选一，而是覆盖两个互不冲突的税优额度。看清差异，才能组合出最优解。</p>
+
+    <div class="compare-wrap fi">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>维度</th>
+            <th>中荷岁岁享3.0<span class="th-sub">税优护理险 · 税优健康险通道</span></th>
+            <th>中英福临门两全（分红型）<span class="th-sub">个人养老金通道</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>年税优额度</td>
+            <td class="cp-highlight">2,400元/年（税前扣除）</td>
+            <td class="cp-highlight">12,000元/年（税前扣除）</td>
+          </tr>
+          <tr>
+            <td>年节税上限</td>
+            <td>最高 <span class="cp-highlight">1,080元</span>（45%税率档）</td>
+            <td>最高 <span class="cp-highlight">5,400元</span>（45%税率档）；领取时单独按3%计税</td>
+          </tr>
+          <tr>
+            <td>产品形态</td>
+            <td>长期护理险，类增额寿现价增长</td>
+            <td>两全保险（分红型），另有C款互联网固收版</td>
+          </tr>
+          <tr>
+            <td>核心领取</td>
+            <td>现价随时可退：10年交<span class="cp-good">10年回正</span>，此后持续增长</td>
+            <td>期满一次性领取<span class="cp-good">100%基本保额</span>（个养账户内锁定至领取条件达成）</td>
+          </tr>
+          <tr>
+            <td>保障责任</td>
+            <td>10种特疾＋意外1-3级伤残，<span class="cp-highlight">一次性赔付护理金</span></td>
+            <td>身故/全残按已交保费<span class="cp-highlight">160%/140%/120%</span>与现价取高赔付</td>
+          </tr>
+          <tr>
+            <td>交费门槛</td>
+            <td>支持<span class="cp-good">月缴200元</span>上车，年缴2,400元即顶格</td>
+            <td>年交，最低6,000元（20年交）/ 8,000元，最高12,000元</td>
+          </tr>
+          <tr>
+            <td>谁能当被保人</td>
+            <td>本人或<span class="cp-good">配偶、子女、父母</span>均可</td>
+            <td>投保人与被保人须为同一人（个养账户本人制）</td>
+          </tr>
+          <tr>
+            <td>增值权益</td>
+            <td>5年缴及以上送体检（232城，不限使用人）；康养旅居权益可叠加</td>
+            <td>绿通就医/国际二诊/住院关爱，交费期内每年1次；SOS全球救援</td>
+          </tr>
+          <tr>
+            <td>投保便捷度</td>
+            <td><span class="cp-good">全国可售、全程线上、无需双录</span></td>
+            <td>免双录；个养账户投保，12家合作银行可开户</td>
+          </tr>
+          <tr>
+            <td>保司背景</td>
+            <td>中荷人寿：北京银行×法国巴黎保险，偿付能力176.14%，连续12季度AA+</td>
+            <td>中英人寿：中粮×英杰华（AVIVA-COFCO），个养系列APE 2.88亿</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 适配人群 ================= -->
+<section class="section" id="fit" style="background: rgba(255,255,255,.015);">
+  <div class="wrap">
+    <div class="sec-eyebrow">FOR WHOM</div>
+    <h2 class="sec-title">对号入座 · 四种配置姿势</h2>
+    <p class="sec-desc">节税金额跟着税率走：税率10%以上，这两款产品就值得认真考虑。</p>
+
+    <div class="grid g4">
+      <div class="card fi">
+        <div class="card-icon"><i class="fas fa-briefcase"></i></div>
+        <h3>税率10%-20%的上班族</h3>
+        <p>优先 <b class="cp-highlight">岁岁享3.0</b>：月缴200元无痛上车，年省税240-480元，还白捡一份体检和终身护理保障。</p>
+      </div>
+      <div class="card fi">
+        <div class="card-icon"><i class="fas fa-arrow-trend-up"></i></div>
+        <h3>税率20%以上中高收入</h3>
+        <p>加码 <b class="cp-highlight">福临门</b>：12,000元额度顶格缴存，年节税2,400-5,400元，「税率差＋满期金」双重套利。</p>
+      </div>
+      <div class="card fi">
+        <div class="card-icon"><i class="fas fa-child-reaching"></i></div>
+        <h3>想给孩子存钱的父母</h3>
+        <p>岁岁享3.0被保人可以是孩子：夫妻双份年抵税1,080元，现价10年回正，<b class="cp-highlight">小升初/成年礼随取随用</b>。</p>
+      </div>
+      <div class="card fi">
+        <div class="card-icon"><i class="fas fa-crown"></i></div>
+        <h3>双配置满配玩家</h3>
+        <p>两份额度叠加：2,400＋12,000元全部用足，最高年节税 <b class="cp-highlight">6,480元</b>——国家发的红包，一分不浪费。</p>
+      </div>
+    </div>
+
+    <div class="card fi" style="margin-top:16px;">
+      <h3 style="font-size:17px;"><i class="fas fa-route" style="color:var(--gold2);margin-right:8px;"></i>个人养老金 · 五步操作流程</h3>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="step-num">1</div>
+          <h4>开户</h4>
+          <p>个人养老金账户＋资金账户，两个账户银行一步到位</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">2</div>
+          <h4>缴存</h4>
+          <p>向资金账户缴存，每年最高12,000元</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">3</div>
+          <h4>选择产品</h4>
+          <p>从资金账户扣款，投保福临门两全</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">4</div>
+          <h4>报税抵扣</h4>
+          <p>个税APP「一站式申报」免下载凭证，扫码即抵</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">5</div>
+          <h4>领取养老金</h4>
+          <p>符合条件后领取，单独按3%税率计税</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="section">
+  <div class="wrap">
+    <div class="cta-wrap fi">
+      <h2>你的税率档，能省多少钱？</h2>
+      <p class="cta-sub">发送「税优测算」，按你的真实税率一对一测算节税金额与满期收益，定制专属双产品组合方案。</p>
+      <button class="cta-btn" onclick="copyWechat()"><i class="fab fa-weixin"></i> 添加微信 · 获取专属测算</button>
+    </div>
+    <p class="disclaimer">
+      风险提示：本页面内容为产品资料整理与理解参考，不构成保险合同组成部分。具体保险责任、条款、服务以实际保险合同载明为准。分红型保险的未来保单红利为非保证利益，其红利分配是不确定的，在某些年度红利可能为零；税优后IRR等测算数据基于假设税率与演示口径，仅供参考，不代表实际收益承诺。个人养老金资金往来与领取要求按个人养老金资金账户管理规定与个人养老金制度执行。
+    </p>
+  </div>
+</section>
+
+<footer style="text-align:center;padding:60px 24px 40px">
+  <div class="footer-brand">W A N X I A N G</div>
+</footer>
+
+<script>
+/* ============ 复制微信号 ============ */
+function copyWechat() {
+  navigator.clipboard.writeText('jaydenkong');
+  var t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = '微信号已复制 ✓';
+  document.body.appendChild(t);
+  setTimeout(function(){ t.remove(); }, 2000);
+}
+/* ============ 滚动动画 ============ */
+var obs = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){ e.target.classList.add('on'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.fi').forEach(function(el){ obs.observe(el); });
+
+/* ============ Chart.js 全局 ============ */
+Chart.defaults.color = '#a8a8b0';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+Chart.defaults.font.family = '-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif';
+
+/* 格式化函数必须放在 options 之外（防 scriptable option 误调用） */
+var LABEL_FMT = {
+  taxChart:    function(v){ return '¥' + Number(v).toLocaleString(); },
+  irrChart:    function(v){ return v + '%'; },
+  matureChart: function(v){ return (v/10000).toFixed(1) + '万'; }
+};
+var valueLabelPlugin = {
+  id:'valueLabel',
+  afterDatasetsDraw:function(chart){
+    var cfg = (chart.options.plugins && chart.options.plugins.valueLabel) || {};
+    if(cfg.display === false) return;
+    var fmt = LABEL_FMT[chart.canvas.id];
+    var ctx = chart.ctx, horizontal = chart.options.indexAxis === 'y', area = chart.chartArea;
+    ctx.save();
+    ctx.font = (cfg.fontSize || 10) + 'px -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif';
+    ctx.textBaseline = horizontal ? 'middle' : 'bottom';
+    ctx.textAlign = horizontal ? 'left' : 'center';
+    chart.data.datasets.forEach(function(ds, di){
+      var meta = chart.getDatasetMeta(di);
+      if(meta.hidden) return;
+      var col = (cfg.colors && cfg.colors[di]) || cfg.color || '#f0d080';
+      meta.data.forEach(function(el, i){
+        var n = Number(ds.data[i]);
+        if(!isFinite(n)) return;
+        var txt = fmt ? fmt(n) : String(n);
+        ctx.fillStyle = col;
+        if(horizontal){
+          var tx = Math.min(el.x + 7, area.right - ctx.measureText(txt).width);
+          ctx.fillText(txt, tx, el.y);
+        } else {
+          ctx.fillText(txt, el.x, el.y - 5);
+        }
+      });
+    });
+    ctx.restore();
+  }
+};
+Chart.register(valueLabelPlugin);
+
+/* 1. 节税档位柱状图 */
+new Chart(document.getElementById('taxChart'), {
+  type:'bar',
+  data:{
+    labels:['3%','10%','20%','25%','30%','35%','45%'],
+    datasets:[{
+      label:'年节税金额（元）',
+      data:[360,1200,2400,3000,3600,4200,5400],
+      backgroundColor:'rgba(212,160,64,0.7)',
+      borderColor:'#d4a040', borderWidth:1, borderRadius:6
+    }]
+  },
+  options:{
+    maintainAspectRatio:false,
+    layout:{ padding:{ top:18 } },
+    scales:{
+      y:{ suggestedMax:6200, ticks:{ callback:function(v){ return '¥'+v; } } },
+      x:{ title:{ display:true, text:'个税边际税率' } }
+    },
+    plugins:{ legend:{ display:false } }
+  }
+});
+
+/* 2. 个养产品池环形图 */
+new Chart(document.getElementById('poolChart'), {
+  type:'doughnut',
+  data:{
+    labels:['储蓄类 466款','保险类 329款','基金类 303款','理财类 37款'],
+    datasets:[{
+      data:[466,329,303,37],
+      backgroundColor:['rgba(212,160,64,.8)','rgba(48,209,88,.7)','rgba(191,90,242,.65)','rgba(255,159,10,.7)'],
+      borderColor:'#1e1e1e', borderWidth:2
+    }]
+  },
+  options:{
+    maintainAspectRatio:false, cutout:'58%',
+    plugins:{
+      legend:{ position:'bottom', labels:{ padding:14, boxWidth:12 } },
+      valueLabel:{ display:false },
+      tooltip:{ callbacks:{ label:function(c){ return ' ' + c.label + '（占' + (c.parsed/1135*100).toFixed(1) + '%）'; } } }
+    }
+  }
+});
+
+/* 3. 税优后IRR对比 */
+new Chart(document.getElementById('irrChart'), {
+  type:'bar',
+  data:{
+    labels:['20岁投保','30岁投保','40岁投保'],
+    datasets:[
+      { label:'节税2,400/年（20%税率）', data:[3.28,3.37,3.59],
+        backgroundColor:'rgba(48,209,88,.65)', borderColor:'#30d158', borderWidth:1, borderRadius:6 },
+      { label:'节税5,400/年（45%税率）', data:[4.37,4.88,6.06],
+        backgroundColor:'rgba(212,160,64,.75)', borderColor:'#d4a040', borderWidth:1, borderRadius:6 }
+    ]
+  },
+  options:{
+    maintainAspectRatio:false,
+    layout:{ padding:{ top:18 } },
+    scales:{ y:{ suggestedMax:7.2, ticks:{ callback:function(v){ return v+'%'; } } } },
+    plugins:{
+      legend:{ position:'bottom', labels:{ padding:14, boxWidth:12 } },
+      valueLabel:{ colors:['#7de89b','#f0d080'] }
+    }
+  }
+});
+
+/* 4. 满期收益横向对比 */
+new Chart(document.getElementById('matureChart'), {
+  type:'bar',
+  data:{
+    labels:['20岁投保','30岁投保','40岁投保'],
+    datasets:[
+      { label:'分红型·含分红演示', data:[303520,224703,166607],
+        backgroundColor:'rgba(212,160,64,.75)', borderColor:'#d4a040', borderWidth:1, borderRadius:6 },
+      { label:'C款·固定收益（保证）', data:[229884,187512,152868],
+        backgroundColor:'rgba(48,209,88,.6)', borderColor:'#30d158', borderWidth:1, borderRadius:6 }
+    ]
+  },
+  options:{
+    indexAxis:'y', maintainAspectRatio:false,
+    layout:{ padding:{ right:56 } },
+    scales:{ x:{ ticks:{ callback:function(v){ return (v/10000)+'万'; } }, suggestedMax:340000 } },
+    plugins:{
+      legend:{ position:'bottom', labels:{ padding:14, boxWidth:12 } },
+      valueLabel:{ colors:['#f0d080','#7de89b'] }
+    }
+  }
+});
+
+/* 5. 含分红总收益增长曲线 */
+var years = []; for(var y=1;y<=40;y++) years.push('第'+y+'年');
+var g20=[3322,8153,13397,20009,27144,34813,43072,51931,61437,71614,75113,78780,82633,86676,90917,95359,100011,104904,110033,115417,121064,126984,133222,139788,146666,153894,161484,169457,177827,186622,195866,205586,215800,226535,237834,249717,262203,275312,289069,303520];
+var g30=[4019,9861,16192,24173,32780,42050,52005,62682,74128,86384,90550,94925,99537,104385,109473,114798,120391,126262,132430,138894,145686,152819,160302,168172,176452,185145,194287,203907,214045,224703];
+var g40=[4837,11877,19495,29109,39469,50624,62600,75448,89218,103940,108935,114159,119656,125410,131464,137817,144488,151489,158853,166607];
+new Chart(document.getElementById('growthChart'), {
+  type:'line',
+  data:{
+    labels: years,
+    datasets:[
+      { label:'20岁投保（40年满期）', data:g20, borderColor:'#f0d080', backgroundColor:'rgba(212,160,64,.12)',
+        fill:true, pointRadius:0, tension:.35, borderWidth:2 },
+      { label:'30岁投保（30年满期）', data:g30, borderColor:'#30d158',
+        fill:false, pointRadius:0, tension:.35, borderWidth:2, borderDash:[6,4] },
+      { label:'40岁投保（20年满期）', data:g40, borderColor:'#bf5af2',
+        fill:false, pointRadius:0, tension:.35, borderWidth:2, borderDash:[2,3] }
+    ]
+  },
+  options:{
+    maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    scales:{
+      y:{ ticks:{ callback:function(v){ return (v/10000)+'万'; } } },
+      x:{ ticks:{ maxTicksLimit:10 } }
+    },
+    plugins:{
+      legend:{ position:'bottom', labels:{ padding:14, boxWidth:12 } },
+      valueLabel:{ display:false },
+      tooltip:{ callbacks:{ label:function(c){ return ' ' + c.dataset.label + '：¥' + Number(c.parsed.y).toLocaleString(); } } }
+    }
+  }
+});
+
+/* ============ 图表高度自适应（防拉伸链） ============ */
+function fitCharts(){
+  var narrow = window.innerWidth < 980;
+  document.querySelectorAll('.chart-grid .chart-box').forEach(function(box){
+    var cv = box.querySelector('.chart-canvas'); if(!cv) return;
+    var h;
+    if(narrow){ h = 240; }
+    else {
+      var sib = box.nextElementSibling;
+      var head = box.getBoundingClientRect().height - cv.getBoundingClientRect().height;
+      h = sib ? Math.round(sib.getBoundingClientRect().height - head) : 260;
+      h = Math.max(232, Math.min(332, h));
+    }
+    cv.style.height = h + 'px';
+    var cvs = cv.querySelector('canvas');
+    if(cvs && window.Chart){ var inst = Chart.getChart(cvs); if(inst) inst.resize(); }
+  });
+}
+window.addEventListener('load', fitCharts);
+window.addEventListener('resize', fitCharts);
+</script>
+</body>
+</html>
