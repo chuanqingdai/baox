@@ -21,7 +21,8 @@ const entries = [
   "activity",
   "zhibo",
   "zx202610",
-  "2026syx"
+  "2026syx",
+  "information"
 ];
 
 rmSync(output, { recursive: true, force: true });
