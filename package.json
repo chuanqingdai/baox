@@ -11,7 +11,7 @@
     "admin:hash": "node scripts/admin-hash.mjs"
   },
   "engines": {
-    "node": ">=22"
+    "node": "22.x"
   },
   "dependencies": {
     "image-size": "^2.0.4",
