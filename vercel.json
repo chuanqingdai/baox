@@ -4,5 +4,306 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "cleanUrls": true,
-  "trailingSlash": true
+  "trailingSlash": true,
+  "functions": {
+    "api/page.mjs": {
+      "includeFiles": "{masterclass,poster,collection,tool,about,activity,zhibo,zx202610,2026syx,information,account,login}/**/*.html"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/masterclass",
+      "destination": "/api/page?slug=masterclass"
+    },
+    {
+      "source": "/masterclass/",
+      "destination": "/api/page?slug=masterclass"
+    },
+    {
+      "source": "/masterclass/index",
+      "destination": "/api/page?slug=masterclass"
+    },
+    {
+      "source": "/masterclass/index.html",
+      "destination": "/api/page?slug=masterclass"
+    },
+    {
+      "source": "/poster",
+      "destination": "/api/page?slug=poster"
+    },
+    {
+      "source": "/poster/",
+      "destination": "/api/page?slug=poster"
+    },
+    {
+      "source": "/poster/index",
+      "destination": "/api/page?slug=poster"
+    },
+    {
+      "source": "/poster/index.html",
+      "destination": "/api/page?slug=poster"
+    },
+    {
+      "source": "/collection",
+      "destination": "/api/page?slug=collection"
+    },
+    {
+      "source": "/collection/",
+      "destination": "/api/page?slug=collection"
+    },
+    {
+      "source": "/collection/index",
+      "destination": "/api/page?slug=collection"
+    },
+    {
+      "source": "/collection/index.html",
+      "destination": "/api/page?slug=collection"
+    },
+    {
+      "source": "/tool",
+      "destination": "/api/page?slug=tool"
+    },
+    {
+      "source": "/tool/",
+      "destination": "/api/page?slug=tool"
+    },
+    {
+      "source": "/tool/index",
+      "destination": "/api/page?slug=tool"
+    },
+    {
+      "source": "/tool/index.html",
+      "destination": "/api/page?slug=tool"
+    },
+    {
+      "source": "/about",
+      "destination": "/api/page?slug=about"
+    },
+    {
+      "source": "/about/",
+      "destination": "/api/page?slug=about"
+    },
+    {
+      "source": "/about/index",
+      "destination": "/api/page?slug=about"
+    },
+    {
+      "source": "/about/index.html",
+      "destination": "/api/page?slug=about"
+    },
+    {
+      "source": "/activity",
+      "destination": "/api/page?slug=activity"
+    },
+    {
+      "source": "/activity/",
+      "destination": "/api/page?slug=activity"
+    },
+    {
+      "source": "/activity/index",
+      "destination": "/api/page?slug=activity"
+    },
+    {
+      "source": "/activity/index.html",
+      "destination": "/api/page?slug=activity"
+    },
+    {
+      "source": "/zhibo",
+      "destination": "/api/page?slug=zhibo"
+    },
+    {
+      "source": "/zhibo/",
+      "destination": "/api/page?slug=zhibo"
+    },
+    {
+      "source": "/zhibo/index",
+      "destination": "/api/page?slug=zhibo"
+    },
+    {
+      "source": "/zhibo/index.html",
+      "destination": "/api/page?slug=zhibo"
+    },
+    {
+      "source": "/zx202610",
+      "destination": "/api/page?slug=zx202610"
+    },
+    {
+      "source": "/zx202610/",
+      "destination": "/api/page?slug=zx202610"
+    },
+    {
+      "source": "/zx202610/index",
+      "destination": "/api/page?slug=zx202610"
+    },
+    {
+      "source": "/zx202610/index.html",
+      "destination": "/api/page?slug=zx202610"
+    },
+    {
+      "source": "/2026syx",
+      "destination": "/api/page?slug=2026syx"
+    },
+    {
+      "source": "/2026syx/",
+      "destination": "/api/page?slug=2026syx"
+    },
+    {
+      "source": "/2026syx/index",
+      "destination": "/api/page?slug=2026syx"
+    },
+    {
+      "source": "/2026syx/index.html",
+      "destination": "/api/page?slug=2026syx"
+    },
+    {
+      "source": "/information",
+      "destination": "/api/page?slug=information"
+    },
+    {
+      "source": "/information/",
+      "destination": "/api/page?slug=information"
+    },
+    {
+      "source": "/information/index",
+      "destination": "/api/page?slug=information"
+    },
+    {
+      "source": "/information/index.html",
+      "destination": "/api/page?slug=information"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "source": "/(account|admin|login)(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/masterclass/index",
+      "destination": "/masterclass/",
+      "permanent": true
+    },
+    {
+      "source": "/masterclass/index.html",
+      "destination": "/masterclass/",
+      "permanent": true
+    },
+    {
+      "source": "/poster/index",
+      "destination": "/poster/",
+      "permanent": true
+    },
+    {
+      "source": "/poster/index.html",
+      "destination": "/poster/",
+      "permanent": true
+    },
+    {
+      "source": "/collection/index",
+      "destination": "/collection/",
+      "permanent": true
+    },
+    {
+      "source": "/collection/index.html",
+      "destination": "/collection/",
+      "permanent": true
+    },
+    {
+      "source": "/tool/index",
+      "destination": "/tool/",
+      "permanent": true
+    },
+    {
+      "source": "/tool/index.html",
+      "destination": "/tool/",
+      "permanent": true
+    },
+    {
+      "source": "/about/index",
+      "destination": "/about/",
+      "permanent": true
+    },
+    {
+      "source": "/about/index.html",
+      "destination": "/about/",
+      "permanent": true
+    },
+    {
+      "source": "/activity/index",
+      "destination": "/activity/",
+      "permanent": true
+    },
+    {
+      "source": "/activity/index.html",
+      "destination": "/activity/",
+      "permanent": true
+    },
+    {
+      "source": "/zhibo/index",
+      "destination": "/zhibo/",
+      "permanent": true
+    },
+    {
+      "source": "/zhibo/index.html",
+      "destination": "/zhibo/",
+      "permanent": true
+    },
+    {
+      "source": "/zx202610/index",
+      "destination": "/zx202610/",
+      "permanent": true
+    },
+    {
+      "source": "/zx202610/index.html",
+      "destination": "/zx202610/",
+      "permanent": true
+    },
+    {
+      "source": "/2026syx/index",
+      "destination": "/2026syx/",
+      "permanent": true
+    },
+    {
+      "source": "/2026syx/index.html",
+      "destination": "/2026syx/",
+      "permanent": true
+    },
+    {
+      "source": "/information/index",
+      "destination": "/information/",
+      "permanent": true
+    },
+    {
+      "source": "/information/index.html",
+      "destination": "/information/",
+      "permanent": true
+    }
+  ]
 }
