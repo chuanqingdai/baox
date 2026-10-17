@@ -1,3 +1,5 @@
+import process from "node:process";
+import {Buffer} from "node:buffer";
 import { randomBytes, scrypt, timingSafeEqual, createHash } from "node:crypto";
 import { promisify } from "node:util";
 import { imageSize } from "image-size";
@@ -50,7 +52,7 @@ export function cookieToken(req) {
   return /^[a-f0-9]{64}$/.test(token) ? token : "";
 }
 export function sessionCookie(token, seconds = SESSION_SECONDS) {
-  return `baox_session=${token}; HttpOnly; Path=/; SameSite=Lax; Max-Age=${seconds}${process.env.NODE_ENV === "production" || process.env.VERCEL ? "; Secure" : ""}`;
+  return `baox_session=${token}; HttpOnly; Path=/; SameSite=Lax; Max-Age=${seconds}${process.env.NODE_ENV === "production" || process.env.VERCEL || typeof Deno !== "undefined" ? "; Secure" : ""}`;
 }
 export function assertSameOrigin(req) {
   const allowed = new URL(process.env.SITE_ORIGIN || "https://baox.ai").origin;

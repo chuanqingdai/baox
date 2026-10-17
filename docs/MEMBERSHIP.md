@@ -33,13 +33,16 @@ npm run dev
 本地管理员沿用指定账户，修改密码可在个人中心操作。普通体验账户仅存在本地测试数据库。
 
 ## 部署
-1. 在持有 baox.ai 的 Vercel 项目中，将 `.env.production.local` 中 DATABASE_URL、SITE_ORIGIN 配到 Production；DATABASE_URL 设为 sensitive。
-2. Preview 使用单独数据库时，独立配置它的 DATABASE_URL，并将 SITE_ORIGIN 设置成精确预览域名。不要将真实客户信息用于公开预览。
-3. 不需要把 ADMIN_PASSWORD_HASH 配进 Vercel；管理员已初始化，该值仅供一次性初始化脚本使用。
-4. `npm run build && npm test`。推送 main 触发 Vercel 发布。保留 Vercel Node Functions 自动识别，Framework Preset 为 Other，输出 dist。
-5. 验证游客点击保藏、直接访问 /collection/、/collection/index、/collection/index.html；未登录均不能得到原页面。
-6. 验证注册、头像修改、昵称修改、密码更新、退出、管理员权限保存、禁止普通用户查询 /api/account?action=users。
-7. 验证各受控页面、图片与脚本资源。请求必须在 Vercel 后端执行，不能只把 dist 复制到纯静态托管。
+生产使用 Supabase Edge Function `membership` 连接数据库，Vercel `/api/account` 转发会话请求，`/api/page` 先查询权限再返回受控 HTML。数据库凭据由 Supabase 自动注入，Vercel 无需额外配置数据库环境变量。服务地址是公开 URL，不是密钥；每个敏感操作仍验证用户会话、权限和请求来源。
+
+1. 共享会员服务代码修改后，运行 `node scripts/bundle-membership-edge.mjs`，将 `.local-data/edge-bundle.json` 中的文件部署到 Supabase 的 membership 函数，入口 index.ts，import map deno.json。该服务自行验证会员会话，因此平台 verify_jwt=false。
+2. 函数使用平台 SUPABASE_DB_URL，事务内 SET LOCAL ROLE baox_backend。数据库拥有者需授予 postgres 切换到该角色的权限；实际 DML 由受限角色执行。不要将数据库凭据放入函数源码。
+3. `npm run build && npm test`。通过 GitHub 推送 main 触发原 Vercel 项目自动部署；Framework 为 Other，输出 dist，保留 Node Functions。
+4. 验证游客直接访问 /collection/ 及 index 别名无法获得受控 HTML，注册/登录后才可访问；普通用户不能查询客户 API。
+5. 验证个人资料、密码轮换、退出、后台标签/级别/停用与页面权限。会话和受控 HTML 禁止缓存，云端服务不可用时拒绝访问。
+6. 请求来源严格限定 https://baox.ai；公开预览域名不能执行生产账号的写操作。生产数据不用于公开预览。
+
+仍支持自托管 Node 的 DATABASE_URL 模式；只有明确设置该变量时才由网站进程直连数据库。网站依赖服务端鉴权，不能仅复制 dist 到纯静态托管。
 
 ## 数据库迁移与维护
 - `server/schema.sql` 为初始结构。DDL 通过 Supabase SQL Editor / migration 使用数据库拥有者执行；网站的 baox_backend 不具备 DDL 权限。

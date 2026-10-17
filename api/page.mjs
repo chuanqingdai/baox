@@ -2,7 +2,8 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { database } from "../server/db.mjs";
 import { Membership } from "../server/membership.mjs";
-import { PAGES, DEFAULT_PUBLIC } from "../server/catalog.mjs";
+import { PAGES } from "../server/catalog.mjs";
+import {membershipRequest} from '../server/remote-membership.mjs';
 const root = process.cwd();
 export function createPageHandler(getDatabase = database) {
   return async function handler(req, res) {
@@ -31,7 +32,11 @@ export function createPageHandler(getDatabase = database) {
         const service = new Membership(getDatabase());
         user = await service.current(req);
         allowed = await service.permitted(user, slug);
-      } else allowed = DEFAULT_PUBLIC.includes(slug);
+      } else {
+        const response=await membershipRequest({url:req.url,headers:req.headers,method:'GET'},'access',{page:slug});
+        if(!response.ok)throw new Error('Remote membership authorization unavailable');
+        const access=await response.json();allowed=access.allowed;user=access.authenticated?{authenticated:true}:null;
+      }
       if (!allowed) {
         res.statusCode = user ? 403 : 401;
         if (user)
