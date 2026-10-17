@@ -1,12 +1,10 @@
-.DS_Store
 .workbuddy/
-dist/
-
+.DS_Store
 node_modules/
-.env
-.env.*
+dist/
+.env*
 !.env.example
-.vercel/
 .local-data/
-output/
 .playwright-cli/
+.vercel/
+output/

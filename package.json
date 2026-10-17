@@ -4,20 +4,9 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build.mjs",
-    "vercel-build": "node scripts/build.mjs",
-    "dev": "node --env-file-if-exists=.env.local scripts/dev-membership.mjs",
-    "test": "node --test tests/*.test.mjs",
-    "db:setup": "node --env-file-if-exists=.env.local scripts/setup-membership.mjs",
-    "admin:hash": "node scripts/admin-hash.mjs"
+    "vercel-build": "node scripts/build.mjs"
   },
   "engines": {
-    "node": "22.x"
-  },
-  "dependencies": {
-    "image-size": "^2.0.4",
-    "pg": "^8.23.1"
-  },
-  "devDependencies": {
-    "@electric-sql/pglite": "^0.5.10"
+    "node": ">=20"
   }
 }

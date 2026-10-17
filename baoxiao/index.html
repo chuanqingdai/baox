@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
+<title>报销测试仪 · 保罗万相 BAOX.AI</title>
+<meta name="description" content="医疗费用报销测算：社保、团险、商业医疗险叠加报销顺序与明细，一眼看懂每张发票能报多少。">
+<link rel="icon" href="/favicon.ico" sizes="any" type="image/x-icon">
+<link rel="canonical" href="https://baox.ai/baoxiao/">
+<script>
+/* 首屏防闪烁：先于样式生效设置 data-theme */
+(function(){try{
+  var t=localStorage.getItem('baox.reimb.theme');
+  document.documentElement.setAttribute('data-theme', t==='light'?'light':'dark');
+}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();
+</script>
+<link rel="stylesheet" href="libs/fontawesome/css/all.min.css">
+<style>
+/* ============================================================================
+   报销测试仪 · 视觉体系对齐 CRM / GEO / ACTIVITY
+     · 双主题：dark（暗夜黑金，默认） / light（米色深金）
+     · 暖金强调、暖调细边框、小圆角、宋体衬线标题
+     · 96px 图标窄栏 + 顶栏品牌区骨架
+   ============================================================================ */
+[data-theme="dark"]{
+  --bg:#070808; --bg2:#0c0e0e; --card:#0c0e0e; --card2:#111313;
+  --text:#eee5db; --sub:#aea198; --dim:#887e76;
+  --border:#29231f; --border2:#1c1c1b;
+  --gold1:#edbd87; --gold2:#d28b57; --gold3:#e8a97a; --gold4:#edbd87; --gold5:#d28b57;
+  --gold-grad:linear-gradient(135deg,#d28b57 0%,#edbd87 34%,#e0a06d 62%,#c87f4c 84%,#a8663a 100%);
+  --gold-rgba:rgba(210,139,87,.14);
+  --ivory:#eee5db; --surface:#0c0e0e; --surface-2:#111313;
+  --line:#29231f; --line-soft:#1c1c1b;
+  --gold:#d28b57; --gold-bright:#edbd87;
+  --muted:#887e76; --muted-2:#aea198;
+  --green:#7fc79a; --red:#ff6b60; --blue:#6fb4ff; --teal:#5ec4b6; --purple:#cf8dff;
+  --seg-soc:#3f7fb8; --seg-grp:#3d9a8b; --seg-com1:#d28b57; --seg-com2:#b06fa8;
+  --seg-com3:#8b7fd4; --seg-self:#5a4a42;
+  --input-bg:rgba(255,255,255,.04);
+}
+[data-theme="light"]{
+  --bg:#f6f0e0; --bg2:#ece5d3; --card:#fdfbf4; --card2:#f6f1e3;
+  --text:#2b2823; --sub:#57524a; --dim:#7d776c;
+  --border:#dcd2be; --border2:#c9bda4;
+  --gold1:#87671f; --gold2:#9c7830; --gold3:#b08d42; --gold4:#8a681c; --gold5:#6b5118;
+  --gold-grad:linear-gradient(135deg,#87671f 0%,#b08d42 32%,#9c7830 58%,#7f5f22 82%,#664b16 100%);
+  --gold-rgba:rgba(156,120,48,.15);
+  --ivory:#2b2823; --surface:#fdfbf4; --surface-2:#ece5d3;
+  --line:#dcd2be; --line-soft:#e6ddcb;
+  --gold:#9c7830; --gold-bright:#87671f;
+  --muted:#7d776c; --muted-2:#57524a;
+  --green:#2f6d47; --red:#a83226; --blue:#28578c; --teal:#166f7d; --purple:#6a429c;
+  --seg-soc:#5b8ec4; --seg-grp:#4aa394; --seg-com1:#b08d42; --seg-com2:#a87a9e;
+  --seg-com3:#8b84c0; --seg-self:#8a7f72;
+  --input-bg:rgba(90,74,42,.045);
+  --shadow:0 1px 2px rgba(90,74,42,.05),0 6px 20px rgba(90,74,42,.07);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  font-size:14px;line-height:1.6;
+}
+.app-shell{min-height:100vh;}
+.gold-text{background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+/* ---- 侧栏：96px 图标窄栏（与 CRM 同款） ---- */
+.sidebar{
+  position:fixed;left:0;top:0;bottom:0;width:96px;z-index:50;
+  display:flex;flex-direction:column;align-items:center;
+  padding:26px 12px 22px;
+  background:var(--surface);border-right:1px solid var(--line);
+}
+.sidebar nav{
+  display:flex;flex:1;flex-direction:column;justify-content:center;
+  gap:12px;width:100%;overflow-y:auto;scrollbar-width:none;
+}
+.sidebar nav::-webkit-scrollbar{display:none;}
+.sidebar .nav-item{
+  position:relative;width:100%;min-height:clamp(56px,7vh,68px);
+  display:grid;place-items:center;gap:7px;padding:13px 6px;
+  border:1px solid var(--line);border-radius:8px;
+  background:rgba(255,255,255,.018);color:#8b8179;
+  font-size:10.5px;text-decoration:none;
+  transition:background-color .18s ease,border-color .18s ease,color .18s ease;
+}
+[data-theme="light"] .sidebar .nav-item{background:rgba(255,255,255,.5);border-color:var(--border2);color:var(--muted);}
+.sidebar .nav-item i{font-size:20px;line-height:1;}
+.sidebar .nav-item span{font-size:10.5px;line-height:1.1;letter-spacing:.02em;}
+.sidebar .nav-item:hover{background:rgba(255,255,255,.05);color:#cbc2b9;border-color:var(--line);}
+.sidebar .nav-item.active{background:#17130f;border-color:var(--gold);color:var(--gold-bright);}
+.sidebar .nav-item.active::before{
+  content:"";position:absolute;left:-13px;top:50%;margin-top:-11px;
+  width:2px;height:22px;background:var(--gold);
+}
+[data-theme="light"] .sidebar .nav-item:hover{background:rgba(90,74,42,.05);color:var(--muted-2);}
+[data-theme="light"] .sidebar .nav-item.active{background:var(--card);border-color:#c9a88f;color:var(--gold);}
+.sidebar__foot{display:grid;gap:5px;text-align:center;flex:0 0 auto;}
+.sidebar__foot span{font-size:7px;letter-spacing:.055em;white-space:nowrap;color:#55504c;}
+.sidebar__foot strong{color:var(--gold);font-size:10px;font-weight:600;letter-spacing:.06em;}
+
+/* ---- 主区 ---- */
+.main{margin-left:96px;}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:22px;
+  padding:14px 32px 18px;border-bottom:1px solid var(--line);
+}
+[data-theme="dark"] .topbar{background:rgba(7,8,8,.88);}
+[data-theme="light"] .topbar{background:rgba(246,240,224,.92);}
+.topbar__actions{display:flex;align-items:center;gap:10px;margin-left:auto;}
+.topbar .brand{display:flex;align-items:center;gap:18px;min-width:0;flex:0 0 auto;}
+.brand__mark{
+  position:relative;width:70px;height:70px;flex:0 0 auto;display:grid;place-items:center;
+  border:1px solid #5f402d;border-radius:50%;background:var(--surface);
+  box-shadow:inset 0 0 0 4px var(--surface-2),0 12px 28px rgba(0,0,0,.26);
+}
+.brand__mark img{width:58px;height:58px;object-fit:cover;border-radius:50%;border:1px solid #bc7a4d;}
+.brand__mark>span{
+  position:absolute;right:2px;bottom:7px;width:8px;height:8px;
+  border:2px solid var(--surface);border-radius:50%;
+  background:var(--gold-bright);box-shadow:0 0 0 1px #5f402d;
+}
+.brand__copy{position:relative;min-width:0;padding-left:17px;}
+.brand__copy::before{content:"";position:absolute;left:0;top:2px;width:1px;height:calc(100% - 4px);background:#6d4831;}
+.brand__overline{
+  display:flex;align-items:center;gap:9px;
+  color:#b1764f;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;
+}
+.brand__overline i{padding-left:9px;border-left:1px solid #4a3528;color:#6d625a;font-size:8px;font-style:normal;font-weight:600;}
+.ver-badge{
+  padding:1px 7px;border-radius:980px;font-size:9px;font-style:normal;font-weight:700;
+  background:var(--gold-rgba);color:var(--gold-bright);border:1px solid rgba(210,139,87,.30);
+}
+.topbar .brand h1{
+  display:flex;align-items:baseline;gap:7px;margin:6px 0 0;
+  font-family:"Songti SC",STSong,"Source Han Serif SC","Noto Serif SC",serif;
+  font-size:clamp(28px,2.7vw,38px);line-height:1;font-weight:600;white-space:nowrap;
+}
+.topbar .brand h1>span{color:var(--ivory);}
+.topbar .brand h1>strong{color:var(--gold-bright);font-size:.94em;font-weight:600;}
+
+/* 主题切换（与 CRM 同款） */
+.theme-sw{
+  display:inline-flex;align-items:center;gap:5px;padding:5px;border-radius:5px;
+  background:rgba(255,255,255,.05);border:1px solid var(--border);cursor:pointer;user-select:none;
+}
+.theme-sw .ts-btn{
+  padding:4px 11px;border:1px solid transparent;border-radius:4px;background:transparent;
+  color:var(--dim);font-size:12px;font-weight:600;cursor:pointer;
+  display:inline-flex;align-items:center;gap:5px;white-space:nowrap;
+}
+[data-theme="dark"] .theme-sw .ts-btn.on{background:rgba(210,139,87,.14);color:var(--gold1);border-color:rgba(210,139,87,.40);}
+[data-theme="light"] .theme-sw{background:rgba(90,74,42,.05);}
+[data-theme="light"] .theme-sw .ts-btn.on{background:var(--gold-grad);color:#fff;box-shadow:0 2px 9px rgba(156,120,48,.26);}
+
+/* ---- 内容区 ---- */
+.content{padding:22px 32px 64px;max-width:1560px;}
+.section{margin-bottom:26px;}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:14px;flex-wrap:wrap;}
+.sec-head h2{
+  font-family:"Songti SC",STSong,"Source Han Serif SC","Noto Serif SC",serif;
+  font-size:20px;font-weight:600;display:flex;align-items:center;gap:9px;
+}
+.sec-head h2 i{color:var(--gold2);font-size:16px;}
+.sec-sub{font-size:12px;color:var(--dim);}
+
+/* 网格 */
+.grid{display:grid;gap:16px;}
+.g2{grid-template-columns:1fr 1fr;}
+.g3{grid-template-columns:repeat(3,1fr);}
+.g4{grid-template-columns:repeat(4,1fr);}
+.g2-21{grid-template-columns:2fr 1fr;}
+@media(max-width:1100px){.g2,.g3,.g4,.g2-21{grid-template-columns:1fr;}}
+
+/* 面板 / 统计卡 */
+.panel{
+  background:var(--card);border:1px solid var(--border);border-radius:5px;padding:18px 20px;
+}
+[data-theme="light"] .panel{box-shadow:0 1px 2px rgba(90,74,42,.04);}
+.panel-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border2);
+}
+.panel-head .pt{
+  font-family:"Songti SC",STSong,"Source Han Serif SC","Noto Serif SC",serif;
+  font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;
+}
+.panel-head .pt i{color:var(--gold2);font-size:13px;}
+.panel-head .pl{font-size:11.5px;color:var(--dim);}
+.stat{
+  background:var(--card);border:1px solid var(--border);border-radius:5px;padding:16px 18px;
+}
+.stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.stat-label{
+  font-family:"Songti SC",STSong,"Source Han Serif SC","Noto Serif SC",serif;
+  font-size:13px;color:var(--sub);
+}
+.stat-ico{
+  width:30px;height:30px;display:grid;place-items:center;border-radius:5px;
+  background:var(--gold-rgba);color:var(--gold2);font-size:13px;
+}
+.stat-num{font-size:30px;font-weight:700;line-height:1.15;font-variant-numeric:tabular-nums;}
+.stat-num small{font-size:14px;font-weight:600;}
+.stat-foot{margin-top:6px;font-size:11.5px;color:var(--dim);}
+.stat-foot b{color:var(--gold4);font-weight:600;}
+
+/* ---- 表单控件 ---- */
+.f-row{display:grid;gap:12px;margin-bottom:12px;}
+.f-row.c2{grid-template-columns:1fr 1fr;}
+.f-row.c3{grid-template-columns:1fr 1fr 1fr;}
+@media(max-width:640px){.f-row.c2,.f-row.c3{grid-template-columns:1fr;}}
+.f-item label{
+  display:block;font-size:12px;color:var(--sub);margin-bottom:5px;font-weight:600;
+}
+.f-item label i{color:var(--gold2);font-size:10px;margin-right:4px;}
+.f-input,select.f-input{
+  width:100%;padding:8px 11px;border-radius:5px;font-size:13px;font-family:inherit;
+  background:var(--input-bg);border:1px solid var(--border);color:var(--text);
+  outline:none;transition:border-color .16s ease;font-variant-numeric:tabular-nums;
+}
+.f-input:focus{border-color:var(--gold2);}
+.f-input::placeholder{color:var(--dim);}
+/* 下拉框：去掉系统默认大箭头区，改自定义小箭头（位置内收，避免贴边悬空） */
+select.f-input{
+  -webkit-appearance:none;appearance:none;padding-right:32px;cursor:pointer;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23887e76' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;background-size:10px 6px;
+}
+select.f-input option{background:var(--card);color:var(--text);}
+.f-unit{position:relative;}
+.f-unit .f-input{padding-right:30px;}
+.f-unit em{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  font-style:normal;font-size:11px;color:var(--dim);pointer-events:none;
+}
+.f-hint{font-size:11px;color:var(--dim);margin-top:4px;line-height:1.5;}
+
+/* 分段选择器（就诊类型 / 就医场所等） */
+.seg{display:flex;gap:6px;flex-wrap:wrap;}
+.seg button{
+  flex:1;min-width:0;padding:8px 6px;border-radius:5px;cursor:pointer;
+  border:1px solid var(--border);background:var(--input-bg);color:var(--sub);
+  font-size:12.5px;font-weight:600;font-family:inherit;white-space:nowrap;
+  transition:all .16s ease;
+}
+.seg button:hover{color:var(--text);border-color:var(--border2);}
+.seg button.on{
+  background:var(--gold-rgba);border-color:rgba(210,139,87,.45);color:var(--gold1);
+}
+[data-theme="light"] .seg button.on{color:var(--gold4);border-color:rgba(156,120,48,.42);}
+
+/* 滑杆 */
+.range-wrap{display:flex;align-items:center;gap:10px;}
+.range-wrap output{
+  min-width:52px;text-align:right;font-size:13px;font-weight:700;color:var(--gold4);
+  font-variant-numeric:tabular-nums;
+}
+input[type="range"]{
+  flex:1;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;
+  background:linear-gradient(to right,var(--gold2) var(--fill,0%),var(--border) var(--fill,0%));
+  outline:none;cursor:pointer;
+}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;
+  background:var(--gold1);border:2px solid var(--surface);box-shadow:0 0 0 1px var(--gold2);
+}
+input[type="range"]::-moz-range-thumb{
+  width:14px;height:14px;border-radius:50%;background:var(--gold1);border:2px solid var(--surface);
+}
+
+/* 开关 */
+.sw{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none;font-size:13px;font-weight:600;color:var(--sub);white-space:nowrap;}
+/* 修正特异性冲突：.f-item label（0,1,1）会把 .sw 覆盖成 block，
+   导致滑轨 width/height 失效、圆点叠字。此处显式还原。 */
+.f-item label.sw{display:inline-flex;margin-bottom:0;}
+.sw input{display:none;}
+.sw .trk{
+  width:36px;height:20px;border-radius:980px;background:var(--border);position:relative;
+  transition:background .18s ease;flex:0 0 auto;
+}
+.sw .trk::after{
+  content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;
+  background:var(--sub);transition:all .18s ease;
+}
+.sw input:checked + .trk{background:rgba(210,139,87,.45);}
+.sw input:checked + .trk::after{left:19px;background:var(--gold1);}
+
+/* 按钮 */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:5px;
+  border:1px solid var(--border);background:var(--input-bg);color:var(--sub);
+  font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .16s ease;
+}
+.btn:hover{color:var(--text);border-color:var(--border2);}
+.btn.gold{background:var(--gold-grad);color:#fff;border-color:none;border:1px solid transparent;}
+.btn.gold:hover{filter:brightness(1.08);color:#fff;}
+.btn.sm{padding:5px 11px;font-size:12px;}
+.btn.danger:hover{color:var(--red);border-color:var(--red);}
+
+/* 商保卡 */
+.com-card{
+  border:1px solid var(--border);border-radius:5px;padding:14px 16px;margin-bottom:12px;
+  background:var(--card2);position:relative;
+}
+.com-card .cc-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.com-card .cc-head .cc-sel{width:130px;flex:0 0 auto;}
+.com-card .cc-head .cc-name{width:220px;flex:0 1 auto;}
+.com-card .cc-head .cc-tag{
+  font-size:10px;padding:2px 8px;border-radius:980px;font-weight:700;
+  background:var(--gold-rgba);color:var(--gold4);border:1px solid rgba(210,139,87,.30);
+}
+.com-card .cc-head .cc-del{margin-left:auto;}
+.chip-note{font-size:11px;color:var(--dim);}
+
+/* ---- 结果：堆叠条 ---- */
+.stack-wrap{padding:6px 0 2px;}
+.stack-bar{
+  display:flex;height:44px;border-radius:5px;overflow:hidden;
+  border:1px solid var(--border);
+}
+.stack-bar .sg{
+  position:relative;min-width:2px;transition:width .45s ease;
+  display:flex;align-items:center;justify-content:center;
+}
+.stack-bar .sg b{
+  font-size:11px;font-weight:700;color:rgba(255,255,255,.92);white-space:nowrap;
+  text-shadow:0 1px 2px rgba(0,0,0,.4);padding:0 4px;overflow:hidden;
+}
+.stack-legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px;}
+.stack-legend .lg{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--sub);}
+.stack-legend .lg i{width:10px;height:10px;border-radius:3px;flex:0 0 auto;}
+.stack-legend .lg b{color:var(--text);font-variant-numeric:tabular-nums;}
+
+/* ---- 明细表 ---- */
+table.detail{width:100%;border-collapse:collapse;font-size:12.5px;}
+table.detail th{
+  text-align:left;padding:8px 10px;color:var(--dim);font-weight:600;font-size:11.5px;
+  border-bottom:1px solid var(--border);white-space:nowrap;
+}
+table.detail td{padding:9px 10px;border-bottom:1px solid var(--border2);vertical-align:top;}
+table.detail tr:last-child td{border-bottom:none;}
+table.detail td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+table.detail th.num{text-align:right;}
+table.detail .lv{
+  display:inline-flex;align-items:center;gap:7px;font-weight:600;white-space:nowrap;
+}
+table.detail .lv i{width:8px;height:8px;border-radius:2px;flex:0 0 auto;}
+table.detail tr.hl td{background:var(--gold-rgba);}
+table.detail tr.hl td b{color:var(--gold4);}
+.row-note{font-size:11px;color:var(--dim);margin-top:2px;line-height:1.5;}
+
+/* ---- 策略路径 ---- */
+.path-flow{display:flex;flex-direction:column;gap:10px;}
+.path-step{
+  display:flex;gap:12px;align-items:flex-start;padding:11px 13px;border-radius:5px;
+  border:1px solid var(--border);background:var(--card2);
+}
+.path-step .no{
+  flex:0 0 auto;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+  background:var(--gold-grad);color:#fff;font-size:12px;font-weight:700;
+}
+.path-step .tx b{display:block;font-size:13px;margin-bottom:2px;}
+.path-step .tx span{font-size:11.5px;color:var(--dim);line-height:1.55;}
+.path-step .amt{
+  margin-left:auto;flex:0 0 auto;text-align:right;font-size:14px;font-weight:700;
+  color:var(--gold4);font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+.path-step .amt small{display:block;font-size:10px;color:var(--dim);font-weight:400;}
+
+/* 提示列表 */
+.tips{display:flex;flex-direction:column;gap:9px;}
+.tip{
+  display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:5px;
+  font-size:12.5px;line-height:1.6;border:1px solid var(--border);background:var(--card2);
+}
+.tip i{flex:0 0 auto;margin-top:2px;font-size:12px;}
+.tip.warn{border-color:rgba(210,139,87,.35);}
+.tip.warn i{color:var(--gold2);}
+.tip.bad i{color:var(--red);}
+.tip.ok i{color:var(--green);}
+.tip.info i{color:var(--blue);}
+
+/* 发票六宫格 */
+.inv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media(max-width:640px){.inv-grid{grid-template-columns:1fr 1fr;}}
+.inv-cell{
+  border:1px solid var(--border);border-radius:5px;padding:10px 12px;background:var(--card2);
+}
+.inv-cell .ic-t{font-size:11px;color:var(--dim);margin-bottom:3px;}
+.inv-cell .ic-v{font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;}
+.inv-cell .ic-n{font-size:10.5px;color:var(--dim);margin-top:2px;line-height:1.4;}
+
+.footnote{
+  margin-top:26px;padding-top:14px;border-top:1px solid var(--border2);
+  font-size:11.5px;color:var(--dim);line-height:1.8;
+}
+
+/* 过渡 */
+body,.sidebar,.panel,.stat,.topbar,.com-card,.path-step,.tip,.inv-cell{
+  transition:background-color .28s ease,border-color .28s ease,color .28s ease;
+}
+
+/* 窄屏 */
+@media(max-width:900px){
+  .sidebar{
+    position:fixed;left:0;right:0;top:0;bottom:auto;width:auto;height:auto;
+    flex-direction:row;align-items:center;gap:4px;padding:8px 12px;
+    overflow-x:auto;border-right:none;border-bottom:1px solid var(--line);
+  }
+  .sidebar nav{flex-direction:row;justify-content:flex-start;gap:4px;overflow:visible;}
+  .sidebar .nav-item{width:auto;min-width:52px;min-height:46px;}
+  .sidebar__foot{display:none;}
+  .main{margin-left:0;padding-top:66px;}
+  .topbar{padding:12px 16px;flex-wrap:wrap;gap:12px;}
+  .topbar .brand h1{font-size:22px;}
+  .brand__mark{width:54px;height:54px;}
+  .brand__mark img{width:44px;height:44px;}
+  .content{padding:16px 16px 48px;}
+
+  /* ---- 移动端表单与卡片优化 ---- */
+  /* 分段按钮两列排布，避免四个挤一行 */
+  .seg button{flex:1 1 44%;padding:9px 6px;}
+  /* 三列表单收为单列 */
+  .f-row.c3{grid-template-columns:1fr;}
+  /* 面板头允许换行，右侧按钮组不挤压标题 */
+  .panel-head{flex-wrap:wrap;gap:10px;}
+  .panel-head .pt{flex:1 1 auto;min-width:0;}
+  .panel-head>span:last-child{display:flex;gap:8px;flex-wrap:wrap;}
+  /* 商保卡头：标签 + 类型 + 名称 + 删除，两行排布 */
+  .com-card{padding:12px 14px;}
+  .com-card .cc-head{flex-wrap:wrap;gap:8px;}
+  .com-card .cc-head .cc-tag{flex:0 0 auto;white-space:nowrap;}
+  .com-card .cc-head .cc-sel{flex:1 1 40%;width:auto;min-width:120px;}
+  .com-card .cc-head .cc-name{flex:1 1 100%;width:auto;order:3;}
+  .com-card .cc-head .cc-del{margin-left:auto;order:2;}
+  /* 统计卡数字收窄 */
+  .stat-num{font-size:24px;}
+  /* 堆叠条内百分比标签过窄时隐藏 */
+  .stack-bar .sg b{font-size:10px;}
+  /* 路径卡：金额换行到下方 */
+  .path-step{flex-wrap:wrap;}
+  .path-step .amt{margin-left:38px;}
+  /* 发票六宫格改两列 */
+  .inv-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:640px){
+  .topbar .brand h1{font-size:20px;}
+  .f-row.c2{grid-template-columns:1fr;}
+  .theme-sw .ts-btn span{display:none;}
+  .theme-sw .ts-btn{padding:5px 9px;}
+  .sec-head h2{font-size:18px;}
+  .stat-num{font-size:22px;}
+  .inv-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ========== 侧栏 · 96px 图标窄栏 ========== -->
+  <aside class="sidebar" aria-label="页面导航">
+    <nav>
+      <a class="nav-item active" href="#sec-input" title="基本信息 · 就医费用与保险信息" aria-label="基本信息"><i class="fa-solid fa-sliders"></i><span>信息</span></a>
+      <a class="nav-item" href="#sec-result" title="测算结果 · 报销总览" aria-label="测算结果"><i class="fa-solid fa-chart-pie"></i><span>总览</span></a>
+      <a class="nav-item" href="#sec-detail" title="报销明细 · 每一层报了哪笔钱" aria-label="报销明细"><i class="fa-solid fa-list-check"></i><span>明细</span></a>
+      <a class="nav-item" href="#sec-advice" title="策略解读 · 报销顺序与提示" aria-label="策略解读"><i class="fa-solid fa-lightbulb"></i><span>解读</span></a>
+    </nav>
+    <div class="sidebar__foot">
+      <span>BAOX REIMBURSE CALC</span>
+      <strong>V1.0</strong>
+    </div>
+  </aside>
+
+  <!-- ========== 主区 ========== -->
+  <main class="main">
+
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand__mark">
+          <img src="assets/avatar.png" alt="公子头像">
+          <span aria-hidden="true"></span>
+        </div>
+        <div class="brand__copy">
+          <div class="brand__overline"><span>医疗费用 · 报销测算中枢</span><i>BAOX REIMBURSE CALC</i><em class="ver-badge">v1.0</em></div>
+          <h1><span>公子的</span><strong>报销测试仪</strong></h1>
+        </div>
+      </div>
+      <div class="topbar__actions">
+        <div class="theme-sw" id="themeSw" role="group" aria-label="切换皮肤">
+          <button class="ts-btn on" data-theme-set="dark" onclick="setTheme('dark')" title="暗夜黑金"><i class="fa-solid fa-moon"></i><span>暗夜</span></button>
+          <button class="ts-btn" data-theme-set="light" onclick="setTheme('light')" title="米色深金（浅色）"><i class="fa-solid fa-sun"></i><span>米金</span></button>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- ==================== ① 测算输入 ==================== -->
+      <section class="section" id="sec-input">
+        <div class="sec-head">
+          <h2><i class="fa-solid fa-sliders"></i>基本信息</h2>
+          <span class="sec-sub">填写就医费用与已有保障，下方结果实时更新 · 数据仅在本机浏览器计算</span>
+        </div>
+
+        <div class="grid g2" style="margin-bottom:16px;">
+
+          <!-- 就医信息 -->
+          <div class="panel">
+            <div class="panel-head"><span class="pt"><i class="fa-solid fa-hospital"></i>就医信息</span><span class="pl">本次看病的基本情况</span></div>
+
+            <div class="f-row c3">
+              <div class="f-item">
+                <label><i class="fa-solid fa-bed-pulse"></i>就诊类型</label>
+                <div class="seg" id="segType">
+                  <button data-v="in" class="on">住院</button>
+                  <button data-v="out">门诊</button>
+                </div>
+              </div>
+              <div class="f-item">
+                <label><i class="fa-solid fa-sack-dollar"></i>住院费用</label>
+                <div class="f-unit"><input class="f-input" id="inTotal" type="number" min="0" step="100" value="17392.38"><em>元</em></div>
+              </div>
+              <div class="f-item" id="vexItem">
+                <label><i class="fa-solid fa-stethoscope"></i>前后门急诊费用 <span style="color:var(--dim);font-weight:400;">（可选）</span></label>
+                <div class="f-unit"><input class="f-input" id="inVex" type="number" min="0" step="100" value="0" placeholder="0"><em>元</em></div>
+                <div class="f-hint">与本次住院同一疾病的住院前门急诊 / 出院后复查费用</div>
+              </div>
+            </div>
+
+            <div class="f-row">
+              <div class="f-item">
+                <label><i class="fa-solid fa-building"></i>就医场所</label>
+                <div class="seg" id="segPlace">
+                  <button data-v="pub" class="on">公立普通部</button>
+                  <button data-v="vip">特需 / 国际部</button>
+                  <button data-v="priv">私立医院</button>
+                </div>
+                <div class="f-hint" id="placeHint">普通部：医保正常结算，商业医疗险普遍覆盖。</div>
+              </div>
+            </div>
+
+            <div class="f-hint" style="margin-top:2px;">费用构成按就医场所自动估算（普通部自费约 22%、特需约 50%、私立约 70%），无需填写。</div>
+          </div>
+
+          <!-- 社保 -->
+          <div class="panel">
+            <div class="panel-head"><span class="pt"><i class="fa-solid fa-id-card"></i>社保（基本医疗保险）</span><span class="pl">内置简化口径，可手动修正</span></div>
+
+            <div class="f-row">
+              <div class="f-item">
+                <label><i class="fa-solid fa-user-tie"></i>社保类型</label>
+                <div class="seg" id="segSocial">
+                  <button data-v="emp" class="on">职工医保</button>
+                  <button data-v="res">居民医保</button>
+                  <button data-v="ncm">新农合</button>
+                  <button data-v="none">无社保</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="f-row c2">
+              <div class="f-item">
+                <label><i class="fa-solid fa-location-dot"></i>所在省份</label>
+                <select class="f-input" id="selProv"></select>
+              </div>
+              <div class="f-item" id="cityItem">
+                <label><i class="fa-solid fa-city"></i>所在城市</label>
+                <select class="f-input" id="selCity"></select>
+              </div>
+            </div>
+
+            <div class="f-row c3">
+              <div class="f-item">
+                <label>起付线</label>
+                <div class="f-unit"><input class="f-input" id="inSocDed" type="number" min="0" step="50" value="1500"><em>元</em></div>
+              </div>
+              <div class="f-item">
+                <label>报销比例</label>
+                <div class="f-unit"><input class="f-input" id="inSocRatio" type="number" min="0" max="100" step="1" value="85"><em>%</em></div>
+              </div>
+              <div class="f-item">
+                <label>封顶线</label>
+                <div class="f-unit"><input class="f-input" id="inSocCap" type="number" min="0" step="10000" value="500000"><em>元</em></div>
+              </div>
+            </div>
+            <div class="f-row">
+              <div class="f-item" style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+                <label class="sw"><input type="checkbox" id="swSocSettled" checked><span class="trk"></span>本次就医已用社保结算</label>
+              </div>
+            </div>
+            <div class="f-hint" id="socHint">上海职工 · 住院：起付线 1500 元，报销约 85%。实际以当地医保局口径为准。</div>
+          </div>
+        </div>
+
+        <!-- 发票拆解（名词解释） -->
+        <div class="panel" style="margin-bottom:16px;">
+          <div class="panel-head">
+            <span class="pt"><i class="fa-solid fa-file-invoice"></i>发票拆解</span>
+            <span class="pl">看懂发票上的名词</span>
+          </div>
+          <div class="f-hint" style="margin-bottom:10px;">下面六个格子对应发票上的六项金额，测算结果就是按这个口径拆出来的。</div>
+          <div class="inv-grid" id="invGrid"></div>
+        </div>
+
+        <!-- 团险 -->
+        <div class="panel" style="margin-bottom:16px;">
+          <div class="panel-head">
+            <span class="pt"><i class="fa-solid fa-people-group"></i>团体保险（公司福利）</span>
+            <label class="sw"><input type="checkbox" id="swGroup"><span class="trk"></span>有团险</label>
+          </div>
+          <div id="groupBody" style="display:none;">
+            <div class="f-row c3">
+              <div class="f-item">
+                <label>门诊保额</label>
+                <div class="f-unit"><input class="f-input" id="inGrpOutCap" type="number" min="0" step="500" value="5000"><em>元</em></div>
+              </div>
+              <div class="f-item">
+                <label>住院保额</label>
+                <div class="f-unit"><input class="f-input" id="inGrpInCap" type="number" min="0" step="1000" value="20000"><em>元</em></div>
+              </div>
+              <div class="f-item">
+                <label>免赔额（年）</label>
+                <div class="f-unit"><input class="f-input" id="inGrpDed" type="number" min="0" step="50" value="100"><em>元</em></div>
+              </div>
+            </div>
+            <div class="f-row c3">
+              <div class="f-item">
+                <label>报销比例</label>
+                <div class="f-unit"><input class="f-input" id="inGrpRatio" type="number" min="0" max="100" step="5" value="90"><em>%</em></div>
+              </div>
+              <div class="f-item" style="display:flex;align-items:flex-end;padding-bottom:6px;">
+                <label class="sw"><input type="checkbox" id="swGrpSocialOnly" checked><span class="trk"></span>限社保范围内</label>
+              </div>
+              <div class="f-item" style="display:flex;align-items:flex-end;">
+                <div class="f-hint">多数公司团险只报社保目录内费用，且不报自费药。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 商保 -->
+        <div class="panel">
+          <div class="panel-head">
+            <span class="pt"><i class="fa-solid fa-shield-halved"></i>商业医疗险（可叠加多份）</span>
+            <span>
+              <button class="btn sm" id="btnDemo" type="button" title="填入公众号文章中的发票案例"><i class="fa-solid fa-file-invoice"></i> 填入发票示例</button>
+              <button class="btn sm gold" id="btnAddCom" type="button"><i class="fa-solid fa-plus"></i> 添加商保</button>
+            </span>
+          </div>
+          <div id="comList"></div>
+          <div class="f-hint">报销顺序不影响总额：费用补偿型医疗险合计报销不超过实际花费；其他商业险已报销部分通常可抵扣免赔额（社保统筹不可抵扣）。</div>
+        </div>
+      </section>
+
+      <!-- ==================== ② 测算结果 ==================== -->
+      <section class="section" id="sec-result">
+        <div class="sec-head">
+          <h2><i class="fa-solid fa-chart-pie"></i>测算结果</h2>
+          <span class="sec-sub">本次就医费用的报销总览</span>
+        </div>
+
+        <div class="grid g4" style="margin-bottom:16px;">
+          <div class="stat">
+            <div class="stat-top"><span class="stat-label">就医总费用</span><span class="stat-ico"><i class="fa-solid fa-sack-dollar"></i></span></div>
+            <div class="stat-num" id="kpiTotal">—</div>
+            <div class="stat-foot"><span id="kpiTotalFoot">—</span></div>
+          </div>
+          <div class="stat">
+            <div class="stat-top"><span class="stat-label">合计报销</span><span class="stat-ico"><i class="fa-solid fa-hand-holding-dollar"></i></span></div>
+            <div class="stat-num gold-text" id="kpiReimb">—</div>
+            <div class="stat-foot"><span id="kpiReimbFoot">—</span></div>
+          </div>
+          <div class="stat">
+            <div class="stat-top"><span class="stat-label">报销比例</span><span class="stat-ico"><i class="fa-solid fa-percent"></i></span></div>
+            <div class="stat-num gold-text" id="kpiRatio">—</div>
+            <div class="stat-foot"><span>合计报销 ÷ 总费用</span></div>
+          </div>
+          <div class="stat">
+            <div class="stat-top"><span class="stat-label">最终自付</span><span class="stat-ico"><i class="fa-solid fa-wallet"></i></span></div>
+            <div class="stat-num" id="kpiSelf">—</div>
+            <div class="stat-foot"><span id="kpiSelfFoot">—</span></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><span class="pt"><i class="fa-solid fa-bars-staggered"></i>这笔钱谁来付</span><span class="pl">总费用 = 各层报销 + 最终自付</span></div>
+          <div class="stack-wrap">
+            <div class="stack-bar" id="stackBar"></div>
+            <div class="stack-legend" id="stackLegend"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== ③ 报销明细 ==================== -->
+      <section class="section" id="sec-detail">
+        <div class="sec-head">
+          <h2><i class="fa-solid fa-list-check"></i>报销明细</h2>
+          <span class="sec-sub">发票视角 + 每一层报销的基数、扣减与实报金额</span>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><span class="pt"><i class="fa-solid fa-table-list"></i>报销路径明细</span><span class="pl">按推荐顺序逐层结算</span></div>
+          <div style="overflow-x:auto;">
+            <table class="detail" id="tblDetail"></table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== ④ 策略解读 ==================== -->
+      <section class="section" id="sec-advice">
+        <div class="sec-head">
+          <h2><i class="fa-solid fa-lightbulb"></i>策略解读</h2>
+          <span class="sec-sub">最优报销顺序与本次测算提示</span>
+        </div>
+
+        <div class="grid g2">
+          <div class="panel">
+            <div class="panel-head"><span class="pt"><i class="fa-solid fa-route"></i>推荐报销顺序</span><span class="pl">社保 → 团险 → 商保</span></div>
+            <div class="path-flow" id="pathFlow"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><span class="pt"><i class="fa-solid fa-circle-exclamation"></i>本次测算提示</span><span class="pl">自动生成</span></div>
+            <div class="tips" id="tipList"></div>
+          </div>
+        </div>
+
+        <div class="footnote">
+          <b>测算口径说明</b><br>
+          ① 医保报销基数 = 总费用 − 自费（目录外）− 分类自负（乙类 × 15%）；统筹支付 =（报销基数 − 起付线）× 报销比例，不超过封顶线。<br>
+          ② 商业保险可报销范围 = 个人实际承担部分（含个人账户支付与现金支付）；社保统筹已支付部分任何商业险均不重复报销。<br>
+          ③ 百万医疗等产品的年度免赔额，一般可用其他商业保险已报销金额抵扣，社保统筹支付不可抵扣；以有社保身份投保但未经社保结算的，报销比例通常降至 60%。<br>
+          ④ 特需部 / 国际部 / 私立医院费用通常不在医保统筹报销范围，仅中高端医疗险可覆盖。<br>
+          ⑤ 住院前后门急诊：社保按门诊口径单独结算（门诊起付线为年度累计）；商业医疗险按「住院前后门急诊」责任并入住院保额与免赔额，常见时间窗口为住院前 7 天、出院后 30 天内且与住院同一疾病原因，以保单条款为准。<br>
+          ⑥ 本工具内置的社保参数为简化测算口径，实际起付线、比例、封顶线以当地医保局与保单条款为准；测算结果仅供参考，不构成投保或理赔建议。
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+/* ============================================================================
+   主题切换（与 CRM 同款双主题）
+   ============================================================================ */
+function currentTheme(){return document.documentElement.getAttribute('data-theme')==='light'?'light':'dark';}
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  try{localStorage.setItem('baox.reimb.theme', t);}catch(e){}
+  document.querySelectorAll('.theme-sw .ts-btn').forEach(function(b){
+    b.classList.toggle('on', b.getAttribute('data-theme-set')===t);
+  });
+}
+
+/* ============================================================================
+   === ENGINE START ===
+   报销测算引擎（纯函数，无 DOM 依赖，可离线单测）
+   口径来源：公众号文章《一张发票看懂医疗险报销》
+     · 医保支付（报销基数）= 总费用 − 分类自负 − 自费
+     · 统筹支付 =（报销基数 − 起付线）× 比例
+     · 商保可报销范围 = 个人承担 = 总费用 − 统筹支付
+     · 免赔额抵扣：其他商业险已报销部分可抵扣，社保统筹不可抵扣
+   ============================================================================ */
+function r2(n){return Math.round((n+Number.EPSILON)*100)/100;}
+
+/* 内置社保简化口径（全国）：
+   省份 → 参数按省统一；个别参数差异大的城市用 cp 覆盖（如广州 / 深圳）。
+   参数格式 [起付线, 报销比例%, 封顶线]，类型：emp 职工 / res 居民 / ncm 新农合。
+   内置值为简化测算口径，用户可手动修正，实际以当地医保局为准。 */
+var TIER = {
+  east:{emp:{in:[1000,85,450000],out:[1200,70,15000]}, res:{in:[500,70,200000],out:[200,55,2500]}, ncm:{in:[500,60,180000],out:[0,50,800]}},
+  mid:{emp:{in:[900,83,400000],out:[800,68,12000]}, res:{in:[400,68,180000],out:[0,50,2000]}, ncm:{in:[400,58,150000],out:[0,50,800]}},
+  west:{emp:{in:[800,82,350000],out:[600,65,10000]}, res:{in:[300,65,150000],out:[0,50,1500]}, ncm:{in:[300,55,120000],out:[0,45,600]}}
+};
+var PROVINCES = [
+  {name:'北京', cities:[], p:{emp:{in:[1300,85,500000],out:[1800,70,20000]}, res:{in:[1300,75,250000],out:[100,50,3000]}, ncm:TIER.east.ncm}},
+  {name:'上海', cities:[], p:{emp:{in:[1500,85,500000],out:[1500,70,20000]}, res:{in:[300,70,250000],out:[300,60,3000]}, ncm:TIER.east.ncm}},
+  {name:'天津', cities:[], p:{emp:{in:[1700,85,450000],out:[1500,70,15000]}, res:{in:[500,70,200000],out:[600,50,4000]}, ncm:TIER.east.ncm}},
+  {name:'重庆', cities:[], p:{emp:{in:[800,85,400000],out:[0,60,10000]}, res:{in:[300,70,200000],out:[0,50,3000]}, ncm:TIER.west.ncm}},
+  {name:'广东', cities:['广州','深圳','珠海','佛山','东莞','中山','惠州','其他'], p:TIER.east,
+   cp:{'广州':{emp:{in:[1600,86,500000],out:[0,65,7200]}, res:{in:[500,70,250000],out:[0,50,1000]}, ncm:TIER.east.ncm},
+       '深圳':{emp:{in:[300,90,600000],out:[0,75,9000]}, res:{in:[300,75,300000],out:[0,50,1000]}, ncm:TIER.east.ncm}}},
+  {name:'江苏', cities:['南京','苏州','无锡','常州','南通','徐州','扬州','其他'], p:TIER.east},
+  {name:'浙江', cities:['杭州','宁波','温州','嘉兴','绍兴','金华','台州','其他'], p:TIER.east},
+  {name:'山东', cities:['济南','青岛','烟台','潍坊','临沂','淄博','其他'], p:TIER.east},
+  {name:'福建', cities:['福州','厦门','泉州','漳州','莆田','其他'], p:TIER.east},
+  {name:'海南', cities:['海口','三亚','儋州','其他'], p:TIER.east},
+  {name:'辽宁', cities:['沈阳','大连','鞍山','锦州','丹东','其他'], p:TIER.east},
+  {name:'四川', cities:['成都','绵阳','德阳','宜宾','南充','泸州','其他'], p:TIER.mid},
+  {name:'湖北', cities:['武汉','宜昌','襄阳','荆州','黄石','其他'], p:TIER.mid},
+  {name:'湖南', cities:['长沙','株洲','湘潭','岳阳','衡阳','其他'], p:TIER.mid},
+  {name:'河南', cities:['郑州','洛阳','开封','新乡','南阳','其他'], p:TIER.mid},
+  {name:'安徽', cities:['合肥','芜湖','马鞍山','安庆','蚌埠','其他'], p:TIER.mid},
+  {name:'河北', cities:['石家庄','唐山','保定','廊坊','邯郸','其他'], p:TIER.mid},
+  {name:'江西', cities:['南昌','赣州','九江','上饶','宜春','其他'], p:TIER.mid},
+  {name:'陕西', cities:['西安','咸阳','宝鸡','榆林','渭南','其他'], p:TIER.mid},
+  {name:'山西', cities:['太原','大同','临汾','运城','长治','其他'], p:TIER.mid},
+  {name:'吉林', cities:['长春','吉林','延边','四平','其他'], p:TIER.mid},
+  {name:'黑龙江', cities:['哈尔滨','大庆','齐齐哈尔','牡丹江','其他'], p:TIER.mid},
+  {name:'广西', cities:['南宁','柳州','桂林','玉林','梧州','其他'], p:TIER.west},
+  {name:'云南', cities:['昆明','曲靖','大理','红河','玉溪','其他'], p:TIER.west},
+  {name:'贵州', cities:['贵阳','遵义','六盘水','安顺','其他'], p:TIER.west},
+  {name:'内蒙古', cities:['呼和浩特','包头','鄂尔多斯','赤峰','通辽','其他'], p:TIER.west},
+  {name:'甘肃', cities:['兰州','天水','酒泉','张掖','其他'], p:TIER.west},
+  {name:'宁夏', cities:['银川','吴忠','石嘴山','中卫','其他'], p:TIER.west},
+  {name:'青海', cities:['西宁','海东','格尔木','其他'], p:TIER.west},
+  {name:'新疆', cities:['乌鲁木齐','喀什','伊犁','克拉玛依','其他'], p:TIER.west},
+  {name:'西藏', cities:['拉萨','日喀则','昌都','其他'], p:TIER.west}
+];
+var KIND_LABEL = {emp:'职工医保', res:'居民医保', ncm:'新农合'};
+
+/* 商保类型预设 */
+var COM_PRESETS = {
+  million:{label:'百万医疗', deductible:10000, ratio:100, noSocialRatio:60, inCap:2000000, outCap:0, socialOnly:false, coverVip:false},
+  mid:{label:'中端医疗', deductible:0, ratio:100, noSocialRatio:100, inCap:1000000, outCap:10000, socialOnly:false, coverVip:false},
+  high:{label:'高端医疗', deductible:0, ratio:100, noSocialRatio:100, inCap:10000000, outCap:100000, socialOnly:false, coverVip:true}
+};
+
+/*
+ * 主测算函数
+ * input = {
+ *   type:'in'|'out', total, place:'pub'|'vip'|'priv',
+ *   selfRatio:0~1 自费占比, yiRatio:0~1 乙类占比, yiSelf:0~1 乙类自负比例,
+ *   social:{kind:'emp'|'res'|'none', ded, ratio:0~1, cap},
+ *   group:{on, outCap, inCap, ded, ratio:0~1, socialOnly},
+ *   commercials:[{name, ptype, deductible, ratio:0~1, noSocialRatio:0~1, inCap, outCap, socialOnly, coverVip}],
+ *   dedOffset:bool 免赔额可否被其他商业报销抵扣
+ * }
+ */
+function calc(inp){
+  var tips = [];
+  var yiSelf = inp.yiSelf;
+
+  /* ---- 账单拆分：住院发票 H + 前后门急诊发票 O（仅住院场景，与住院同一疾病） ---- */
+  var TH = Math.max(0, inp.total||0);
+  var TO = inp.type==='in' ? Math.max(0, inp.vex||0) : 0;
+  var T = r2(TH + TO);
+
+  var hasSocial = inp.social.kind !== 'none';
+  var settled = inp.social.settled !== false;
+  var socOK = hasSocial && settled && inp.place==='pub';
+
+  /* 单张发票：拆分费用构成并按给定社保参数结算 */
+  function bill(amount, ded, ratio, cap){
+    var C = r2(amount * inp.selfRatio);
+    var B = r2(r2(amount * inp.yiRatio) * yiSelf);
+    var M = r2(Math.max(0, amount - C - B));
+    var SI = 0;
+    if (socOK && M > ded) SI = r2(Math.min(cap, (M - ded) * ratio));
+    return {amt:amount, C:C, B:B, M:M, SI:SI, R:r2(amount - SI), socLeft:r2(amount - C - SI)};
+  }
+  /* 从某张发票冲抵报销金额：先社保内剩余，再自费 */
+  function consume(b, amt){
+    var s = Math.min(amt, b.socLeft);
+    b.socLeft = r2(b.socLeft - s);
+    b.R = r2(b.R - amt);
+  }
+
+  var H = bill(TH, inp.social.ded, inp.social.ratio, inp.social.cap);
+  var O = TO > 0 ? bill(TO, inp.social.outDed, inp.social.outRatio, inp.social.outCap) : null;
+
+  /* ---- 社保层提示 ---- */
+  var socNoteH = '', socNoteO = '';
+  if (!hasSocial){
+    socNoteH = '无社保，统筹基金不支付';
+  } else if (!settled && inp.place === 'pub'){
+    socNoteH = '有社保但本次未经社保结算，统筹支付按 0 计';
+    tips.push({level:'warn', text:'本次就医未经社保结算：统筹支付按 0 计，且「有社保身份投保」的商业险报销比例通常下调（如百万医疗降至 60%）。'});
+  } else if (inp.place !== 'pub'){
+    socNoteH = '特需 / 国际部 / 私立医院费用通常不在医保统筹报销范围';
+    tips.push({level:'warn', text:'本次就医场所为'+(inp.place==='vip'?'特需 / 国际部':'私立医院')+'，医保统筹一般不予报销，费用需依赖团险或中高端商业医疗险覆盖。'});
+  } else if (H.M <= inp.social.ded){
+    socNoteH = '住院报销基数未达起付线 ' + fmtN(inp.social.ded) + ' 元';
+    tips.push({level:'info', text:'住院费用中医保范围内部分（'+fmtN(H.M)+' 元）未达住院起付线 '+fmtN(inp.social.ded)+' 元，本次住院统筹基金不支付。'});
+  } else {
+    socNoteH = '（基数 ' + fmtN(H.M) + ' − 住院起付线 ' + fmtN(inp.social.ded) + '）× ' + Math.round(inp.social.ratio*100) + '%';
+  }
+  if (O){
+    if (!socOK){
+      socNoteO = socNoteH;
+    } else if (O.M <= inp.social.outDed){
+      socNoteO = '门急诊基数未达门诊起付线 ' + fmtN(inp.social.outDed) + ' 元';
+      tips.push({level:'info', text:'前后门急诊费用按门诊口径结算：门诊起付线为年度累计制，若年内已累计超过起付线，实际可按比例报销，此处按单次保守测算。'});
+    } else {
+      socNoteO = '按门诊口径：（基数 ' + fmtN(O.M) + ' − 门诊起付线 ' + fmtN(inp.social.outDed) + '）× ' + Math.round(inp.social.outRatio*100) + '%（门诊起付线为年度累计，此处按单次测算）';
+    }
+    tips.push({level:'info', text:'住院前后门急诊 '+fmtN(TO)+' 元：社保按门诊口径单独结算；商业险按「住院前后门急诊」责任并入住院保额与免赔额报销（常见为住院前 7 天、出院后 30 天内，以保单条款为准）。'});
+  }
+
+  var layers = [];
+  layers.push({
+    key:'social', name: O ? '医保统筹 · 住院' : '医保统筹', icon:'soc',
+    base:H.M, ded: socOK ? inp.social.ded : 0,
+    ratio:inp.social.ratio, amount:H.SI, note:socNoteH
+  });
+  if (O){
+    layers.push({
+      key:'socialO', name:'医保统筹 · 前后门急诊', icon:'soc',
+      base:O.M, ded: socOK ? inp.social.outDed : 0,
+      ratio:inp.social.outRatio, amount:O.SI, note:socNoteO
+    });
+  }
+
+  /* 其他商业险已报销累计（用于抵扣后续产品免赔额；社保统筹不可抵扣） */
+  var commPaid = 0;
+
+  /* ---- 团险：住院 / 门急诊分别受各自保额限制，免赔额（年）共享，先扣住院 ---- */
+  if (inp.group.on){
+    var gDed = inp.group.ded || 0, gr = inp.group.ratio;
+    var bH = inp.group.socialOnly ? H.socLeft : H.R;
+    var gH = r2(Math.max(0, Math.min(inp.group.inCap, Math.max(0, bH - gDed) * gr)));
+    var gNote = (inp.group.socialOnly?'限社保范围内，':'')
+      + '住院基数 '+fmtN(bH)+' 元'+(gDed>0?'，扣年免赔 '+fmtN(gDed)+' 元':'')+'，× '+Math.round(gr*100)+'%，实报 '+fmtN(gH)+' 元';
+    var G = gH;
+    var gO = 0;
+    if (O){
+      var bO = inp.group.socialOnly ? O.socLeft : O.R;
+      var dedO = Math.max(0, gDed - bH);
+      gO = r2(Math.max(0, Math.min(inp.group.outCap, Math.max(0, bO - dedO) * gr)));
+      gNote += '；门急诊基数 '+fmtN(bO)+' 元'+(dedO>0?'，扣剩余免赔 '+fmtN(dedO)+' 元':'')+'，实报 '+fmtN(gO)+' 元';
+      G = r2(G + gO);
+    }
+    if (G<=0 && (bH>0 || (O&&O.R>0)) && gDed>=bH){
+      gNote += '；未达免赔额，本次不报销';
+    }
+    layers.push({key:'group', name:'团险', icon:'grp', base:r2(bH+(O?(inp.group.socialOnly?O.socLeft:O.R):0)), ded:gDed, ratio:gr, amount:G, note:gNote, cap:inp.group.inCap});
+    consume(H, gH);
+    if (O && gO>0) consume(O, gO);
+    commPaid = r2(commPaid + G);
+  }
+
+  /* ---- 商保（逐份）：住院场景下前后门急诊并入住院责任（共用住院保额与免赔额） ---- */
+  inp.commercials.forEach(function(c, idx){
+    var cap = inp.type==='in' ? c.inCap : c.outCap;
+    var note = '', amt = 0, effRatio = c.ratio;
+    var placeOk = inp.place==='pub' || c.coverVip;
+
+    if (cap <= 0){
+      note = inp.type==='out' ? '该产品不含门诊责任' : '该产品不含住院责任';
+      tips.push({level:'info', text:'「'+c.name+'」'+(inp.type==='out'?'不含门诊责任，本次门诊费用无法通过它报销':'不含住院责任')+'。'});
+    } else if (!placeOk){
+      note = '仅覆盖公立普通部，不含特需 / 国际部 / 私立';
+      tips.push({level:'bad', text:'「'+c.name+'」不覆盖特需 / 国际部 / 私立医院费用，本层报销为 0。'});
+    } else {
+      var baseH = c.socialOnly ? H.socLeft : H.R;
+      var baseO = O ? (c.socialOnly ? O.socLeft : O.R) : 0;
+      var base = r2(baseH + baseO);
+      /* 免赔额抵扣：前序商业报销可抵扣 */
+      var dedRemain = c.deductible;
+      if (inp.dedOffset && dedRemain > 0 && commPaid > 0){
+        dedRemain = Math.max(0, r2(dedRemain - commPaid));
+      }
+      /* 有社保身份但未经社保结算 → 比例罚则 */
+      var penalty = false;
+      if (hasSocial && !settled && inp.place === 'pub' && c.noSocialRatio < c.ratio){
+        effRatio = c.noSocialRatio;
+        penalty = true;
+      }
+      amt = r2(Math.max(0, Math.min(cap, Math.max(0, base - dedRemain) * effRatio)));
+      note = (c.socialOnly?'限社保范围内，':'')
+        + '基数 ' + fmtN(base) + ' 元' + (O ? '（住院 '+fmtN(baseH)+' + 前后门急诊 '+fmtN(baseO)+'，并入住院责任）' : '')
+        + (c.deductible>0 ? '，免赔 ' + fmtN(c.deductible) + ' 元' + (inp.dedOffset && dedRemain < c.deductible ? '（前序报销抵扣后剩 ' + fmtN(dedRemain) + ' 元）' : '') : '，0 免赔')
+        + '，× ' + Math.round(effRatio*100) + '%' + (penalty ? '（未经社保结算，比例下调）' : '');
+      if (amt <= 0 && base > 0 && dedRemain >= base){
+        note += '；未达免赔额，本次不报销';
+        tips.push({level:'warn', text:'「'+c.name+'」本次可报销基数 '+fmtN(base)+' 元，未达免赔额 '+fmtN(dedRemain)+' 元，报销 0 元。'});
+      }
+      if (penalty){
+        tips.push({level:'warn', text:'「'+c.name+'」以有社保身份投保，本次未经社保结算，报销比例降至 '+Math.round(effRatio*100)+'%。'});
+      }
+      /* 冲抵：先住院发票，后门急诊发票 */
+      var amtH = Math.min(amt, H.R);
+      consume(H, amtH);
+      if (O && amt - amtH > 0) consume(O, r2(amt - amtH));
+      commPaid = r2(commPaid + amt);
+    }
+    layers.push({
+      key:'com'+idx, name:c.name, icon:'com'+Math.min(idx,2),
+      base: (placeOk && cap>0) ? r2((c.socialOnly?H.socLeft:H.R) + (O?(c.socialOnly?O.socLeft:O.R):0) + amt) : 0,
+      ded:c.deductible, ratio:effRatio, amount:amt, note:note, cap:cap
+    });
+  });
+
+  /* ---- 汇总 ---- */
+  var finalPay = r2(H.R + (O ? O.R : 0));
+  var totalReimb = r2(T - finalPay);
+  var ratio = T > 0 ? totalReimb / T : 0;
+
+  if (finalPay <= 0 && T > 0){
+    tips.push({level:'ok', text:'本次费用已被全额报销，个人自付 0 元。'});
+  } else if (ratio < 0.5 && T > 0){
+    tips.push({level:'bad', text:'本次报销比例仅 '+Math.round(ratio*100)+'%，超过一半费用需自担，建议检视保障结构（如免赔额过高、缺少门诊责任或不含自费项目）。'});
+  }
+  if (inp.selfRatio >= 0.4){
+    tips.push({level:'info', text:'自费（目录外）费用占比约 '+Math.round(inp.selfRatio*100)+'%，只有「不限社保目录」的商业险才能覆盖这部分费用。'});
+  }
+
+  return {
+    T:T, TH:TH, TO:TO,
+    C:r2(H.C+(O?O.C:0)), B:r2(H.B+(O?O.B:0)), M:r2(H.M+(O?O.M:0)),
+    SI:r2(H.SI+(O?O.SI:0)),
+    R:finalPay, totalReimb:totalReimb, ratio:ratio,
+    layers:layers, tips:tips
+  };
+}
+
+function fmtN(n){
+  n = r2(n||0);
+  var parts = n.toFixed(2).split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return (parts[1]==='00') ? parts[0] : parts.join('.');
+}
+/* === ENGINE END === */
+
+/* ============================================================================
+   UI 绑定
+   ============================================================================ */
+var comSeq = 0;
+var commercials = [];
+
+var PLACE_HINT = {
+  pub:'普通部：医保正常结算，商业医疗险普遍覆盖。',
+  vip:'特需 / 国际部：医保统筹一般不报，仅中端（部分）及高端医疗可覆盖。',
+  priv:'私立医院：医保统筹不报，通常仅高端医疗险覆盖。'
+};
+var PLACE_DEFAULT = {
+  pub:{self:0.22, yi:0.15},
+  vip:{self:0.50, yi:0.12},
+  priv:{self:0.70, yi:0.08}
+};
+/* 费用构成内部估算值（普通客户无需感知，按就医场所自动取值） */
+var expSelf = PLACE_DEFAULT.pub.self, expYi = PLACE_DEFAULT.pub.yi;
+
+function $(id){return document.getElementById(id);}
+
+function segValue(id){var b=document.querySelector('#'+id+' button.on');return b?b.getAttribute('data-v'):null;}
+function segInit(id, onChange){
+  document.querySelectorAll('#'+id+' button').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('#'+id+' button').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      onChange(segValue(id));
+    });
+  });
+}
+
+/* ---- 社保参数自动填充 ---- */
+function findProv(){
+  var pn = $('selProv').value, prov = null;
+  PROVINCES.forEach(function(p){ if (p.name === pn) prov = p; });
+  return prov;
+}
+
+function fillCities(){
+  var prov = findProv();
+  var ci = $('cityItem'), sc = $('selCity');
+  /* 直辖市 / 自定义：省内政策统一，只保留省份字段 */
+  if (!prov || !prov.cities.length){ ci.style.display = 'none'; sc.innerHTML = ''; return; }
+  ci.style.display = '';
+  sc.innerHTML = prov.cities.map(function(c){ return '<option value="'+c+'">'+c+'</option>'; }).join('');
+}
+
+function initProv(){
+  $('selProv').innerHTML = PROVINCES.map(function(p){
+    return '<option value="'+p.name+'"'+(p.name==='上海'?' selected':'')+'>'+p.name+'</option>';
+  }).join('') + '<option value="custom">自定义</option>';
+  fillCities();
+}
+
+function fillSocial(){
+  var kind = segValue('segSocial');
+  var type = segValue('segType');
+  if (kind === 'none'){ $('socHint').textContent = '无社保：全部费用由团险 / 商保 / 个人承担。'; recalc(); return; }
+  if ($('selProv').value === 'custom'){ $('socHint').textContent = '自定义地区：起付线、报销比例与封顶线完全手动填写。'; recalc(); return; }
+  var prov = findProv();
+  if (!prov){ recalc(); return; }
+  var params = prov.p;
+  var city = prov.cities.length ? $('selCity').value : '';
+  if (city && prov.cp && prov.cp[city]) params = prov.cp[city];
+  var row = params[kind] && params[kind][type];
+  if (row){
+    $('inSocDed').value = row[0];
+    $('inSocRatio').value = row[1];
+    $('inSocCap').value = row[2];
+    $('socHint').textContent = prov.name + (city ? ' · ' + city : '') + ' · ' + KIND_LABEL[kind] + ' · ' + (type==='in'?'住院':'门诊')
+      + '：起付线约 ' + fmtN(row[0]) + ' 元，报销约 ' + row[1] + '%。实际以当地医保局口径为准。';
+  }
+  recalc();
+}
+
+/* ---- 商保卡片 ---- */
+function addCommercial(preset, nameSuffix){
+  var p = COM_PRESETS[preset] || COM_PRESETS.million;
+  var item = {
+    id: ++comSeq,
+    name: p.label + (nameSuffix ? ' ' + nameSuffix : ''),
+    ptype: preset || 'million',
+    deductible: p.deductible, ratio: p.ratio, noSocialRatio: p.noSocialRatio,
+    inCap: p.inCap, outCap: p.outCap,
+    socialOnly: p.socialOnly, coverVip: p.coverVip
+  };
+  commercials.push(item);
+  renderCommercials();
+  recalc();
+}
+
+function removeCommercial(id){
+  commercials = commercials.filter(function(c){return c.id!==id;});
+  renderCommercials();
+  recalc();
+}
+
+function renderCommercials(){
+  var box = $('comList');
+  box.innerHTML = '';
+  if (!commercials.length){
+    box.innerHTML = '<div class="f-hint" style="padding:8px 2px;">尚未添加商业医疗险。点击右上角「添加商保」，可选择百万医疗 / 中端医疗 / 高端医疗预设。</div>';
+    return;
+  }
+  commercials.forEach(function(c, i){
+    var div = document.createElement('div');
+    div.className = 'com-card';
+    div.innerHTML =
+      '<div class="cc-head">'
+      + '<span class="cc-tag">商保 ' + (i+1) + '</span>'
+      + '<select class="f-input cc-sel" data-f="ptype">'
+      +   '<option value="million"'+(c.ptype==='million'?' selected':'')+'>百万医疗</option>'
+      +   '<option value="mid"'+(c.ptype==='mid'?' selected':'')+'>中端医疗</option>'
+      +   '<option value="high"'+(c.ptype==='high'?' selected':'')+'>高端医疗</option>'
+      + '</select>'
+      + '<input class="f-input cc-name" data-f="name" value="'+c.name.replace(/"/g,'&quot;')+'" placeholder="产品名称">'
+      + '<button class="btn sm danger cc-del" type="button"><i class="fa-solid fa-trash-can"></i></button>'
+      + '</div>'
+      + '<div class="f-row c3">'
+      +   '<div class="f-item"><label>免赔额（年）</label><div class="f-unit"><input class="f-input" type="number" min="0" step="500" data-f="deductible" value="'+c.deductible+'"><em>元</em></div></div>'
+      +   '<div class="f-item"><label>报销比例（经社保结算）</label><div class="f-unit"><input class="f-input" type="number" min="0" max="100" step="5" data-f="ratio" value="'+c.ratio+'"><em>%</em></div></div>'
+      +   '<div class="f-item"><label>未经社保结算比例</label><div class="f-unit"><input class="f-input" type="number" min="0" max="100" step="5" data-f="noSocialRatio" value="'+c.noSocialRatio+'"><em>%</em></div></div>'
+      + '</div>'
+      + '<div class="f-row c3">'
+      +   '<div class="f-item"><label>住院保额</label><div class="f-unit"><input class="f-input" type="number" min="0" step="10000" data-f="inCap" value="'+c.inCap+'"><em>元</em></div></div>'
+      +   '<div class="f-item"><label>门诊保额（0 = 不含门诊）</label><div class="f-unit"><input class="f-input" type="number" min="0" step="1000" data-f="outCap" value="'+c.outCap+'"><em>元</em></div></div>'
+      +   '<div class="f-item" style="display:flex;align-items:flex-end;gap:18px;padding-bottom:8px;flex-wrap:wrap;">'
+      +     '<label class="sw"><input type="checkbox" data-f="socialOnly"'+(c.socialOnly?' checked':'')+'><span class="trk"></span>限社保内</label>'
+      +     '<label class="sw"><input type="checkbox" data-f="coverVip"'+(c.coverVip?' checked':'')+'><span class="trk"></span>含特需/私立</label>'
+      +   '</div>'
+      + '</div>';
+    box.appendChild(div);
+
+    div.querySelector('.cc-del').addEventListener('click', function(){ removeCommercial(c.id); });
+    div.querySelectorAll('[data-f]').forEach(function(el){
+      el.addEventListener('change', function(){
+        var f = el.getAttribute('data-f');
+        if (f === 'ptype'){
+          var p = COM_PRESETS[el.value];
+          c.ptype = el.value;
+          c.deductible = p.deductible; c.ratio = p.ratio; c.noSocialRatio = p.noSocialRatio;
+          c.inCap = p.inCap; c.outCap = p.outCap; c.socialOnly = p.socialOnly; c.coverVip = p.coverVip;
+          if (!c.name || /^(百万医疗|中端医疗|高端医疗)/.test(c.name)) c.name = p.label + ' ' + (i+1);
+          renderCommercials();
+        } else if (f === 'name'){
+          c.name = el.value.trim() || ('商保 ' + (i+1));
+        } else if (f === 'socialOnly' || f === 'coverVip'){
+          c[f] = el.checked;
+        } else {
+          c[f] = Math.max(0, +el.value || 0);
+        }
+        recalc();
+      });
+    });
+  });
+}
+
+/* ---- 汇总输入并测算 ---- */
+function readInput(){
+  var kind = segValue('segSocial') || 'emp';
+  var soc = {
+    kind: kind,
+    settled: $('swSocSettled').checked,
+    ded: Math.max(0, +$('inSocDed').value || 0),
+    ratio: Math.min(100, Math.max(0, +$('inSocRatio').value || 0)) / 100,
+    cap: Math.max(0, +$('inSocCap').value || 0)
+  };
+  /* 前后门急诊按门诊口径单独结算：从省份数据取门诊参数；自定义 / 无社保时与主参数一致 */
+  soc.outDed = soc.ded; soc.outRatio = soc.ratio; soc.outCap = soc.cap;
+  var prov = findProv();
+  if (prov && kind !== 'none' && $('selProv').value !== 'custom'){
+    var params = prov.p;
+    var city = prov.cities.length ? $('selCity').value : '';
+    if (city && prov.cp && prov.cp[city]) params = prov.cp[city];
+    var orow = params[kind] && params[kind].out;
+    if (orow){ soc.outDed = orow[0]; soc.outRatio = orow[1] / 100; soc.outCap = orow[2]; }
+  }
+  return {
+    type: segValue('segType') || 'in',
+    total: Math.max(0, +$('inTotal').value || 0),
+    vex: Math.max(0, +$('inVex').value || 0),
+    place: segValue('segPlace') || 'pub',
+    selfRatio: expSelf,
+    yiRatio: expYi,
+    yiSelf: 0.15,
+    social: soc,
+    group: {
+      on: $('swGroup').checked,
+      outCap: Math.max(0, +$('inGrpOutCap').value || 0),
+      inCap: Math.max(0, +$('inGrpInCap').value || 0),
+      ded: Math.max(0, +$('inGrpDed').value || 0),
+      ratio: Math.min(100, Math.max(0, +$('inGrpRatio').value || 0)) / 100,
+      socialOnly: $('swGrpSocialOnly').checked
+    },
+    commercials: commercials.map(function(c){
+      return {name:c.name, ptype:c.ptype, deductible:c.deductible, ratio:c.ratio/100, noSocialRatio:c.noSocialRatio/100,
+              inCap:c.inCap, outCap:c.outCap, socialOnly:c.socialOnly, coverVip:c.coverVip};
+    }),
+    dedOffset: true
+  };
+}
+
+var SEG_COLORS = {soc:'var(--seg-soc)', grp:'var(--seg-grp)', com0:'var(--seg-com1)', com1:'var(--seg-com2)', com2:'var(--seg-com3)', self:'var(--seg-self)'};
+
+function recalc(){
+  var inp = readInput();
+  var r = calc(inp);
+
+  /* KPI */
+  $('kpiTotal').textContent = '¥' + fmtN(r.T);
+  $('kpiTotalFoot').textContent = (inp.type==='in'?'住院':'门诊') + ' · ' + ({pub:'公立普通部',vip:'特需 / 国际部',priv:'私立医院'})[inp.place];
+  $('kpiReimb').textContent = '¥' + fmtN(r.totalReimb);
+  $('kpiReimbFoot').textContent = r.layers.filter(function(l){return l.amount>0;}).length + ' 个渠道参与报销';
+  $('kpiRatio').textContent = r.T>0 ? (r.ratio*100).toFixed(1) + '%' : '—';
+  $('kpiSelf').textContent = '¥' + fmtN(r.R);
+  $('kpiSelfFoot').textContent = r.R>0 ? '需个人承担（现金或个人账户）' : '本次费用已全额报销';
+
+  /* 堆叠条 */
+  var bar = $('stackBar'), leg = $('stackLegend');
+  bar.innerHTML = ''; leg.innerHTML = '';
+  var segs = [];
+  r.layers.forEach(function(l){
+    if (l.amount > 0) segs.push({name:l.name, v:l.amount, color:SEG_COLORS[l.icon]||'var(--seg-com1)'});
+  });
+  if (r.R > 0) segs.push({name:'个人自付', v:r.R, color:SEG_COLORS.self});
+  if (r.T <= 0){
+    bar.innerHTML = '<div style="padding:12px;color:var(--dim);font-size:12px;">请输入就医总费用</div>';
+  } else {
+    segs.forEach(function(s){
+      var pct = s.v / r.T * 100;
+      var d = document.createElement('div');
+      d.className = 'sg';
+      d.style.width = pct + '%';
+      d.style.background = s.color;
+      if (pct >= 7) d.innerHTML = '<b>' + pct.toFixed(0) + '%</b>';
+      d.title = s.name + '：¥' + fmtN(s.v);
+      bar.appendChild(d);
+      var g = document.createElement('span');
+      g.className = 'lg';
+      g.innerHTML = '<i style="background:'+s.color+'"></i>' + s.name + ' <b>¥' + fmtN(s.v) + '</b>';
+      leg.appendChild(g);
+    });
+  }
+
+  /* 明细表 */
+  var tbl = $('tblDetail');
+  var html = '<thead><tr><th>报销层</th><th>计算口径</th><th class="num">基数</th><th class="num">起付 / 免赔</th><th class="num">比例</th><th class="num">实报金额</th></tr></thead><tbody>';
+  r.layers.forEach(function(l){
+    html += '<tr>'
+      + '<td><span class="lv"><i style="background:'+(SEG_COLORS[l.icon]||'var(--seg-com1)')+'"></i>'+l.name+'</span></td>'
+      + '<td><span class="row-note" style="margin:0;">'+(l.note||'—')+'</span></td>'
+      + '<td class="num">¥'+fmtN(l.base)+'</td>'
+      + '<td class="num">'+(l.ded>0?'¥'+fmtN(l.ded):'—')+'</td>'
+      + '<td class="num">'+Math.round((l.ratio||0)*100)+'%</td>'
+      + '<td class="num"><b>¥'+fmtN(l.amount)+'</b></td>'
+      + '</tr>';
+  });
+  html += '<tr class="hl"><td><span class="lv"><i style="background:var(--gold2)"></i>合计报销</span></td><td></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"><b>¥'+fmtN(r.totalReimb)+'</b></td></tr>';
+  html += '<tr><td><span class="lv"><i style="background:var(--seg-self)"></i>最终自付</span></td><td><span class="row-note" style="margin:0;">总费用 − 各层报销</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"><b>¥'+fmtN(r.R)+'</b></td></tr>';
+  html += '</tbody>';
+  tbl.innerHTML = html;
+
+  /* 发票拆解 */
+  var inv = $('invGrid');
+  var personalAccount = r2(r.T - r.SI - r.C - r.B); /* 起付线以下 + 按比例自负（个人账户口径） */
+  inv.innerHTML =
+    invCell('就医总费用', r.T, r.TO>0 ? '住院 '+fmtN(r.TH)+' + 前后门急诊 '+fmtN(r.TO) : '发票金额总计')
+    + invCell('医保统筹支付', r.SI, '医保基金真金白银替你付的')
+    + invCell('分类自负', r.B, '乙类费用 × 15%，目录内但不全报')
+    + invCell('自费', r.C, '丙类药、目录外项目，完全自担')
+    + invCell('起付线 + 按比例自负', personalAccount, '医保范围内但需个人承担的部分')
+    + invCell('商保可报销范围', r2(r.T - r.SI), '= 总费用 − 统筹支付');
+
+  /* 推荐顺序 */
+  var pf = $('pathFlow');
+  var steps = [];
+  var l0 = r.layers[0];
+  steps.push({name:'① 社保（医保统筹）', why:'国家基础福利，先用。统筹支付部分商业险不重复报销，且「经社保结算」是多数百万医疗 100% 报销的前提。', amt:l0.amount});
+  var gl = r.layers.filter(function(l){return l.key==='group';})[0];
+  if (gl) steps.push({name:'② 团险（公司福利）', why:'免赔额低、保额小，适合先覆盖社保报完的小额剩余；其报销金额还可抵扣商保免赔额。', amt:gl.amount});
+  r.layers.filter(function(l){return /^com\d/.test(l.key);}).forEach(function(l, i){
+    steps.push({name:(gl?'③':'②')+' 商保 · '+l.name, why: l.ded>0 ? ('年免赔额 '+fmtN(l.ded)+' 元，前序商业报销可抵扣；0 免赔产品可全额承接。') : '0 免赔，直接按比例承接剩余费用。', amt:l.amount});
+  });
+  pf.innerHTML = steps.map(function(s){
+    return '<div class="path-step"><span class="no">'+s.name.charAt(0)+'</span><div class="tx"><b>'+s.name.slice(2).trim()+'</b><span>'+s.why+'</span></div><div class="amt">¥'+fmtN(s.amt)+'<small>本层实报</small></div></div>';
+  }).join('');
+
+  /* 提示 */
+  var tl = $('tipList');
+  if (!r.tips.length){
+    tl.innerHTML = '<div class="tip ok"><i class="fa-solid fa-circle-check"></i><span>本次测算无特殊风险提示。</span></div>';
+  } else {
+    tl.innerHTML = r.tips.map(function(t){
+      var ico = t.level==='bad'?'fa-circle-xmark':(t.level==='warn'?'fa-triangle-exclamation':(t.level==='ok'?'fa-circle-check':'fa-circle-info'));
+      return '<div class="tip '+t.level+'"><i class="fa-solid '+ico+'"></i><span>'+t.text+'</span></div>';
+    }).join('');
+  }
+}
+
+function invCell(t, v, n){
+  return '<div class="inv-cell"><div class="ic-t">'+t+'</div><div class="ic-v">¥'+fmtN(v)+'</div><div class="ic-n">'+n+'</div></div>';
+}
+
+/* ---- 发票示例（公众号文章案例） ---- */
+function fillDemo(){
+  $('inTotal').value = 17392.38;
+  /* 文章案例：自费 3740.35 / 分类自负 98.57（乙类 657.13 × 15%），直接写入精确占比 */
+  expSelf = 3740.35 / 17392.38;
+  expYi = 657.13 / 17392.38;
+  recalc();
+}
+
+/* ---- 初始化 ---- */
+(function init(){
+  /* 侧栏 active */
+  document.querySelectorAll('.sidebar .nav-item').forEach(function(a){
+    a.addEventListener('click', function(){
+      document.querySelectorAll('.sidebar .nav-item').forEach(function(x){x.classList.remove('active');});
+      a.classList.add('active');
+    });
+  });
+
+  /* 分段选择 */
+  segInit('segType', function(v){
+    $('vexItem').style.display = v === 'in' ? '' : 'none';
+    fillSocial();
+  });
+  segInit('segPlace', function(v){
+    $('placeHint').textContent = PLACE_HINT[v] || '';
+    var pd = PLACE_DEFAULT[v];
+    if (pd){ expSelf = pd.self; expYi = pd.yi; }
+    recalc();
+  });
+  segInit('segSocial', function(){ fillSocial(); });
+
+  /* 社保 */
+  initProv();
+  $('selProv').addEventListener('change', function(){ fillCities(); fillSocial(); });
+  $('selCity').addEventListener('change', fillSocial);
+  ['inSocDed','inSocRatio','inSocCap'].forEach(function(id){ $(id).addEventListener('input', recalc); });
+  $('swSocSettled').addEventListener('change', recalc);
+
+  /* 团险 */
+  $('swGroup').addEventListener('change', function(){
+    $('groupBody').style.display = $('swGroup').checked ? '' : 'none';
+    recalc();
+  });
+  ['inGrpOutCap','inGrpInCap','inGrpDed','inGrpRatio','swGrpSocialOnly'].forEach(function(id){
+    $(id).addEventListener('change', recalc);
+    $(id).addEventListener('input', recalc);
+  });
+
+  /* 商保 */
+  $('btnAddCom').addEventListener('click', function(){
+    var order = ['million','mid','high'];
+    addCommercial(order[commercials.length % 3], String(commercials.length + 1));
+  });
+  $('btnDemo').addEventListener('click', fillDemo);
+
+  $('inTotal').addEventListener('input', recalc);
+  $('inVex').addEventListener('input', recalc);
+
+  /* 默认两份商保：百万医疗 + 中端医疗（便于对比演示） */
+  addCommercial('million', '1');
+  addCommercial('mid', '2');
+  fillSocial();
+})();
+</script>
+</body>
+</html>
